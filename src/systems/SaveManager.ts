@@ -66,7 +66,29 @@ export const SaveManager = {
   migrate(raw: unknown, content: GameContent): SaveData {
     if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) throw new Error('corrupt: not an object');
     const o = raw as Record<string, unknown>;
-    // (Task 33 inserts version-bump logic here, BEFORE these checks, so older saves are upgraded first.)
+
+    // Migration ladder — runs BEFORE shape checks so older saves are upgraded first.
+    const STEPS: Array<(o: Record<string, unknown>) => void> = [
+      // step index i upgrades version i -> i+1
+      (o) => { // 0 -> 1 : M1 baseline
+        o.evolutionStage ??= 0;
+        o.currentEnergy ??= 100;
+        o.quizStats ??= {};
+        o.settings ??= { studyMode: false, answerTimer: false };
+        const fallbackRegionId = (o.currentRegionId as string | undefined) ?? content.regions[0]?.id ?? '';
+        o.playerTile ??= { regionId: fallbackRegionId, x: 4, y: 14 };
+        o.version = 1;
+      }
+      // Milestone 2 appends: (o) => { ...; o.version = 2; }
+    ];
+    let v = typeof o.version === 'number' ? o.version : 0;
+    while (v < CURRENT_SAVE_VERSION) {
+      const step = STEPS[v];
+      if (!step) throw new Error(`corrupt: no migration from v${v}`);
+      step(o);
+      v = o.version as number;
+    }
+
     const isArr = Array.isArray;
     const isObj = (v: unknown) => typeof v === 'object' && v !== null && !Array.isArray(v);
     if (typeof o.version !== 'number') throw new Error('corrupt: no version');

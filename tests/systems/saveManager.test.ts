@@ -84,3 +84,29 @@ describe('SaveManager — corruption', () => {
     expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'corrupt' });
   });
 });
+
+describe('SaveManager — migration', () => {
+  it('upgrades a "version 0" save by filling M1 defaults and bumping the version', () => {
+    const st = memStorage();
+    const base = SaveManager.newGame('pyron', content);
+    const old: Record<string, unknown> = { ...base, version: 0 };
+    delete old.evolutionStage; delete old.currentEnergy; delete old.quizStats; delete old.settings; delete old.playerTile;
+    st.setItem(SAVE_KEY, JSON.stringify(old));
+    const r = SaveManager.load(content, st);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.data.version).toBe(CURRENT_SAVE_VERSION);
+      expect(r.data.evolutionStage).toBe(0);
+      expect(r.data.currentEnergy).toBe(100);
+      expect(r.data.quizStats).toEqual({});
+      expect(r.data.settings).toEqual({ studyMode: false, answerTimer: false });
+      expect(r.data.playerTile.regionId).toBe(r.data.currentRegionId);
+    }
+  });
+  it('a current-version save passes through unchanged', () => {
+    const st = memStorage(); const s = SaveManager.newGame('ionix', content); s.level = 5;
+    SaveManager.save(s, st);
+    const r = SaveManager.load(content, st);
+    expect(r.ok && r.data.level).toBe(5);
+  });
+});
