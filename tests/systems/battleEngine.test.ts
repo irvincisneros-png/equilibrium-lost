@@ -152,3 +152,26 @@ describe('resolveTurn — skill behaviours', () => {
     expect(r.state.enemy.statuses.some(st => st.id === 'oxidised')).toBe(false);
   });
 });
+
+describe('resolveTurn — Catalyst Burst', () => {
+  const burstPlayer = { ...playerInput, atk: 30, spd: 99, equippedSkillIds: ['spark-flare', 'combustion-cascade'], catalystBurstSkillId: 'combustion-cascade', signatureAffinity: 'Combustion' as const };
+  it('is rejected (no-op) when the chain is not full', () => {
+    let s = createBattle(burstPlayer, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    expect(s.catalystBurstReady).toBe(false);
+    const r = resolveTurn(s, { kind: 'catalystBurst' }, skillCtx);
+    // burst didn't fire: enemy only took the enemy's own basic attack damage? no — enemy hp 9999, enemy atk 1 on player; enemy hp unchanged by a no-op burst.
+    expect(r.state.enemy.hp).toBe(9999);
+  });
+  it('when ready: fires the class burst skill at flat ×3, applies its guaranteed status, zeroes the chain', () => {
+    let s = createBattle(burstPlayer, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    for (let i = 0; i < 5; i++) s = resolveTurn(s, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx).state;
+    expect(s.catalystBurstReady).toBe(true);
+    const before = s.enemy.hp;
+    const refSkillDmg = before - resolveTurn(s, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx).state.enemy.hp; // chain-5 spark-flare hit
+    const r = resolveTurn(s, { kind: 'catalystBurst' }, skillCtx);
+    expect(before - r.state.enemy.hp).toBeGreaterThan(refSkillDmg); // burst hits harder than a maxed-chain skill
+    expect(r.state.enemy.statuses.some(st => st.id === 'combusting')).toBe(true);
+    expect(r.state.chain).toBe(0);
+    expect(r.state.catalystBurstReady).toBe(false);
+  });
+});

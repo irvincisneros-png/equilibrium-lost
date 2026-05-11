@@ -72,7 +72,10 @@ const REGEN_PER_TURN = 25;
 function other(side: 'player' | 'enemy'): 'player' | 'enemy' { return side === 'player' ? 'enemy' : 'player'; }
 
 // Replaced properly in Task 19 (resolves the player's class Catalyst Burst skill from ctx).
-function resolveBurstSkill(_attacker: Combatant, _ctx: BattleContext): SkillDef | null { return null; }
+function resolveBurstSkill(attacker: Combatant, ctx: BattleContext): SkillDef | null {
+  if (!attacker.catalystBurstSkillId) return null;
+  try { return ctx.getSkill(attacker.catalystBurstSkillId); } catch { return null; }
+}
 // Replaced properly in Task 20 (enemy AI: pick best affordable skill, 25% wildcard basic attack).
 function chooseEnemyAction(_state: BattleState, _ctx: BattleContext): BattleAction { return { kind: 'attack' }; }
 
