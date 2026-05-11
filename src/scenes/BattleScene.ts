@@ -3,6 +3,7 @@ import type { GameContent, SaveData, SkillDef, StatusEffectInstance } from '../c
 import type { BattleState, BattleEvent, BattleAction, BattleContext } from '../systems/BattleEngine';
 import { createBattle, resolveTurn } from '../systems/BattleEngine';
 import { playerBattleInputFromSave, battleContextFromContent, REFRESHER_TOAST_KEY } from './battlePresenter';
+import { applyVictory } from './battleVictory';
 import { HealthBar } from '../ui/HealthBar';
 import { EnergyBar } from '../ui/EnergyBar';
 import { ChainMeter } from '../ui/ChainMeter';
@@ -44,6 +45,7 @@ export class BattleScene extends Phaser.Scene {
 
   // visuals
   private playerSprite!: Phaser.GameObjects.Image;
+  private playerLabel: Phaser.GameObjects.Text | null = null;
   private enemySprite!: Phaser.GameObjects.Image;
   private enemyLabel: Phaser.GameObjects.Text | null = null;
   private enemyNameText!: Phaser.GameObjects.Text;
@@ -126,7 +128,8 @@ export class BattleScene extends Phaser.Scene {
 
     // --- sprites ---
     this.playerSprite = this.add.image(PLAYER_X, PLAYER_GROUND_Y, this.heroBattleKey()).setOrigin(0.5, 1).setDepth(10);
-    addPlaceholderLabel(this, PLAYER_X, PLAYER_GROUND_Y - this.playerSprite.displayHeight / 2, this.heroBattleKey(), this.content.assets)?.setDepth(11);
+    this.playerLabel = addPlaceholderLabel(this, PLAYER_X, PLAYER_GROUND_Y - this.playerSprite.displayHeight / 2, this.heroBattleKey(), this.content.assets);
+    this.playerLabel?.setDepth(11);
     this.setEnemyVisuals(enemyDef.id);
 
     // --- enemy panel (top) ---
@@ -645,9 +648,57 @@ export class BattleScene extends Phaser.Scene {
       });
       return;
     }
-    // playerWin — Task 48 layers XP / level-ups / unlocks / evolution / boss-clear on top.
+    // playerWin
+    void this.runVictory();
+  }
+
+  private async runVictory(): Promise<void> {
     this.log(`${this.state.enemy.name} is stabilised!`);
-    this.time.delayedCall(1100, () => { this.persistVitals(); this.returnHome(); });
+    await this.wait(900);
+
+    // carry the battle's HP/energy onto the save before the bookkeeping
+    this.save.currentHp = Math.max(1, this.state.player.hp);
+    this.save.currentEnergy = this.state.player.energy;
+
+    const enemyDef = this.content.enemies[this.params.enemyId];
+    const region = this.content.regions.find(r => r.id === this.params.regionId) ?? this.content.regions[0];
+    let evolved = null as ReturnType<typeof applyVictory>['evolved'];
+    let banners: string[] = [];
+    if (enemyDef && region) {
+      const result = applyVictory(this.save, enemyDef, region, this.bonusXp, this.content);
+      this.save = result.save;
+      banners = result.banners;
+      evolved = result.evolved;
+    }
+    this.registry.set('save', this.save);
+    this.persist();
+
+    for (let i = 0; i < banners.length; i++) {
+      if (evolved && i === banners.length - 1) {
+        await this.burstFlash();
+        this.playerSprite.setTexture(this.heroBattleKey());
+        this.playerLabel?.destroy();
+        this.playerLabel = addPlaceholderLabel(this, PLAYER_X, PLAYER_GROUND_Y - this.playerSprite.displayHeight / 2, this.heroBattleKey(), this.content.assets);
+        this.playerLabel?.setDepth(11);
+      }
+      await this.showBanner(banners[i] ?? '');
+    }
+
+    if (enemyDef?.role === 'regionBoss') this.scene.start('WorldMapScene');
+    else this.returnHome();
+  }
+
+  private showBanner(text: string, holdMs = 900): Promise<void> {
+    const t = this.add.text(W / 2, 96, text, { fontFamily: FONT, fontSize: '12px', color: '#f9e2af', backgroundColor: '#0b0f17cc', padding: { x: 8, y: 4 }, align: 'center', wordWrap: { width: W - 40 } })
+      .setOrigin(0.5).setDepth(1200).setScale(0.6);
+    return new Promise<void>(resolve => {
+      this.tweens.add({
+        targets: t, scaleX: 1, scaleY: 1, duration: 160, ease: 'Back.easeOut',
+        onComplete: () => this.time.delayedCall(holdMs, () => {
+          this.tweens.add({ targets: t, alpha: 0, duration: 220, onComplete: () => { t.destroy(); resolve(); } });
+        }),
+      });
+    });
   }
 
   // ---------------------------------------------------------------------------
