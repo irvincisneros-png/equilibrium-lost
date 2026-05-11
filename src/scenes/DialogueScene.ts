@@ -228,19 +228,20 @@ export class DialogueScene extends Phaser.Scene {
 
   private handleEnd(node: DialogueNode): void {
     const launch = node.launch;
+    const regionId = typeof this.returnData.regionId === 'string' ? this.returnData.regionId : '';
 
-    if (launch === 'shrine') {
-      // TODO: Task 49 — launch ChallengeShrineScene
-      console.log('[dialogue] would launch shrine — Task 49 not yet implemented');
-      this.closeScene();
-    } else if (typeof launch === 'string' && launch.startsWith('battle:')) {
-      // TODO: Task 45 — launch BattleScene with enemyId
-      const enemyId = launch.slice('battle:'.length);
-      console.log(`[dialogue] would launch BattleScene for enemy "${enemyId}" — Task 45 not yet implemented`);
-      this.closeScene();
-    } else {
-      this.closeScene();
+    if (launch === 'shrine' && regionId && this.scene.get('ChallengeShrineScene')) {
+      this.scene.stop(this.returnTo);
+      this.scene.start('ChallengeShrineScene', { regionId });
+      return;
     }
+    if (typeof launch === 'string' && launch.startsWith('battle:') && regionId && this.scene.get('BattleScene')) {
+      const enemyId = launch.slice('battle:'.length);
+      this.scene.stop(this.returnTo);
+      this.scene.start('BattleScene', { enemyId, regionId, returnTo: this.returnTo, returnData: this.returnData });
+      return;
+    }
+    this.closeScene();
   }
 
   private closeScene(): void {

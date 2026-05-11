@@ -7,7 +7,7 @@
     "miniBossId": "unstable-deuteride",
     "regionBossId": "the-unstable-isotope",
     "npcIds": ["professor-bohrlin", "archivist-mendel", "shrinekeeper-quanta"],
-    "shrine": { "questionTopic": "atomic-structure", "questionCount": 6, "passRatio": 0.8334, "rewardXp": 220, "rewardItemIds": ["energy-cell", "isotope-core"] },
+    "shrine": { "questionTopic": "atomic-structure", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 220, "rewardItemIds": ["energy-cell", "isotope-core"] },
     "unlocksRegionId": null,
     "bossReward": { "xp": 300, "itemIds": ["reagent", "isotope-core"], "skillId": "thermal-vent" }
   }
