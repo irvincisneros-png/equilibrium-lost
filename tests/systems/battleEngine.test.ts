@@ -225,3 +225,24 @@ describe('resolveTurn — items', () => {
     expect(r.state.player.buffs.atk).toBe(1);
   });
 });
+
+// ── Task 22: Run action — flee succeeds vs wild, fails vs boss ────────────────
+
+describe('resolveTurn — run', () => {
+  it('fleeing a wild battle ends it with outcome "fled"', () => {
+    const s = createBattle({ ...playerInput, spd: 99 }, { def: enemy, level: 3 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'run' }, fullCtx);
+    expect(r.state.outcome).toBe('fled');
+    expect(r.events.some(e => e.t === 'outcome' && (e as any).outcome === 'fled')).toBe(true);
+    // the enemy never got to act because the player fled first (faster) and the battle ended
+    expect(r.events.some(e => e.t === 'attack' && (e as any).side === 'enemy')).toBe(false);
+  });
+  it('fleeing a boss battle fails and wastes the player\'s turn', () => {
+    const bossDef = { id: 'the-unstable-isotope', name: 'The Unstable Isotope', affinity: 'Atomic', baseStats: { hp: 140, atk: 16, def: 12, spd: 10 }, level: 9, attackPower: 30, skillIds: [], xpYield: 260, role: 'regionBoss', spriteKey: 'enemy_unstable_isotope', bossSoftScale: true };
+    const s = createBattle({ ...playerInput, spd: 99 }, { def: bossDef as any, level: 9 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'run' }, fullCtx);
+    expect(r.state.outcome).toBe('ongoing');
+    expect(r.events.some(e => e.t === 'fleeFailed')).toBe(true);
+    expect(r.state.player.hp).toBeLessThan(s.player.hp); // boss still swung
+  });
+});
