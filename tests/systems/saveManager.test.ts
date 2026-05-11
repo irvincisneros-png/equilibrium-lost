@@ -52,3 +52,35 @@ describe('SaveManager.save / load', () => {
     expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'none' });
   });
 });
+
+describe('SaveManager — corruption', () => {
+  it('non-JSON in storage -> corrupt', () => {
+    const st = memStorage();
+    st.setItem(SAVE_KEY, '{not json');
+    expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'corrupt' });
+  });
+  it('a JSON value that is not an object -> corrupt', () => {
+    const st = memStorage();
+    st.setItem(SAVE_KEY, '42');
+    expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'corrupt' });
+  });
+  it('missing version / classId -> corrupt', () => {
+    const st = memStorage();
+    st.setItem(SAVE_KEY, JSON.stringify({ level: 1 }));
+    expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'corrupt' });
+  });
+  it('a classId that does not exist in content -> corrupt', () => {
+    const st = memStorage();
+    const s = SaveManager.newGame('pyron', content);
+    (s as unknown as Record<string, unknown>).classId = 'phantom';
+    st.setItem(SAVE_KEY, JSON.stringify(s));
+    expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'corrupt' });
+  });
+  it('a structurally-broken regionProgress -> corrupt', () => {
+    const st = memStorage();
+    const s = SaveManager.newGame('pyron', content);
+    (s as unknown as Record<string, unknown>).regionProgress = 'nope';
+    st.setItem(SAVE_KEY, JSON.stringify(s));
+    expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'corrupt' });
+  });
+});

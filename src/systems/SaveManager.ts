@@ -63,9 +63,21 @@ export const SaveManager = {
     catch { return { ok: false, reason: 'corrupt' }; }
   },
 
-  migrate(raw: unknown, _content: GameContent): SaveData {
-    if (typeof raw !== 'object' || raw === null) throw new Error('corrupt');
-    return raw as SaveData;
+  migrate(raw: unknown, content: GameContent): SaveData {
+    if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) throw new Error('corrupt: not an object');
+    const o = raw as Record<string, unknown>;
+    // (Task 33 inserts version-bump logic here, BEFORE these checks, so older saves are upgraded first.)
+    const isArr = Array.isArray;
+    const isObj = (v: unknown) => typeof v === 'object' && v !== null && !Array.isArray(v);
+    if (typeof o.version !== 'number') throw new Error('corrupt: no version');
+    if (typeof o.classId !== 'string' || !content.classes.some(c => c.id === o.classId)) throw new Error('corrupt: bad classId');
+    if (typeof o.level !== 'number' || typeof o.xp !== 'number') throw new Error('corrupt: bad level/xp');
+    if (!isObj(o.stats)) throw new Error('corrupt: bad stats');
+    if (!isArr(o.unlockedSkillIds) || !isArr(o.equippedSkillIds) || !isArr(o.items)) throw new Error('corrupt: bad arrays');
+    for (const k of ['regionProgress', 'storyFlags', 'quizStats', 'settings'] as const) {
+      if (!isObj(o[k])) throw new Error(`corrupt: bad ${k}`);
+    }
+    return o as unknown as SaveData;
   },
 
   // recordQuizResult — Task 34
