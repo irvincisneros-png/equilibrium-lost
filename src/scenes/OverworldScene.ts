@@ -5,6 +5,7 @@ import { Npc } from '../entities/Npc';
 import { tileBlocks, isTallGrass, pickWildEncounter } from './overworldHelpers';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
 import { SaveManager } from '../systems/SaveManager';
+import { REFRESHER_TOAST_KEY } from './battlePresenter';
 import elementalReaches from '../content/data/tilemaps/elemental-reaches.json';
 
 interface OverworldSceneData { regionId: string }
@@ -142,6 +143,10 @@ export class OverworldScene extends Phaser.Scene {
     // --- region progress bookkeeping ---
     this.regionProgress().entered = true;
     this.save.currentRegionId = region.id;
+
+    // --- adaptive "study refresher" toast (queued by a battle after 3 consecutive misses) ---
+    const refresher = this.registry.get(REFRESHER_TOAST_KEY) as string | undefined;
+    if (refresher) { this.registry.set(REFRESHER_TOAST_KEY, undefined); this.time.delayedCall(450, () => this.toast(refresher)); }
 
     // --- lifecycle ---
     this.events.on(Phaser.Scenes.Events.RESUME, () => { this.busy = false; });

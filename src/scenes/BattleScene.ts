@@ -1,13 +1,15 @@
 import Phaser from 'phaser';
-import type { GameContent, SaveData } from '../content/types';
+import type { GameContent, SaveData, SkillDef } from '../content/types';
 import type { BattleState, BattleEvent, BattleAction, BattleContext } from '../systems/BattleEngine';
 import { createBattle, resolveTurn } from '../systems/BattleEngine';
-import { playerBattleInputFromSave, battleContextFromContent } from './battlePresenter';
+import { playerBattleInputFromSave, battleContextFromContent, REFRESHER_TOAST_KEY } from './battlePresenter';
 import { HealthBar } from '../ui/HealthBar';
 import { EnergyBar } from '../ui/EnergyBar';
 import { ChainMeter } from '../ui/ChainMeter';
+import { QuizPanel } from '../ui/QuizPanel';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
 import { SaveManager } from '../systems/SaveManager';
+import type { QuizEngine } from '../systems/QuizEngine';
 
 export interface BattleSceneData {
   enemyId: string;
@@ -25,7 +27,7 @@ const ENEMY_X = 360, ENEMY_GROUND_Y = 150;
 const PLAYER_X = 110, PLAYER_GROUND_Y = 222;
 const MENU_LABELS = ['Attack', 'Skills', 'Items', 'Run'] as const;
 
-type Fsm = 'menu' | 'animating' | 'ended';
+type Fsm = 'menu' | 'skillMenu' | 'animating' | 'ended';
 
 /**
  * The turn-based battle. Pure logic lives in `BattleEngine`; this scene only renders state
@@ -52,6 +54,17 @@ export class BattleScene extends Phaser.Scene {
   private logLine!: Phaser.GameObjects.Text;
   private menuButtons: Phaser.GameObjects.Text[] = [];
   private studyMode = false;
+  private quiz!: QuizEngine;
+  private quizPanel!: QuizPanel;
+
+  // skill submenu
+  private skillMenuObjs: Phaser.GameObjects.GameObject[] = [];
+  private skillRowButtons: Phaser.GameObjects.Text[] = [];
+  private skillIdx = 0;
+  private skillRowCount = 0;
+
+  // accumulated per-correct-answer XP, banked at victory (Task 48)
+  private bonusXp = 0;
 
   // animation bookkeeping (displayed HP, corrected by snapBars() afterwards)
   private dispPlayerHp = 0;
@@ -77,6 +90,11 @@ export class BattleScene extends Phaser.Scene {
 
     const region = this.content.regions.find(r => r.id === this.params.regionId) ?? this.content.regions[0];
     const bgKey = region?.battleBackgroundKey ?? 'bg_battle_elemental_reaches';
+
+    this.quiz = this.registry.get('quiz') as QuizEngine;
+    this.bonusXp = 0;
+    this.skillMenuObjs = [];
+    this.skillRowButtons = [];
 
     // --- engine state ---
     this.ctx = battleContextFromContent(this.content, save.settings);
@@ -115,6 +133,10 @@ export class BattleScene extends Phaser.Scene {
     // --- battle log line ---
     this.logLine = this.add.text(8, 304, '', { fontFamily: FONT, fontSize: '8px', color: '#f9e2af', wordWrap: { width: W - 200 } }).setOrigin(0, 0);
 
+    // --- quiz panel (hidden until a quizzed skill fires) ---
+    this.quizPanel = new QuizPanel(this, 20, 34, W - 40, 176);
+    this.quizPanel.setDepth(1000);
+
     // --- action menu (bottom-right) ---
     this.menuButtons = MENU_LABELS.map((label, i) => {
       const t = this.add.text(W - 110, 246 + i * 16, label, { fontFamily: FONT, fontSize: '10px', color: '#cdd6f4' }).setOrigin(0, 0);
@@ -131,11 +153,13 @@ export class BattleScene extends Phaser.Scene {
       kb.on('keydown-DOWN', this.onDown, this);
       kb.on('keydown-ENTER', this.onConfirm, this);
       kb.on('keydown-SPACE', this.onConfirm, this);
+      kb.on('keydown-ESC', this.onCancel, this);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
         kb.off('keydown-UP', this.onUp, this);
         kb.off('keydown-DOWN', this.onDown, this);
         kb.off('keydown-ENTER', this.onConfirm, this);
         kb.off('keydown-SPACE', this.onConfirm, this);
+        kb.off('keydown-ESC', this.onCancel, this);
       });
     }
 
@@ -149,9 +173,21 @@ export class BattleScene extends Phaser.Scene {
   // Menu
   // ---------------------------------------------------------------------------
 
-  private onUp(): void { if (this.fsm !== 'menu') return; this.menuIdx = (this.menuIdx + MENU_LABELS.length - 1) % MENU_LABELS.length; this.refreshMenu(); }
-  private onDown(): void { if (this.fsm !== 'menu') return; this.menuIdx = (this.menuIdx + 1) % MENU_LABELS.length; this.refreshMenu(); }
-  private onConfirm(): void { if (this.fsm === 'menu') this.confirmMenu(); }
+  private onUp(): void {
+    if (this.fsm === 'menu') { this.menuIdx = (this.menuIdx + MENU_LABELS.length - 1) % MENU_LABELS.length; this.refreshMenu(); }
+    else if (this.fsm === 'skillMenu') { this.skillIdx = (this.skillIdx + this.skillRowCount - 1) % this.skillRowCount; this.refreshSkillMenu(); }
+  }
+  private onDown(): void {
+    if (this.fsm === 'menu') { this.menuIdx = (this.menuIdx + 1) % MENU_LABELS.length; this.refreshMenu(); }
+    else if (this.fsm === 'skillMenu') { this.skillIdx = (this.skillIdx + 1) % this.skillRowCount; this.refreshSkillMenu(); }
+  }
+  private onConfirm(): void {
+    if (this.fsm === 'menu') this.confirmMenu();
+    else if (this.fsm === 'skillMenu') this.confirmSkillMenu();
+  }
+  private onCancel(): void {
+    if (this.fsm === 'skillMenu') this.closeSkillMenu(true);
+  }
 
   private refreshMenu(): void {
     const runDisabled = this.state.enemy.isBoss;
@@ -169,12 +205,108 @@ export class BattleScene extends Phaser.Scene {
     if (this.fsm !== 'menu') return;
     switch (this.menuIdx) {
       case 0: void this.doAction({ kind: 'attack' }); break;
-      case 1: this.log('Skills — available in a later build.'); break;       // TODO: Task 46
+      case 1: this.openSkillMenu(); break;
       case 2: this.log('Items — available in a later build.'); break;        // TODO: Task 47
       case 3:
         if (this.state.enemy.isBoss) { this.log("There's no escaping this battle!"); break; }
         void this.doAction({ kind: 'run' });
         break;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Skills submenu + quiz flow
+  // ---------------------------------------------------------------------------
+
+  private openSkillMenu(): void {
+    if (this.fsm !== 'menu') return;
+    this.fsm = 'skillMenu';
+    this.showMenu(false);
+    const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
+    this.skillRowCount = skills.length + 1; // + a "Back" row
+    this.skillIdx = 0;
+    const x = 150, y = 240, rowH = 12, w = W - x - 8, h = (this.skillRowCount + 1) * rowH + 6;
+    const bg = this.add.rectangle(x, y - 4, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(1, 0x415a77).setDepth(50);
+    this.skillMenuObjs = [bg];
+    this.skillRowButtons = skills.map((s, i) => {
+      const affordable = s.energyCost <= this.state.player.energy;
+      const txt = this.add.text(x + 6, y + i * rowH, '', { fontFamily: FONT, fontSize: '8px', color: affordable ? '#cdd6f4' : '#566074' }).setOrigin(0, 0).setDepth(51);
+      if (affordable) {
+        txt.setInteractive({ useHandCursor: true });
+        txt.on('pointerover', () => { this.skillIdx = i; this.refreshSkillMenu(); });
+        txt.on('pointerdown', () => { this.skillIdx = i; this.confirmSkillMenu(); });
+      }
+      this.skillMenuObjs.push(txt);
+      return txt;
+    });
+    const back = this.add.text(x + 6, y + skills.length * rowH, '', { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51)
+      .setInteractive({ useHandCursor: true });
+    back.on('pointerover', () => { this.skillIdx = skills.length; this.refreshSkillMenu(); });
+    back.on('pointerdown', () => { this.skillIdx = skills.length; this.confirmSkillMenu(); });
+    this.skillRowButtons.push(back);
+    this.skillMenuObjs.push(back);
+    this.refreshSkillMenu();
+  }
+
+  private refreshSkillMenu(): void {
+    const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
+    skills.forEach((s, i) => {
+      const affordable = s.energyCost <= this.state.player.energy;
+      const sel = i === this.skillIdx;
+      const tag = s.topic === null ? ' ·basic' : '';
+      this.skillRowButtons[i]?.setText(`${sel ? '▷' : ' '} ${s.name}  [${s.affinity}] P${s.power} E${s.energyCost}${tag}`)
+        .setColor(!affordable ? '#566074' : sel ? '#f9e2af' : '#cdd6f4');
+    });
+    const backIdx = skills.length;
+    this.skillRowButtons[backIdx]?.setText(`${this.skillIdx === backIdx ? '▷' : ' '} ← Back`).setColor(this.skillIdx === backIdx ? '#f9e2af' : '#cdd6f4');
+  }
+
+  private closeSkillMenu(returnToActionMenu: boolean): void {
+    this.skillMenuObjs.forEach(o => o.destroy());
+    this.skillMenuObjs = [];
+    this.skillRowButtons = [];
+    if (returnToActionMenu) { this.fsm = 'menu'; this.menuIdx = 1; this.showMenu(true); this.refreshMenu(); }
+  }
+
+  private confirmSkillMenu(): void {
+    if (this.fsm !== 'skillMenu') return;
+    const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
+    if (this.skillIdx >= skills.length) { this.closeSkillMenu(true); return; }
+    const skill = skills[this.skillIdx]!;
+    if (skill.energyCost > this.state.player.energy) { this.log('Not enough energy for that.'); return; }
+    this.closeSkillMenu(false);
+    void this.doSkill(skill);
+  }
+
+  private async doSkill(skill: SkillDef): Promise<void> {
+    this.fsm = 'animating';
+    let action: BattleAction;
+    if (skill.topic === null) {
+      action = { kind: 'skill', skillId: skill.id, quizCorrect: null };
+    } else {
+      const q = this.quiz.pickQuestion(skill.topic, skill.questionDifficulty, this.save.quizStats[skill.topic]);
+      const ans = await this.quizPanel.ask(q, { studyMode: this.studyMode, answerTimer: !!this.save.settings.answerTimer });
+      const correct = this.quiz.checkAnswer(q, ans);
+      this.save = SaveManager.recordQuizResult(this.save, skill.topic, correct);
+      this.persist();
+      if (correct) {
+        const bonus = 2 * skill.questionDifficulty;
+        this.bonusXp += bonus;
+        this.floatText(this.playerSprite.x, this.playerSprite.y - this.playerSprite.displayHeight - 6, `Reaction mastered!  +${bonus} XP`, '#a6e3a1', '8px');
+      } else {
+        await this.quizPanel.showCorrection(q);
+      }
+      this.quizPanel.hide();
+      this.maybeQueueRefresher(skill.topic);
+      action = { kind: 'skill', skillId: skill.id, quizCorrect: correct, fastAnswer: ans.fastAnswer };
+    }
+    await this.resolveAndAnimate(action);
+  }
+
+  private maybeQueueRefresher(topic: string): void {
+    const stat = this.save.quizStats[topic];
+    if (stat && stat.recentMisses === 3) {
+      this.registry.set(REFRESHER_TOAST_KEY, 'Prof. Bohrlin: remember — the atomic number is the number of protons. Try that reaction again.');
     }
   }
 
@@ -186,6 +318,10 @@ export class BattleScene extends Phaser.Scene {
     if (this.fsm !== 'menu') return;
     this.fsm = 'animating';
     this.showMenu(false);
+    await this.resolveAndAnimate(action);
+  }
+
+  private async resolveAndAnimate(action: BattleAction): Promise<void> {
     const before = this.state;
     const { state: next, events } = resolveTurn(before, action, this.ctx);
     this.dispPlayerHp = before.player.hp;

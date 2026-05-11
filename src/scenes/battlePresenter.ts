@@ -7,6 +7,9 @@ import { statsForLevel } from '../systems/Progression';
  * so `BattleScene` can stay a thin renderer.
  */
 
+/** Registry key: a one-shot "study refresher" message the battle queues for the overworld to toast. */
+export const REFRESHER_TOAST_KEY = 'overworld:refresherToast';
+
 /** Builds the engine's player input from the current save + content (stats, equipped skills, burst id). */
 export function playerBattleInputFromSave(save: SaveData, content: GameContent): PlayerBattleInput {
   const cls = content.classes.find(c => c.id === save.classId);
