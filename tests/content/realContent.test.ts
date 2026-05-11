@@ -43,4 +43,20 @@ describe('shipped content', () => {
       expect(bursts.length, c.id).toBe(1);
     }
   });
+  it('every content-referenced asset key has both an images entry and a placeholder spec', () => {
+    const { content } = loadGameContent();
+    const placeholderKeys = new Set(content.assets.placeholders.map(p => p.key));
+    const referenced = new Set<string>();
+    for (const e of Object.values(content.enemies)) referenced.add(e.spriteKey);
+    for (const n of Object.values(content.npcs)) referenced.add(n.spriteKey);
+    for (const r of content.regions) { referenced.add(r.tilesetKey); referenced.add(r.battleBackgroundKey); }
+    for (const c of content.classes) for (const stage of [0, ...c.evolutions.map(e => e.stage)]) {
+      const sk = stage === 0 ? `hero_${c.id}_0` : `hero_${c.id}_${stage}`;
+      referenced.add(`${sk}_overworld`); referenced.add(`${sk}_battle`);
+    }
+    for (const key of referenced) {
+      expect(content.assets.images[key], `images[${key}]`).toBeDefined();
+      expect(placeholderKeys.has(key), `placeholder[${key}]`).toBe(true);
+    }
+  });
 });

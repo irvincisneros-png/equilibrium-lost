@@ -136,6 +136,7 @@ export interface DialogueNode {
   choices?: DialogueChoice[];  // branch
   setFlag?: string;            // sets a story flag on visit
   end?: boolean;               // terminal node
+  launch?: 'shrine' | string; // 'shrine' or 'battle:<enemyId>' — handled by DialogueScene on end
 }
 export interface NpcDef {
   id: string;

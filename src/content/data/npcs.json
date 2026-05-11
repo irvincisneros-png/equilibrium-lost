@@ -1,1 +1,31 @@
-{}
+{
+  "professor-bohrlin": {
+    "id": "professor-bohrlin", "name": "Professor Bohrlin", "spriteKey": "npc_professor_bohrlin", "tile": { "x": 6, "y": 5 }, "facing": "down",
+    "dialogue": [
+      { "id": "n0", "speaker": "Prof. Bohrlin", "text": "Welcome to the Elemental Reaches, young chemist. Æquor is unravelling — but every atom still obeys the rules. Shall I refresh you?", "choices": [ { "label": "Please do.", "next": "n1" }, { "label": "I know this — let me through.", "next": "n_skip" } ] },
+      { "id": "n1", "speaker": "Prof. Bohrlin", "text": "An atom has a tiny, dense NUCLEUS — protons (+1) and neutrons (0) — surrounded by electrons (−1) in SHELLS.", "next": "n2" },
+      { "id": "n2", "speaker": "Prof. Bohrlin", "text": "The number of protons is the ATOMIC NUMBER — it decides which element you have. Protons + neutrons = MASS NUMBER.", "next": "n3" },
+      { "id": "n3", "speaker": "Prof. Bohrlin", "text": "Shells fill up: 2 in the first, then 8, then 8. The OUTER-shell electrons — the valence electrons — decide how an element reacts.", "next": "n4", "setFlag": "lesson_atomic_structure_seen" },
+      { "id": "n4", "speaker": "Prof. Bohrlin", "text": "When you use a chemistry Skill in battle you'll be asked about this. Get it right and the reaction roars; get it wrong and I'll set you straight — no harm done. Off you go.", "end": true },
+      { "id": "n_skip", "speaker": "Prof. Bohrlin", "text": "Confident! Then prove it in battle. Remember — a wrong answer just fizzles the move; it never hurts you.", "end": true, "setFlag": "lesson_atomic_structure_seen" }
+    ]
+  },
+  "archivist-mendel": {
+    "id": "archivist-mendel", "name": "Archivist Mendel", "spriteKey": "npc_archivist_mendel", "tile": { "x": 12, "y": 9 }, "facing": "left",
+    "dialogue": [
+      { "id": "m0", "speaker": "Archivist Mendel", "text": "The Periodic Table is a map of every element — and it's been scrambled by the corruption. Let me show you how to read it.", "next": "m1" },
+      { "id": "m1", "speaker": "Archivist Mendel", "text": "ROWS are PERIODS — going across, each atom gains a proton and an electron. COLUMNS are GROUPS — elements in a group have the same number of valence electrons, so they behave alike.", "next": "m2" },
+      { "id": "m2", "speaker": "Archivist Mendel", "text": "Group 1 — alkali metals — one outer electron, fiercely reactive. Group 17 — halogens — need one more, also reactive. Group 18 — noble gases — full shells, almost inert.", "next": "m3" },
+      { "id": "m3", "speaker": "Archivist Mendel", "text": "ISOTOPES are atoms of the same element with different neutron counts — same chemistry, different mass. An ION is an atom that's gained or lost electrons, so it carries a charge.", "next": "m4", "setFlag": "lesson_periodic_table_seen" },
+      { "id": "m4", "speaker": "Archivist Mendel", "text": "Master this and the Unstable Isotope guarding the heart of this region won't stand a chance. Good luck.", "end": true }
+    ]
+  },
+  "shrinekeeper-quanta": {
+    "id": "shrinekeeper-quanta", "name": "Shrinekeeper Quanta", "spriteKey": "npc_shrinekeeper_quanta", "tile": { "x": 3, "y": 13 }, "facing": "right",
+    "dialogue": [
+      { "id": "q0", "speaker": "Shrinekeeper Quanta", "text": "Behind me lies the Challenge Shrine — a gauntlet of questions, no monsters. Clear it and you'll earn an Energy Cell and a Stable Isotope Core.", "choices": [ { "label": "Enter the Shrine.", "next": "q_enter" }, { "label": "Not yet.", "next": "q_later" } ] },
+      { "id": "q_enter", "speaker": "Shrinekeeper Quanta", "text": "Six questions. Miss no more than one. Begin when ready.", "end": true, "setFlag": "shrine_entered_elemental_reaches", "launch": "shrine" },
+      { "id": "q_later", "speaker": "Shrinekeeper Quanta", "text": "The Shrine will wait. Come back when you've studied.", "end": true }
+    ]
+  }
+}
