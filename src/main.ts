@@ -6,9 +6,10 @@ import { DialogueScene } from './scenes/DialogueScene';
 import { TitleScene } from './scenes/TitleScene';
 import { ClassSelectScene } from './scenes/ClassSelectScene';
 import { WorldMapScene } from './scenes/WorldMapScene';
+import { OverworldScene } from './scenes/OverworldScene';
 
 // Scenes are appended here as Phase 6 tasks add them.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const SCENES: any[] = [BootScene, ErrorScene, DialogueScene, TitleScene, ClassSelectScene, WorldMapScene];
+const SCENES: any[] = [BootScene, ErrorScene, DialogueScene, TitleScene, ClassSelectScene, WorldMapScene, OverworldScene];
 
 new Phaser.Game(makeGameConfig(SCENES));

@@ -147,9 +147,7 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   private enterRegion(regionId: string): void {
-    // TODO: Task 43 — OverworldScene
-    console.log('[worldmap] would enter region', regionId); // TODO: Task 43
-    // When OverworldScene exists: this.scene.start('OverworldScene', { regionId });
+    this.scene.start('OverworldScene', { regionId });
   }
 
   private showToast(message: string): void {

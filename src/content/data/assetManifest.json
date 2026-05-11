@@ -35,7 +35,7 @@
     "icon_status_combusting": "assets/images/icon_status_combusting.png",
     "title_art": "assets/images/title_art.png"
   },
-  "tilemaps": { "tilemap_elemental_reaches": "assets/tilemaps/elemental-reaches.json" },
+  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json" },
   "audio": {},
   "placeholders": [
     { "key": "worldmap", "w": 480, "h": 320, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
