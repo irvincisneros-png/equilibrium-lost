@@ -112,3 +112,43 @@ describe('resolveTurn — skill action', () => {
     expect(s.catalystBurstReady).toBe(true);
   });
 });
+
+describe('resolveTurn — skill behaviours', () => {
+  it('shell-shatter can inflict Oxidised (DEF drain over time)', () => {
+    // rng() must be < 0.40 for the status proc (chance 40); use 0 to force it. randFactor becomes 0.85.
+    let s = createBattle({ ...playerInput, atk: 30, spd: 99, equippedSkillIds: ['shell-shatter'] }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 0 });
+    const r = resolveTurn(s, { kind: 'skill', skillId: 'shell-shatter', quizCorrect: true }, skillCtx);
+    expect(r.state.enemy.statuses.some(st => st.id === 'oxidised')).toBe(true);
+    // after the end-of-turn tick, def stage should have dropped by 1
+    expect(r.state.enemy.buffs.def).toBe(-1);
+  });
+  it('precipitate strips the target\'s stat buffs', () => {
+    let s = createBattle({ ...playerInput, spd: 99, equippedSkillIds: ['precipitate'] }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    s.enemy.buffs = { atk: 2, def: 1 };
+    const r = resolveTurn(s, { kind: 'skill', skillId: 'precipitate', quizCorrect: true }, skillCtx);
+    expect(r.state.enemy.buffs).toEqual({}); // ...modulo any end-of-turn oxidised tick, which precipitate doesn't apply
+    expect(r.events.some(e => e.t === 'buffsStripped' && (e as any).target === 'enemy')).toBe(true);
+  });
+  it('catalyze grants an extra basic attack the same turn', () => {
+    let s = createBattle({ ...playerInput, atk: 30, spd: 99, equippedSkillIds: ['catalyze'] }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'skill', skillId: 'catalyze', quizCorrect: true }, skillCtx);
+    expect(r.events.some(e => e.t === 'extraAction' && (e as any).side === 'player')).toBe(true);
+    const playerHits = r.events.filter(e => e.t === 'attack' && (e as any).side === 'player');
+    expect(playerHits.length).toBeGreaterThanOrEqual(2); // the catalyze "hit" (power 8) + the free attack
+    expect(r.state.enemy.statuses.some(st => st.id === 'catalysed')).toBe(true);
+  });
+  it('decompose splits a high-HP enemy into two halves: one active now, one queued', () => {
+    const enemyCtx = { ...skillCtx, getEnemyDef: (id: string) => { if (id === 'shellfracture-half') return { id, name: 'Shell Fragment', affinity: 'Decomposition', baseStats: { hp: 14, atk: 8, def: 3, spd: 7 }, level: 4, attackPower: 18, skillIds: [], xpYield: 8, role: 'wild', spriteKey: 'enemy_shellfracture_half' } as any; throw new Error('?'); } };
+    let s = createBattle({ ...playerInput, atk: 1, spd: 99, equippedSkillIds: ['decompose'] }, { def: { id: 'shellfracture', name: 'Shellfracture', affinity: 'Decomposition', baseStats: { hp: 60, atk: 1, def: 99, spd: 1 }, level: 4, attackPower: 1, skillIds: [], xpYield: 24, role: 'wild', spriteKey: 'enemy_shellfracture', splitIntoId: 'shellfracture-half' } as any, level: 4 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'skill', skillId: 'decompose', quizCorrect: true }, enemyCtx);
+    expect(r.state.enemy.enemyId).toBe('shellfracture-half');
+    expect(r.state.enemyQueue.length).toBe(1);
+    expect(r.state.enemyQueue[0]!.enemyId).toBe('shellfracture-half');
+    expect(r.events.some(e => e.t === 'enemySwitch')).toBe(true);
+  });
+  it('a fizzled skill applies NO behaviours', () => {
+    let s = createBattle({ ...playerInput, atk: 30, spd: 99, equippedSkillIds: ['shell-shatter'] }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 0 });
+    const r = resolveTurn(s, { kind: 'skill', skillId: 'shell-shatter', quizCorrect: false }, skillCtx);
+    expect(r.state.enemy.statuses.some(st => st.id === 'oxidised')).toBe(false);
+  });
+});

@@ -123,7 +123,7 @@ function applyAction(state: BattleState, side: 'player' | 'enemy', action: Battl
         const b = skill.behavior;
         if (b.healPercent) { const heal = Math.floor(attacker.maxHp * b.healPercent / 100); attacker.hp = Math.min(attacker.maxHp, attacker.hp + heal); events.push({ t: 'heal', target: side, amount: heal }); }
         if (b.stripBuffs) { defender.buffs = {}; events.push({ t: 'buffsStripped', target: defSide }); }
-        if (b.applyStatus && state.rng() * 100 < b.applyStatus.chance) {
+        if (b.applyStatus && state.rng() * 100 <= b.applyStatus.chance) {
           const ap = applyStatus(defender, { id: b.applyStatus.id, turns: b.applyStatus.turns, magnitude: b.applyStatus.magnitude });
           state[defSide] = ap.combatant; defender = state[defSide]; events.push(...ap.events);
         }
