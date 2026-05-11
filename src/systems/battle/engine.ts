@@ -77,7 +77,18 @@ function resolveBurstSkill(attacker: Combatant, ctx: BattleContext): SkillDef | 
   try { return ctx.getSkill(attacker.catalystBurstSkillId); } catch { return null; }
 }
 // Replaced properly in Task 20 (enemy AI: pick best affordable skill, 25% wildcard basic attack).
-function chooseEnemyAction(_state: BattleState, _ctx: BattleContext): BattleAction { return { kind: 'attack' }; }
+function chooseEnemyAction(state: BattleState, ctx: BattleContext): BattleAction {
+  const e = state.enemy;
+  if (state.rng() < 0.25) return { kind: 'attack' };
+  let best: { id: string; score: number } | null = null;
+  for (const id of e.skillIds) {
+    let skill: SkillDef; try { skill = ctx.getSkill(id); } catch { continue; }
+    if (skill.energyCost > e.energy) continue;
+    const score = Math.max(1, skill.power) * effectiveness(TYPE_CHART, skill.affinity, state.player.affinity);
+    if (!best || score > best.score) best = { id, score };
+  }
+  return best ? { kind: 'skill', skillId: best.id, quizCorrect: null } : { kind: 'attack' };
+}
 
 /** Apply ONE combatant's action to a (mutable) working state. Returns events + whether a free follow-up attack was granted. */
 function applyAction(state: BattleState, side: 'player' | 'enemy', action: BattleAction, ctx: BattleContext): { events: BattleEvent[]; grantedExtraAttack: boolean } {

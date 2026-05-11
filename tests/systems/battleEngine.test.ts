@@ -153,6 +153,20 @@ describe('resolveTurn — skill behaviours', () => {
   });
 });
 
+describe('chooseEnemyAction', () => {
+  it('with skills, picks the highest expected-damage affordable skill (rng above the 25% wildcard)', () => {
+    // electrid knows spark-flare (Combustion, power 42). player affinity Combustion vs Combustion -> neutral 1. Still better than basic attack 20.
+    let s = createBattle({ ...playerInput, spd: 1 }, { def: { id: 'electrid', name: 'Electrid', affinity: 'Atomic', baseStats: { hp: 9999, atk: 30, def: 4, spd: 99 }, level: 3, attackPower: 20, skillIds: ['spark-flare'], xpYield: 16, role: 'wild', spriteKey: 'enemy_electrid' } as any, level: 3 }, { rng: () => 0.9 });
+    const r = resolveTurn(s, { kind: 'attack' }, skillCtx);
+    expect(r.events.some(e => e.t === 'attack' && (e as any).side === 'enemy' && (e as any).skillId === 'spark-flare')).toBe(true);
+  });
+  it('falls back to a basic attack when the enemy has no skills', () => {
+    let s = createBattle({ ...playerInput, spd: 1 }, { def: { ...enemy, baseStats: { hp: 9999, atk: 30, def: 4, spd: 99 } }, level: 3 }, { rng: () => 0.9 });
+    const r = resolveTurn(s, { kind: 'attack' }, skillCtx);
+    expect(r.events.some(e => e.t === 'attack' && (e as any).side === 'enemy' && (e as any).skillId === undefined)).toBe(true);
+  });
+});
+
 describe('resolveTurn — Catalyst Burst', () => {
   const burstPlayer = { ...playerInput, atk: 30, spd: 99, equippedSkillIds: ['spark-flare', 'combustion-cascade'], catalystBurstSkillId: 'combustion-cascade', signatureAffinity: 'Combustion' as const };
   it('is rejected (no-op) when the chain is not full', () => {
