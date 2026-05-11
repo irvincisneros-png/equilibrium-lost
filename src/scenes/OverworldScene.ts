@@ -155,6 +155,16 @@ export class OverworldScene extends Phaser.Scene {
       kb?.off('keydown-ENTER', this.tryAction, this);
       kb?.off('keydown-ESC', this.openMenu, this);
     });
+
+    // If we just got dropped back onto the (still-active) mini-boss chokepoint — e.g. after fleeing —
+    // re-trigger the guardian so it can't be slipped past.
+    const mbHere = this.objAt('minibossTrigger', this.player.tileXY());
+    if (mbHere && !this.flag(String(mbHere.flag))) {
+      this.startBattle({
+        enemyId: String(mbHere.enemyId), level: this.enemyLevel(String(mbHere.enemyId)),
+        isBoss: false, isMiniBoss: true, returnTo: 'OverworldScene', returnData: { regionId: this.region.id },
+      });
+    }
   }
 
   override update(): void {
