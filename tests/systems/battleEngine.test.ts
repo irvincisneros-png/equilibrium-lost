@@ -246,3 +246,32 @@ describe('resolveTurn — run', () => {
     expect(r.state.player.hp).toBeLessThan(s.player.hp); // boss still swung
   });
 });
+
+// ── Task 23: Boss soft-scaling + integration battle ───────────────────────────
+
+describe('boss soft-scaling', () => {
+  const bossDef = { id: 'the-unstable-isotope', name: 'The Unstable Isotope', affinity: 'Atomic', baseStats: { hp: 140, atk: 16, def: 12, spd: 10 }, level: 9, attackPower: 30, skillIds: ['isotope-flux'], xpYield: 260, role: 'regionBoss', spriteKey: 'enemy_unstable_isotope', bossSoftScale: true } as any;
+  it('scales UP to an over-levelled player but never DOWN for an under-levelled one', () => {
+    const vsHigh = buildEnemyCombatant(bossDef, 9, 13);
+    expect(vsHigh.level).toBe(13);
+    expect(vsHigh.maxHp).toBeGreaterThan(140);
+    const vsLow = buildEnemyCombatant(bossDef, 9, 5);
+    expect(vsLow.level).toBe(9);            // not scaled down — under-levelled players aren't punished further
+    expect(vsLow.maxHp).toBe(140);
+  });
+  it('wild enemies never soft-scale', () => {
+    const w = buildEnemyCombatant({ ...bossDef, role: 'wild', bossSoftScale: false } as any, 9, 20);
+    expect(w.level).toBe(9);
+  });
+});
+
+describe('integration — a whole battle resolves deterministically', () => {
+  it('a level-9 player beats Protium without fainting (seeded rng)', () => {
+    let seed = 12345; const rng = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+    let s = createBattle({ ...playerInput, level: 9, maxHp: 100, hp: 100, atk: 40, def: 18, spd: 18, equippedSkillIds: ['proton-jab', 'spark-flare', 'shell-shatter'] }, { def: enemy, level: 3 }, { rng });
+    let guard = 0;
+    while (s.outcome === 'ongoing' && guard++ < 50) s = resolveTurn(s, { kind: guard % 2 === 0 ? 'attack' : 'skill', skillId: 'spark-flare', quizCorrect: true } as any, skillCtx).state;
+    expect(s.outcome).toBe('playerWin');
+    expect(guard).toBeLessThan(50);
+  });
+});
