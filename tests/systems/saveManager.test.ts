@@ -110,3 +110,24 @@ describe('SaveManager — migration', () => {
     expect(r.ok && r.data.level).toBe(5);
   });
 });
+
+describe('SaveManager.recordQuizResult', () => {
+  it('creates a topic entry on first record', () => {
+    const s = SaveManager.recordQuizResult(SaveManager.newGame('pyron', content), 'atomic-structure', true);
+    expect(s.quizStats['atomic-structure']).toEqual({ topic: 'atomic-structure', asked: 1, correct: 1, recentMisses: 0 });
+  });
+  it('accumulates asked/correct and tracks a miss streak that resets on a correct answer', () => {
+    let s = SaveManager.newGame('pyron', content);
+    s = SaveManager.recordQuizResult(s, 'atomic-structure', false);
+    s = SaveManager.recordQuizResult(s, 'atomic-structure', false);
+    expect(s.quizStats['atomic-structure']).toMatchObject({ asked: 2, correct: 0, recentMisses: 2 });
+    s = SaveManager.recordQuizResult(s, 'atomic-structure', true);
+    expect(s.quizStats['atomic-structure']).toMatchObject({ asked: 3, correct: 1, recentMisses: 0 });
+  });
+  it('does not mutate the input', () => {
+    const s0 = SaveManager.newGame('pyron', content);
+    const s1 = SaveManager.recordQuizResult(s0, 'atomic-structure', true);
+    expect(s0.quizStats).toEqual({});
+    expect(s1).not.toBe(s0);
+  });
+});

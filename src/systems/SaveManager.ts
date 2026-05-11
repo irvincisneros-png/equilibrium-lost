@@ -102,5 +102,14 @@ export const SaveManager = {
     return o as unknown as SaveData;
   },
 
-  // recordQuizResult — Task 34
+  recordQuizResult(data: SaveData, topic: string, correct: boolean): SaveData {
+    const prev = data.quizStats[topic] ?? { topic, asked: 0, correct: 0, recentMisses: 0 };
+    const updated = {
+      topic,
+      asked: prev.asked + 1,
+      correct: prev.correct + (correct ? 1 : 0),
+      recentMisses: correct ? 0 : Math.min(prev.recentMisses + 1, 99)
+    };
+    return { ...data, quizStats: { ...data.quizStats, [topic]: updated } };
+  },
 };
