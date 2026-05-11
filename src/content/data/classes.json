@@ -1,0 +1,32 @@
+[
+  {
+    "id": "pyron", "name": "Pyron", "theme": "Combustion / energy",
+    "baseStats": { "hp": 28, "atk": 14, "def": 6, "spd": 9 },
+    "growth":    { "hp": 6,  "atk": 4,  "def": 1, "spd": 2 },
+    "signatureAffinity": "Combustion",
+    "startingSkillIds": ["proton-jab", "spark-flare", "shell-shatter"],
+    "startingItemIds": [ { "itemId": "minor-buffer", "qty": 3 } ],
+    "skillUnlocks": [ { "level": 3, "skillId": "ionize" }, { "level": 5, "skillId": "thermal-vent" }, { "level": 7, "skillId": "neutralize" }, { "level": 9, "skillId": "decompose" } ],
+    "evolutions": [ { "stage": 1, "name": "Pyrochemist", "atLevel": 10, "requiresRegionClearedId": "elemental-reaches", "statBonus": { "hp": 12, "atk": 8, "def": 3, "spd": 4 }, "spriteKey": "hero_pyron_1", "newSignatureSkillId": "combustion-cascade" } ]
+  },
+  {
+    "id": "aqualis", "name": "Aqualis", "theme": "Acids, bases & solutions",
+    "baseStats": { "hp": 36, "atk": 10, "def": 9, "spd": 8 },
+    "growth":    { "hp": 8,  "atk": 3,  "def": 2, "spd": 2 },
+    "signatureAffinity": "Acid",
+    "startingSkillIds": ["proton-jab", "acid-splash", "shell-shatter"],
+    "startingItemIds": [ { "itemId": "minor-buffer", "qty": 4 } ],
+    "skillUnlocks": [ { "level": 3, "skillId": "ionize" }, { "level": 5, "skillId": "neutralize" }, { "level": 7, "skillId": "precipitate" }, { "level": 9, "skillId": "decompose" } ],
+    "evolutions": [ { "stage": 1, "name": "Solvent Adept", "atLevel": 10, "requiresRegionClearedId": "elemental-reaches", "statBonus": { "hp": 16, "atk": 5, "def": 5, "spd": 3 }, "spriteKey": "hero_aqualis_1", "newSignatureSkillId": "universal-solvent" } ]
+  },
+  {
+    "id": "ionix", "name": "Ionix", "theme": "Atomic structure & bonding",
+    "baseStats": { "hp": 30, "atk": 11, "def": 7, "spd": 13 },
+    "growth":    { "hp": 6,  "atk": 3,  "def": 1, "spd": 4 },
+    "signatureAffinity": "Atomic",
+    "startingSkillIds": ["proton-jab", "ionize", "shell-shatter"],
+    "startingItemIds": [ { "itemId": "minor-buffer", "qty": 3 } ],
+    "skillUnlocks": [ { "level": 3, "skillId": "spark-flare" }, { "level": 5, "skillId": "catalyze" }, { "level": 7, "skillId": "neutralize" }, { "level": 9, "skillId": "decompose" } ],
+    "evolutions": [ { "stage": 1, "name": "Nucleon", "atLevel": 10, "requiresRegionClearedId": "elemental-reaches", "statBonus": { "hp": 12, "atk": 6, "def": 3, "spd": 7 }, "spriteKey": "hero_ionix_1", "newSignatureSkillId": "nuclear-realignment" } ]
+  }
+]

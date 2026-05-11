@@ -1,0 +1,9 @@
+{
+  "minor-buffer":  { "id": "minor-buffer",  "name": "Minor Buffer",  "kind": "buffer",        "usableInBattle": true,  "effect": { "healHp": 25 },                       "description": "Restores 25 HP. A weak pH buffer solution." },
+  "buffer":        { "id": "buffer",        "name": "Buffer",        "kind": "buffer",        "usableInBattle": true,  "effect": { "healHpPercent": 50 },                "description": "Restores 50% of max HP." },
+  "reagent":       { "id": "reagent",       "name": "Reagent",       "kind": "reagent",       "usableInBattle": true,  "effect": { "revive": true, "reviveHpPercent": 50 }, "description": "Revives a fainted hero with 50% HP." },
+  "energy-cell":   { "id": "energy-cell",   "name": "Energy Cell",   "kind": "energy",        "usableInBattle": true,  "effect": { "restoreEnergy": 50 },                 "description": "Restores 50 Energy." },
+  "atk-catalyst":  { "id": "atk-catalyst",  "name": "Activation Powder", "kind": "statBooster", "usableInBattle": true, "effect": { "statBoostStages": { "atk": 1 } },   "description": "+1 ATK stage for the battle." },
+  "def-catalyst":  { "id": "def-catalyst",  "name": "Inhibitor Gel",  "kind": "statBooster",   "usableInBattle": true,  "effect": { "statBoostStages": { "def": 1 } },     "description": "+1 DEF stage for the battle." },
+  "isotope-core":  { "id": "isotope-core",  "name": "Stable Isotope Core", "kind": "evolutionMaterial", "usableInBattle": false, "effect": {},                       "description": "A stabilised nucleus. Radiates with potential. (Evolution material.)" }
+}
