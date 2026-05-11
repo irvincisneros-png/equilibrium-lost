@@ -1,6 +1,6 @@
 // tests/systems/progression.test.ts
 import { describe, it, expect } from 'vitest';
-import { xpToNextLevel, totalXpForLevel, levelForXp, statsForLevel, addXp } from '../../src/systems/Progression';
+import { xpToNextLevel, totalXpForLevel, levelForXp, statsForLevel, addXp, checkEvolution } from '../../src/systems/Progression';
 import classesData from '../../src/content/data/classes.json';
 import type { ClassDef } from '../../src/content/types';
 const classes = classesData as ClassDef[];
@@ -61,4 +61,17 @@ describe('addXp', () => {
     expect(r.newlyUnlockedSkillIds).not.toContain('ionize');         // already had it
     expect(r.newlyUnlockedSkillIds).toContain('combustion-cascade');  // unlocked at level 10
   });
+});
+
+const cleared = { 'elemental-reaches': { entered: true, miniBossDefeated: true, bossDefeated: true, shrineCleared: false } };
+const notCleared = { 'elemental-reaches': { entered: true, miniBossDefeated: true, bossDefeated: false, shrineCleared: false } };
+
+describe('checkEvolution', () => {
+  it('returns the stage-1 evolution when Lv>=10 AND Region 1 boss is down', () => {
+    const evo = checkEvolution(pyron, 10, 0, cleared);
+    expect(evo?.name).toBe('Pyrochemist');
+  });
+  it('returns null below the level threshold', () => { expect(checkEvolution(pyron, 9, 0, cleared)).toBeNull(); });
+  it('returns null when the required region boss is not yet defeated', () => { expect(checkEvolution(pyron, 12, 0, notCleared)).toBeNull(); });
+  it('returns null when already at the latest authored stage', () => { expect(checkEvolution(pyron, 30, 1, cleared)).toBeNull(); });
 });

@@ -42,3 +42,20 @@ export function addXp(state: ProgressState, amount: number, classDef: ClassDef):
   }
   return { level: newLevel, xp, unlockedSkillIds: [...unlocked], leveledTo, newlyUnlockedSkillIds };
 }
+
+// ---------- evolution gate ----------
+
+export function checkEvolution(
+  classDef: ClassDef,
+  level: number,
+  currentStage: number,
+  regionProgress: Record<string, RegionProgress>
+): EvolutionDef | null {
+  for (const evo of classDef.evolutions) {
+    if (evo.stage !== currentStage + 1) continue;
+    if (level < evo.atLevel) continue;
+    if (!regionProgress[evo.requiresRegionClearedId]?.bossDefeated) continue;
+    return evo;
+  }
+  return null;
+}
