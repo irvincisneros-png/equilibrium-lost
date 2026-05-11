@@ -32,13 +32,6 @@ export class BootScene extends Phaser.Scene {
 
     generatePlaceholderTextures(this, content.content.assets);
 
-    // Temporary visual confirmation — remove in Task 38 when TitleScene is added.
-    this.add.text(8, 8, 'boot OK — ' + content.content.assets.placeholders.length + ' placeholder textures', {
-      fontFamily: 'monospace',
-      fontSize: '10px',
-      color: '#a6e3a1'
-    });
-
-    this.scene.start('TitleScene'); // Task 38 adds TitleScene; Phaser logs "scene not found" until then.
+    this.scene.start('TitleScene');
   }
 }
