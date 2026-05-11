@@ -136,14 +136,19 @@ export class WorldMapScene extends Phaser.Scene {
       }).setOrigin(0.5);
     }
 
-    // Menu button (Task 50)
+    // Menu button — opens MenuScene as an overlay
     const menuBtn = this.add.text(W - 8, 8, '[Menu]', {
       fontFamily: FONT, fontSize: '9px', color: DIM_COLOR
     }).setOrigin(1, 0).setInteractive({ useHandCursor: true });
-    menuBtn.on('pointerdown', () => {
-      // TODO: Task 50 — MenuScene
-      console.log('[worldmap] would open menu'); // TODO: Task 50
-    });
+    const openMenu = (): void => {
+      if (this.scene.isActive('MenuScene') || !this.scene.get('MenuScene')) return;
+      this.scene.launch('MenuScene', { returnTo: 'WorldMapScene' });
+      this.scene.pause();
+    };
+    menuBtn.on('pointerdown', openMenu);
+    const kb = this.input.keyboard;
+    kb?.on('keydown-ESC', openMenu);
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => kb?.off('keydown-ESC', openMenu));
   }
 
   private enterRegion(regionId: string): void {
