@@ -31,4 +31,16 @@ describe('shipped content', () => {
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true); // at least one widget question (used by the boss)
   });
+  it('every skill id referenced by an enemy exists', () => {
+    const { content } = loadGameContent();
+    for (const e of Object.values(content.enemies)) for (const sid of e.skillIds) expect(content.skills[sid], `${e.id} -> ${sid}`).toBeDefined();
+  });
+  it('each class has exactly one Catalyst Burst skill reachable', () => {
+    const { content } = loadGameContent();
+    for (const c of content.classes) {
+      const reachable = [...c.startingSkillIds, ...c.skillUnlocks.map(u => u.skillId)];
+      const bursts = reachable.filter(id => content.skills[id]?.isCatalystBurst);
+      expect(bursts.length, c.id).toBe(1);
+    }
+  });
 });
