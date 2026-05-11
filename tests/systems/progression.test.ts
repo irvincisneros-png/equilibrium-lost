@@ -1,6 +1,6 @@
 // tests/systems/progression.test.ts
 import { describe, it, expect } from 'vitest';
-import { xpToNextLevel, totalXpForLevel, levelForXp, statsForLevel } from '../../src/systems/Progression';
+import { xpToNextLevel, totalXpForLevel, levelForXp, statsForLevel, addXp } from '../../src/systems/Progression';
 import classesData from '../../src/content/data/classes.json';
 import type { ClassDef } from '../../src/content/types';
 const classes = classesData as ClassDef[];
@@ -37,5 +37,28 @@ describe('statsForLevel', () => {
     const l10s1 = statsForLevel(pyron, 10, 1);
     expect(l10s1.hp).toBe(l10s0.hp + evo.hp);
     expect(l10s1.atk).toBe(l10s0.atk + evo.atk);
+  });
+});
+
+describe('addXp', () => {
+  it('adds xp and reports the new level(s) crossed', () => {
+    const r = addXp({ level: 1, xp: 0, unlockedSkillIds: [...pyron.startingSkillIds] }, 350, pyron);
+    expect(r.level).toBe(3);                 // 350 xp -> level 3 (needs 300)
+    expect(r.xp).toBe(350);
+    expect(r.leveledTo).toEqual([2, 3]);
+  });
+  it('unlocks skills scheduled at the levels just crossed (and not before)', () => {
+    const r = addXp({ level: 1, xp: 0, unlockedSkillIds: [...pyron.startingSkillIds] }, totalXpForLevel(3), pyron);
+    // pyron unlocks "ionize" at level 3
+    expect(r.newlyUnlockedSkillIds).toContain('ionize');
+    expect(r.unlockedSkillIds).toContain('ionize');
+    const r2 = addXp({ level: 1, xp: 0, unlockedSkillIds: [...pyron.startingSkillIds] }, totalXpForLevel(2), pyron);
+    expect(r2.newlyUnlockedSkillIds).not.toContain('ionize'); // level 2, not yet
+  });
+  it('is idempotent about already-unlocked skills', () => {
+    const r = addXp({ level: 9, xp: totalXpForLevel(9), unlockedSkillIds: ['proton-jab', 'ionize'] }, xpToNextLevel(9), pyron);
+    expect(r.level).toBe(10);
+    expect(r.newlyUnlockedSkillIds).not.toContain('ionize');         // already had it
+    expect(r.newlyUnlockedSkillIds).toContain('combustion-cascade');  // unlocked at level 10
   });
 });

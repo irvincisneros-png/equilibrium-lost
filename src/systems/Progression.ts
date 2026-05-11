@@ -21,3 +21,24 @@ export function statsForLevel(classDef: ClassDef, level: number, evolutionStage:
   for (const evo of classDef.evolutions) if (evo.stage <= evolutionStage) s = addStats(s, evo.statBonus);
   return floorStats(s);
 }
+
+// ---------- progression state ----------
+
+export interface ProgressState { level: number; xp: number; unlockedSkillIds: string[]; }
+export interface AddXpResult extends ProgressState { leveledTo: number[]; newlyUnlockedSkillIds: string[]; }
+
+export function addXp(state: ProgressState, amount: number, classDef: ClassDef): AddXpResult {
+  const xp = state.xp + Math.max(0, Math.floor(amount));
+  const newLevel = levelForXp(xp);
+  const leveledTo: number[] = [];
+  for (let l = state.level + 1; l <= newLevel; l++) leveledTo.push(l);
+  const unlocked = new Set(state.unlockedSkillIds);
+  const newlyUnlockedSkillIds: string[] = [];
+  for (const u of classDef.skillUnlocks) {
+    if (u.level > state.level && u.level <= newLevel && !unlocked.has(u.skillId)) {
+      unlocked.add(u.skillId);
+      newlyUnlockedSkillIds.push(u.skillId);
+    }
+  }
+  return { level: newLevel, xp, unlockedSkillIds: [...unlocked], leveledTo, newlyUnlockedSkillIds };
+}
