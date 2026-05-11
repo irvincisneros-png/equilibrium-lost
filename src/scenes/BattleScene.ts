@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import type { GameContent, SaveData, SkillDef } from '../content/types';
+import type { GameContent, SaveData, SkillDef, StatusEffectInstance } from '../content/types';
 import type { BattleState, BattleEvent, BattleAction, BattleContext } from '../systems/BattleEngine';
 import { createBattle, resolveTurn } from '../systems/BattleEngine';
 import { playerBattleInputFromSave, battleContextFromContent, REFRESHER_TOAST_KEY } from './battlePresenter';
@@ -27,7 +27,7 @@ const ENEMY_X = 360, ENEMY_GROUND_Y = 150;
 const PLAYER_X = 110, PLAYER_GROUND_Y = 222;
 const MENU_LABELS = ['Attack', 'Skills', 'Items', 'Run'] as const;
 
-type Fsm = 'menu' | 'skillMenu' | 'animating' | 'ended';
+type Fsm = 'menu' | 'skillMenu' | 'itemMenu' | 'animating' | 'ended';
 
 /**
  * The turn-based battle. Pure logic lives in `BattleEngine`; this scene only renders state
@@ -63,6 +63,19 @@ export class BattleScene extends Phaser.Scene {
   private skillIdx = 0;
   private skillRowCount = 0;
 
+  // item submenu
+  private itemMenuObjs: Phaser.GameObjects.GameObject[] = [];
+  private itemRowButtons: Phaser.GameObjects.Text[] = [];
+  private itemRowIds: string[] = [];
+  private itemIdx = 0;
+  private itemRowCount = 0;
+
+  // catalyst burst + status icons
+  private burstButton: Phaser.GameObjects.Text | null = null;
+  private burstTween: Phaser.Tweens.Tween | null = null;
+  private playerStatusObjs: Phaser.GameObjects.GameObject[] = [];
+  private enemyStatusObjs: Phaser.GameObjects.GameObject[] = [];
+
   // accumulated per-correct-answer XP, banked at victory (Task 48)
   private bonusXp = 0;
 
@@ -93,8 +106,10 @@ export class BattleScene extends Phaser.Scene {
 
     this.quiz = this.registry.get('quiz') as QuizEngine;
     this.bonusXp = 0;
-    this.skillMenuObjs = [];
-    this.skillRowButtons = [];
+    this.skillMenuObjs = []; this.skillRowButtons = [];
+    this.itemMenuObjs = []; this.itemRowButtons = []; this.itemRowIds = [];
+    this.burstButton = null; this.burstTween = null;
+    this.playerStatusObjs = []; this.enemyStatusObjs = [];
 
     // --- engine state ---
     this.ctx = battleContextFromContent(this.content, save.settings);
@@ -154,19 +169,23 @@ export class BattleScene extends Phaser.Scene {
       kb.on('keydown-ENTER', this.onConfirm, this);
       kb.on('keydown-SPACE', this.onConfirm, this);
       kb.on('keydown-ESC', this.onCancel, this);
+      kb.on('keydown-B', this.onBurstKey, this);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
         kb.off('keydown-UP', this.onUp, this);
         kb.off('keydown-DOWN', this.onDown, this);
         kb.off('keydown-ENTER', this.onConfirm, this);
         kb.off('keydown-SPACE', this.onConfirm, this);
         kb.off('keydown-ESC', this.onCancel, this);
+        kb.off('keydown-B', this.onBurstKey, this);
       });
     }
 
+    this.refreshStatusIcons();
     this.log(`A wild ${this.state.enemy.name} appears!`);
     this.fsm = 'menu';
     this.menuIdx = 0;
     this.refreshMenu();
+    this.refreshBurstButton();
   }
 
   // ---------------------------------------------------------------------------
@@ -176,18 +195,23 @@ export class BattleScene extends Phaser.Scene {
   private onUp(): void {
     if (this.fsm === 'menu') { this.menuIdx = (this.menuIdx + MENU_LABELS.length - 1) % MENU_LABELS.length; this.refreshMenu(); }
     else if (this.fsm === 'skillMenu') { this.skillIdx = (this.skillIdx + this.skillRowCount - 1) % this.skillRowCount; this.refreshSkillMenu(); }
+    else if (this.fsm === 'itemMenu') { this.itemIdx = (this.itemIdx + this.itemRowCount - 1) % this.itemRowCount; this.refreshItemMenu(); }
   }
   private onDown(): void {
     if (this.fsm === 'menu') { this.menuIdx = (this.menuIdx + 1) % MENU_LABELS.length; this.refreshMenu(); }
     else if (this.fsm === 'skillMenu') { this.skillIdx = (this.skillIdx + 1) % this.skillRowCount; this.refreshSkillMenu(); }
+    else if (this.fsm === 'itemMenu') { this.itemIdx = (this.itemIdx + 1) % this.itemRowCount; this.refreshItemMenu(); }
   }
   private onConfirm(): void {
     if (this.fsm === 'menu') this.confirmMenu();
     else if (this.fsm === 'skillMenu') this.confirmSkillMenu();
+    else if (this.fsm === 'itemMenu') this.confirmItemMenu();
   }
   private onCancel(): void {
     if (this.fsm === 'skillMenu') this.closeSkillMenu(true);
+    else if (this.fsm === 'itemMenu') this.closeItemMenu(true);
   }
+  private onBurstKey(): void { if (this.fsm === 'menu' && this.state.catalystBurstReady) void this.doBurst(); }
 
   private refreshMenu(): void {
     const runDisabled = this.state.enemy.isBoss;
@@ -206,7 +230,7 @@ export class BattleScene extends Phaser.Scene {
     switch (this.menuIdx) {
       case 0: void this.doAction({ kind: 'attack' }); break;
       case 1: this.openSkillMenu(); break;
-      case 2: this.log('Items — available in a later build.'); break;        // TODO: Task 47
+      case 2: this.openItemMenu(); break;
       case 3:
         if (this.state.enemy.isBoss) { this.log("There's no escaping this battle!"); break; }
         void this.doAction({ kind: 'run' });
@@ -222,6 +246,7 @@ export class BattleScene extends Phaser.Scene {
     if (this.fsm !== 'menu') return;
     this.fsm = 'skillMenu';
     this.showMenu(false);
+    this.hideBurstButton();
     const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     this.skillRowCount = skills.length + 1; // + a "Back" row
     this.skillIdx = 0;
@@ -265,7 +290,7 @@ export class BattleScene extends Phaser.Scene {
     this.skillMenuObjs.forEach(o => o.destroy());
     this.skillMenuObjs = [];
     this.skillRowButtons = [];
-    if (returnToActionMenu) { this.fsm = 'menu'; this.menuIdx = 1; this.showMenu(true); this.refreshMenu(); }
+    if (returnToActionMenu) { this.fsm = 'menu'; this.menuIdx = 1; this.showMenu(true); this.refreshMenu(); this.refreshBurstButton(); }
   }
 
   private confirmSkillMenu(): void {
@@ -311,6 +336,140 @@ export class BattleScene extends Phaser.Scene {
   }
 
   // ---------------------------------------------------------------------------
+  // Items submenu
+  // ---------------------------------------------------------------------------
+
+  private usableItems(): { itemId: string; qty: number }[] {
+    return this.save.items.filter(e => e.qty > 0 && this.content.items[e.itemId]?.usableInBattle);
+  }
+
+  private openItemMenu(): void {
+    if (this.fsm !== 'menu') return;
+    const items = this.usableItems();
+    this.fsm = 'itemMenu';
+    this.showMenu(false);
+    this.hideBurstButton();
+    this.itemRowIds = items.map(i => i.itemId);
+    this.itemRowCount = items.length + 1; // + a "Back" row
+    this.itemIdx = 0;
+    const x = 150, y = 240, rowH = 12, w = W - x - 8, h = (this.itemRowCount + 1) * rowH + 6;
+    const bg = this.add.rectangle(x, y - 4, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(1, 0x415a77).setDepth(50);
+    this.itemMenuObjs = [bg];
+    this.itemRowButtons = items.map((_entry, i) => {
+      const txt = this.add.text(x + 6, y + i * rowH, '', { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51).setInteractive({ useHandCursor: true });
+      txt.on('pointerover', () => { this.itemIdx = i; this.refreshItemMenu(); });
+      txt.on('pointerdown', () => { this.itemIdx = i; this.confirmItemMenu(); });
+      this.itemMenuObjs.push(txt);
+      return txt;
+    });
+    const back = this.add.text(x + 6, y + items.length * rowH, '', { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51).setInteractive({ useHandCursor: true });
+    back.on('pointerover', () => { this.itemIdx = items.length; this.refreshItemMenu(); });
+    back.on('pointerdown', () => { this.itemIdx = items.length; this.confirmItemMenu(); });
+    this.itemRowButtons.push(back);
+    this.itemMenuObjs.push(back);
+    if (items.length === 0) this.log('No usable items in your bag.');
+    this.refreshItemMenu();
+  }
+
+  private refreshItemMenu(): void {
+    const items = this.usableItems();
+    items.forEach((entry, i) => {
+      const def = this.content.items[entry.itemId];
+      const sel = i === this.itemIdx;
+      this.itemRowButtons[i]?.setText(`${sel ? '▷' : ' '} ${def?.name ?? entry.itemId}  ×${entry.qty}`).setColor(sel ? '#f9e2af' : '#cdd6f4');
+    });
+    const backIdx = items.length;
+    this.itemRowButtons[backIdx]?.setText(`${this.itemIdx === backIdx ? '▷' : ' '} ← Back`).setColor(this.itemIdx === backIdx ? '#f9e2af' : '#cdd6f4');
+  }
+
+  private closeItemMenu(returnToActionMenu: boolean): void {
+    this.itemMenuObjs.forEach(o => o.destroy());
+    this.itemMenuObjs = []; this.itemRowButtons = []; this.itemRowIds = [];
+    if (returnToActionMenu) { this.fsm = 'menu'; this.menuIdx = 2; this.showMenu(true); this.refreshMenu(); this.refreshBurstButton(); }
+  }
+
+  private confirmItemMenu(): void {
+    if (this.fsm !== 'itemMenu') return;
+    const itemId = this.itemRowIds[this.itemIdx];
+    if (!itemId) { this.closeItemMenu(true); return; }
+    this.closeItemMenu(false);
+    void this.doItem(itemId);
+  }
+
+  private async doItem(itemId: string): Promise<void> {
+    this.fsm = 'animating';
+    // consume one from the bag (the engine uses it this turn)
+    const entry = this.save.items.find(e => e.itemId === itemId);
+    if (entry) { entry.qty -= 1; if (entry.qty <= 0) this.save.items = this.save.items.filter(e => e.itemId !== itemId); }
+    this.persist();
+    await this.resolveAndAnimate({ kind: 'item', itemId });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Catalyst Burst
+  // ---------------------------------------------------------------------------
+
+  private async doBurst(): Promise<void> {
+    if (this.fsm !== 'menu' || !this.state.catalystBurstReady) return;
+    this.fsm = 'animating';
+    this.showMenu(false);
+    this.hideBurstButton();
+    this.log('CATALYST BURST!');
+    await this.burstFlash();
+    await this.resolveAndAnimate({ kind: 'catalystBurst' });
+  }
+
+  private burstFlash(): Promise<void> {
+    const flash = this.add.rectangle(0, 0, W, H, 0xffffff, 0).setOrigin(0, 0).setDepth(2000);
+    this.cameras.main.zoomTo(1.08, 180, 'Sine.easeInOut', true);
+    return new Promise<void>(resolve => {
+      this.tweens.add({
+        targets: flash, alpha: { from: 0, to: 0.85 }, duration: 150, yoyo: true,
+        onComplete: () => { flash.destroy(); this.cameras.main.zoomTo(1, 180, 'Sine.easeInOut', true); this.time.delayedCall(180, () => resolve()); },
+      });
+    });
+  }
+
+  private refreshBurstButton(): void {
+    if (this.fsm !== 'menu' || !this.state.catalystBurstReady) { this.hideBurstButton(); return; }
+    if (!this.burstButton) {
+      this.burstButton = this.add.text(W / 2, 230, '★ CATALYST BURST  [B] ★', { fontFamily: FONT, fontSize: '11px', color: '#ffd166', backgroundColor: '#5a1320', padding: { x: 6, y: 3 } })
+        .setOrigin(0.5).setDepth(800).setInteractive({ useHandCursor: true });
+      this.burstButton.on('pointerdown', () => { void this.doBurst(); });
+    }
+    this.burstButton.setVisible(true);
+    if (!this.burstTween) this.burstTween = this.tweens.add({ targets: this.burstButton, scaleX: 1.12, scaleY: 1.12, yoyo: true, repeat: -1, duration: 320 });
+  }
+
+  private hideBurstButton(): void {
+    this.burstTween?.remove();
+    this.burstTween = null;
+    this.burstButton?.setScale(1).setVisible(false);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Status-effect icons
+  // ---------------------------------------------------------------------------
+
+  private refreshStatusIcons(): void {
+    this.playerStatusObjs.forEach(o => o.destroy()); this.playerStatusObjs = [];
+    this.enemyStatusObjs.forEach(o => o.destroy()); this.enemyStatusObjs = [];
+    this.layStatuses(this.state.enemy.statuses, 8, 33, this.enemyStatusObjs);
+    this.layStatuses(this.state.player.statuses, 8, 281, this.playerStatusObjs);
+  }
+
+  private layStatuses(statuses: StatusEffectInstance[], x0: number, y0: number, sink: Phaser.GameObjects.GameObject[]): void {
+    let x = x0;
+    for (const s of statuses) {
+      const icon = this.add.image(x, y0, `icon_status_${s.id}`).setOrigin(0, 0).setDisplaySize(10, 10).setDepth(20);
+      const num = this.add.text(x + 11, y0, String(Math.max(0, s.turnsRemaining)), { fontFamily: FONT, fontSize: '7px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(20);
+      this.tweens.add({ targets: icon, scaleX: 1.25, scaleY: 1.25, yoyo: true, duration: 110 });
+      sink.push(icon, num);
+      x += 11 + 8;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
   // Turn resolution + animation
   // ---------------------------------------------------------------------------
 
@@ -318,6 +477,7 @@ export class BattleScene extends Phaser.Scene {
     if (this.fsm !== 'menu') return;
     this.fsm = 'animating';
     this.showMenu(false);
+    this.hideBurstButton();
     await this.resolveAndAnimate(action);
   }
 
@@ -330,8 +490,9 @@ export class BattleScene extends Phaser.Scene {
     this.state = next;
     await this.animate(events);
     this.snapBars();
-    if (this.state.outcome === 'ongoing') { this.showMenu(true); this.fsm = 'menu'; this.menuIdx = 0; this.refreshMenu(); }
-    else this.runEndSequence();
+    if (this.state.outcome === 'ongoing') {
+      this.showMenu(true); this.fsm = 'menu'; this.menuIdx = 0; this.refreshMenu(); this.refreshBurstButton();
+    } else this.runEndSequence();
   }
 
   private async animate(events: BattleEvent[]): Promise<void> {
@@ -466,6 +627,7 @@ export class BattleScene extends Phaser.Scene {
 
   private runEndSequence(): void {
     this.fsm = 'ended';
+    this.hideBurstButton();
     const outcome = this.state.outcome;
     if (outcome === 'fled') {
       this.log('Got away safely!');
@@ -536,6 +698,7 @@ export class BattleScene extends Phaser.Scene {
     this.enemyHpBar.setValue(this.state.enemy.hp, this.state.enemy.maxHp);
     if (!this.studyMode) this.chainMeter.setChain(this.state.chain);
     this.refreshEnemyName();
+    this.refreshStatusIcons();
   }
 
   private persistVitals(): void {
