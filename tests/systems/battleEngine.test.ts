@@ -1,7 +1,9 @@
 // tests/systems/battleEngine.test.ts
 import { describe, it, expect } from 'vitest';
-import { createBattle, getTurnOrder, resolveTurn } from '../../src/systems/BattleEngine';
+import { createBattle, getTurnOrder, resolveTurn, buildEnemyCombatant } from '../../src/systems/BattleEngine';
 import type { EnemyDef } from '../../src/content/types';
+import itemsData from '../../src/content/data/items.json';
+const items = itemsData as Record<string, import('../../src/content/types').ItemDef>;
 import skillsData from '../../src/content/data/skills.json';
 const skills = skillsData as Record<string, import('../../src/content/types').SkillDef>;
 
@@ -41,6 +43,7 @@ const ctx = {
 } as any;
 
 const skillCtx = { ...ctx, getSkill: (id: string) => { const s = skills[id]; if (!s) throw new Error('unknown skill ' + id); return s; } };
+const fullCtx = { ...skillCtx, getItem: (id: string) => { const i = items[id]; if (!i) throw new Error('unknown item ' + id); return i; } };
 
 describe('resolveTurn — basic attacks only', () => {
   it('faster side (player) hits first; both act; player regenerates 25 energy at the start of the turn', () => {
@@ -187,5 +190,38 @@ describe('resolveTurn — Catalyst Burst', () => {
     expect(r.state.enemy.statuses.some(st => st.id === 'combusting')).toBe(true);
     expect(r.state.chain).toBe(0);
     expect(r.state.catalystBurstReady).toBe(false);
+  });
+});
+
+// ── Task 21: Item action in battle ────────────────────────────────────────────
+
+describe('resolveTurn — items', () => {
+  it('minor-buffer heals 25 HP, capped at max', () => {
+    const s = createBattle({ ...playerInput, hp: 10, spd: 99 }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'item', itemId: 'minor-buffer' }, fullCtx);
+    // healed by ~25 then took a small hit from enemy
+    expect(r.state.player.hp).toBeGreaterThan(10);
+    expect(r.events.some(e => e.t === 'item' && (e as any).itemId === 'minor-buffer')).toBe(true);
+  });
+  it('reagent revives a fainted hero — but only if hp is 0', () => {
+    // hp starts at 0; reagent restores 50% of maxHp (50); the heal event confirms the amount
+    const s = createBattle({ ...playerInput, hp: 0, maxHp: 100, spd: 99 }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'item', itemId: 'reagent' }, fullCtx);
+    // verify the revive event fired with amount 50
+    const healEvent = r.events.find(e => e.t === 'heal' && (e as any).target === 'player') as any;
+    expect(healEvent).toBeDefined();
+    expect(healEvent.amount).toBe(50); // 50% of maxHp 100
+    expect(r.state.player.hp).toBeGreaterThan(0); // player is no longer fainted
+  });
+  it('energy-cell restores 50 Energy, capped at max', () => {
+    const s = createBattle({ ...playerInput, energy: 30, maxEnergy: 100, spd: 99 }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'item', itemId: 'energy-cell' }, fullCtx);
+    // +25 turn regen happens first (energy 55), then +50 cell -> capped at 100
+    expect(r.state.player.energy).toBe(100);
+  });
+  it('a stat booster raises the relevant buff stage', () => {
+    const s = createBattle({ ...playerInput, spd: 99 }, { def: { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    const r = resolveTurn(s, { kind: 'item', itemId: 'atk-catalyst' }, fullCtx);
+    expect(r.state.player.buffs.atk).toBe(1);
   });
 });
