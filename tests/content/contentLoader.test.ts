@@ -51,3 +51,41 @@ describe('validateGameContent', () => {
     expect(r.errors.length).toBeGreaterThan(0);
   });
 });
+
+import { ContentLoader, ContentError } from '../../src/content/ContentLoader';
+
+const minimalRaw = () => ({
+  classes: [{ id: 'pyron', name: 'Pyron', theme: 't', baseStats: { hp: 30, atk: 12, def: 6, spd: 9 }, growth: { hp: 6, atk: 3, def: 1, spd: 2 },
+    signatureAffinity: 'Combustion', startingSkillIds: ['ember-test'], startingItemIds: [], skillUnlocks: [], evolutions: [] }],
+  skills: { 'ember-test': { id: 'ember-test', name: 'Ember', affinity: 'Combustion', power: 30, energyCost: 20, topic: 'atomic-structure', questionDifficulty: 1, accuracy: 100, isSignature: true, isCatalystBurst: false, description: 'd' } },
+  enemies: { protium: { id: 'protium', name: 'Protium', affinity: 'Atomic', baseStats: { hp: 20, atk: 8, def: 4, spd: 6 }, level: 3, attackPower: 20, skillIds: [], xpYield: 12, role: 'wild', spriteKey: 'enemy_protium' } },
+  regions: [{ id: 'elemental-reaches', index: 1, name: 'The Elemental Reaches', topic: 'atomic-structure', tilemapKey: 'tiles_elemental_reaches', tilesetKey: 'tiles_elemental_reaches', battleBackgroundKey: 'bg_battle_elemental_reaches',
+    wildEnemyIds: ['protium'], encounterRatePerStep: 0.12, miniBossId: 'protium', regionBossId: 'protium', npcIds: [],
+    shrine: { questionTopic: 'atomic-structure', questionCount: 5, passRatio: 0.8, rewardXp: 200, rewardItemIds: [] }, unlocksRegionId: null, bossReward: { xp: 300, itemIds: [] } }],
+  items: { buffer: { id: 'buffer', name: 'Buffer', kind: 'buffer', usableInBattle: true, effect: { healHp: 20 }, description: 'd' } },
+  typeChart: { Base: { Acid: 2 } },
+  questions: { 'atomic-structure': [
+    { id: 'q1', topic: 'atomic-structure', difficulty: 1, format: 'mcq', prompt: 'p', options: ['a','b','c','d'], answerIndex: 0, explanation: 'e' },
+    { id: 'BAD', topic: 'atomic-structure', difficulty: 1, format: 'mcq', prompt: 'p', options: ['a','b'], answerIndex: 0, explanation: 'e' } // malformed -> dropped
+  ] },
+  npcs: {},
+  assets: { images: {}, tilemaps: {}, audio: {}, placeholders: [] }
+});
+
+describe('ContentLoader.fromRaw', () => {
+  it('indexes valid content and drops malformed questions with a warning', () => {
+    const { content, warnings } = ContentLoader.fromRaw(minimalRaw());
+    expect(content.questions['atomic-structure']!.map(q => q.id)).toEqual(['q1']);
+    expect(warnings.some(w => /BAD/.test(w))).toBe(true);
+    expect(content.regions[0]!.id).toBe('elemental-reaches');
+    expect(content.skills['ember-test']!.power).toBe(30);
+  });
+  it('throws ContentError when a required collection is empty', () => {
+    const raw = minimalRaw(); (raw as any).classes = [];
+    expect(() => ContentLoader.fromRaw(raw)).toThrowError(ContentError);
+  });
+  it('throws ContentError listing the offending fields when a skill is malformed', () => {
+    const raw = minimalRaw(); (raw.skills as any)['ember-test'] = { id: 'ember-test' };
+    expect(() => ContentLoader.fromRaw(raw)).toThrowError(/ember-test/);
+  });
+});
