@@ -30,3 +30,25 @@ describe('SaveManager.newGame', () => {
   });
   it('throws for an unknown class id', () => { expect(() => SaveManager.newGame('nope', content)).toThrow(); });
 });
+
+describe('SaveManager.save / load', () => {
+  it('round-trips a save through storage', () => {
+    const st = memStorage();
+    const s = SaveManager.newGame('aqualis', content);
+    s.level = 7; s.xp = 1500; s.storyFlags.lesson_atomic_structure_seen = true;
+    SaveManager.save(s, st);
+    const r = SaveManager.load(content, st);
+    expect(r.ok).toBe(true);
+    if (r.ok) { expect(r.data.classId).toBe('aqualis'); expect(r.data.level).toBe(7); expect(r.data.storyFlags.lesson_atomic_structure_seen).toBe(true); }
+  });
+  it('load returns {ok:false, reason:"none"} when there is no save', () => {
+    const r = SaveManager.load(content, memStorage());
+    expect(r).toEqual({ ok: false, reason: 'none' });
+  });
+  it('clear removes the save', () => {
+    const st = memStorage();
+    SaveManager.save(SaveManager.newGame('ionix', content), st);
+    SaveManager.clear(st);
+    expect(SaveManager.load(content, st)).toEqual({ ok: false, reason: 'none' });
+  });
+});

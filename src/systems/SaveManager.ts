@@ -46,5 +46,27 @@ export const SaveManager = {
       settings: { studyMode: false, answerTimer: false }
     };
   },
-  // save/load/migrate/clear/recordQuizResult — Tasks 31–34
+  save(data: SaveData, storage: StorageLike): void {
+    storage.setItem(SAVE_KEY, JSON.stringify(data));
+  },
+
+  clear(storage: StorageLike): void {
+    storage.removeItem(SAVE_KEY);
+  },
+
+  load(content: GameContent, storage: StorageLike): { ok: true; data: SaveData } | { ok: false; reason: 'none' | 'corrupt' } {
+    const raw = storage.getItem(SAVE_KEY);
+    if (raw == null) return { ok: false, reason: 'none' };
+    let parsed: unknown;
+    try { parsed = JSON.parse(raw); } catch { return { ok: false, reason: 'corrupt' }; }
+    try { const data = SaveManager.migrate(parsed, content); return { ok: true, data }; }
+    catch { return { ok: false, reason: 'corrupt' }; }
+  },
+
+  migrate(raw: unknown, _content: GameContent): SaveData {
+    if (typeof raw !== 'object' || raw === null) throw new Error('corrupt');
+    return raw as SaveData;
+  },
+
+  // recordQuizResult — Task 34
 };
