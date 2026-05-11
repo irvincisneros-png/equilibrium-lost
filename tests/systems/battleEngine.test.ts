@@ -2,6 +2,8 @@
 import { describe, it, expect } from 'vitest';
 import { createBattle, getTurnOrder, resolveTurn } from '../../src/systems/BattleEngine';
 import type { EnemyDef } from '../../src/content/types';
+import skillsData from '../../src/content/data/skills.json';
+const skills = skillsData as Record<string, import('../../src/content/types').SkillDef>;
 
 const enemy: EnemyDef = { id: 'protium', name: 'Protium', affinity: 'Atomic', baseStats: { hp: 22, atk: 8, def: 4, spd: 6 }, level: 3, attackPower: 22, skillIds: [], xpYield: 14, role: 'wild', spriteKey: 'enemy_protium' };
 
@@ -38,6 +40,8 @@ const ctx = {
   settings: { answerTimer: false }
 } as any;
 
+const skillCtx = { ...ctx, getSkill: (id: string) => { const s = skills[id]; if (!s) throw new Error('unknown skill ' + id); return s; } };
+
 describe('resolveTurn — basic attacks only', () => {
   it('faster side (player) hits first; both act; player regenerates 25 energy at the start of the turn', () => {
     // attackPower trimmed to 4 so the player's basic attack doesn't one-shot a 22-HP wild enemy:
@@ -70,5 +74,41 @@ describe('resolveTurn — basic attacks only', () => {
     const again = resolveTurn(s, { kind: 'attack' }, ctx);
     expect(again.state.outcome).toBe('playerWin');
     expect(again.events).toEqual([]);
+  });
+});
+
+describe('resolveTurn — skill action', () => {
+  it('a correct quiz fires at full power, deducts energy, and ticks the chain up', () => {
+    // start at energy 50 so regen fires (+25); spark-flare costs 25; net = 50 + 25 - 25 = 50
+    const s0 = createBattle({ ...playerInput, atk: 30, energy: 50, equippedSkillIds: ['spark-flare'] }, { def: { ...enemy, baseStats: { hp: 999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 0.9 }); // rng 0.9: no status proc (chance 30), randFactor ~0.985
+    const r = resolveTurn(s0, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx);
+    expect(r.state.player.energy).toBe(50 + 25 - 25); // +25 regen, −25 cost
+    expect(r.state.chain).toBe(1);
+    expect(r.events.some(e => e.t === 'chainChanged' && (e as any).chain === 1)).toBe(true);
+    expect(r.state.enemy.hp).toBeLessThan(999);
+  });
+  it('a wrong quiz fizzles to ~30% and resets the chain', () => {
+    let s = createBattle({ ...playerInput, atk: 30, equippedSkillIds: ['spark-flare'] }, { def: { ...enemy, baseStats: { hp: 999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    s = resolveTurn(s, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx).state; // chain -> 1
+    const before = s.enemy.hp;
+    const r = resolveTurn(s, { kind: 'skill', skillId: 'spark-flare', quizCorrect: false }, skillCtx);
+    expect(r.events.some(e => e.t === 'quizFizzle')).toBe(true);
+    expect(r.state.chain).toBe(0);
+    const fizzleDmg = before - r.state.enemy.hp;
+    const fullDmgRef = before - resolveTurn(s, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx).state.enemy.hp;
+    expect(fizzleDmg).toBeLessThan(fullDmgRef * 0.5);
+  });
+  it('a no-quiz skill (proton-jab, topic null) fires at full power and does NOT touch the chain', () => {
+    let s = createBattle({ ...playerInput, atk: 30, equippedSkillIds: ['spark-flare', 'proton-jab'] }, { def: { ...enemy, baseStats: { hp: 999, atk: 1, def: 12, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    s = resolveTurn(s, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx).state; // chain 1
+    const r = resolveTurn(s, { kind: 'skill', skillId: 'proton-jab', quizCorrect: null }, skillCtx);
+    expect(r.state.chain).toBe(1); // unchanged
+    expect(r.state.player.energy).toBe(s.player.energy + 25 - 0); // proton-jab costs 0
+  });
+  it('reaching chain 5 sets catalystBurstReady', () => {
+    let s = createBattle({ ...playerInput, atk: 30, spd: 99, equippedSkillIds: ['spark-flare'] }, { def: { ...enemy, baseStats: { hp: 99999, atk: 1, def: 99, spd: 1 } }, level: 3 }, { rng: () => 1 });
+    for (let i = 0; i < 5; i++) s = resolveTurn(s, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx).state;
+    expect(s.chain).toBe(5);
+    expect(s.catalystBurstReady).toBe(true);
   });
 });
