@@ -27,6 +27,13 @@ export class QuizEngine {
     return q;
   }
 
-  // Task 25:
-  checkAnswer(_q: QuestionDef, _answer: { index?: number; widgetCoeffs?: number[] }): boolean { throw new Error('not implemented — Task 25'); }
+  checkAnswer(q: QuestionDef, answer: { index?: number; widgetCoeffs?: number[] }): boolean {
+    if (q.format === 'mcq') return typeof answer.index === 'number' && answer.index === q.answerIndex;
+    if (q.format === 'balanceEquation' && q.equation) {
+      const expected = [...q.equation.reactants, ...q.equation.products].map(t => t.coeff);
+      const got = answer.widgetCoeffs;
+      return Array.isArray(got) && got.length === expected.length && expected.every((c, i) => got[i] === c);
+    }
+    return false;
+  }
 }

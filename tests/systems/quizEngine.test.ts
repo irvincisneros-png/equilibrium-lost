@@ -35,3 +35,22 @@ describe('QuizEngine.pickQuestion', () => {
     expect(() => new QuizEngine(bank, { rng: () => 0 }).pickQuestion('nope', 1)).toThrow();
   });
 });
+
+const eqQ: QuestionDef = { id: 'e1', topic: 't', difficulty: 3, format: 'balanceEquation', prompt: 'Balance H2 + O2 -> H2O',
+  equation: { reactants: [{ formula: 'H2', coeff: 2 }, { formula: 'O2', coeff: 1 }], products: [{ formula: 'H2O', coeff: 2 }] }, explanation: '2H2 + O2 -> 2H2O' };
+const mcqQ: QuestionDef = { id: 'm1', topic: 't', difficulty: 1, format: 'mcq', prompt: 'p', options: ['a', 'b', 'c', 'd'], answerIndex: 2, explanation: 'e' };
+
+describe('QuizEngine.checkAnswer', () => {
+  const qe = new QuizEngine({ t: [mcqQ, eqQ] }, { rng: () => 0 });
+  it('mcq: only the matching index is correct', () => {
+    expect(qe.checkAnswer(mcqQ, { index: 2 })).toBe(true);
+    expect(qe.checkAnswer(mcqQ, { index: 0 })).toBe(false);
+    expect(qe.checkAnswer(mcqQ, {})).toBe(false);
+  });
+  it('balanceEquation: every coefficient (reactants then products) must match', () => {
+    expect(qe.checkAnswer(eqQ, { widgetCoeffs: [2, 1, 2] })).toBe(true);
+    expect(qe.checkAnswer(eqQ, { widgetCoeffs: [1, 1, 2] })).toBe(false);
+    expect(qe.checkAnswer(eqQ, { widgetCoeffs: [2, 1] })).toBe(false);   // wrong length
+    expect(qe.checkAnswer(eqQ, { index: 0 })).toBe(false);              // wrong answer kind
+  });
+});
