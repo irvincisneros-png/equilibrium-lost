@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Textbox } from '../ui/Textbox';
 import { entryNode, nextNode } from '../ui/DialogueRunner';
+import { persist as savePersist } from '../persist';
 import type { DialogueNode, NpcDef, SaveData } from '../content/types';
 import type { GameContent } from '../content/types';
 
@@ -249,6 +250,7 @@ export class DialogueScene extends Phaser.Scene {
     const save = this.registry.get('save') as SaveData | null | undefined;
     if (save) {
       this.registry.set('save', save); // re-set in case registry listeners need a notification
+      savePersist();
     }
 
     this.scene.stop();

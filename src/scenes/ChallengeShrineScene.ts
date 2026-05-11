@@ -3,6 +3,7 @@ import type { GameContent, SaveData, RegionDef } from '../content/types';
 import type { QuizEngine } from '../systems/QuizEngine';
 import { QuizPanel } from '../ui/QuizPanel';
 import { SaveManager } from '../systems/SaveManager';
+import { persist as savePersist } from '../persist';
 import { addXp } from '../systems/Progression';
 import { scoreGauntlet } from './shrineScoring';
 
@@ -91,7 +92,7 @@ export class ChallengeShrineScene extends Phaser.Scene {
       await this.banner(`Not quite — ${result.correct}/${result.total}.  Study and return; the Shrine will keep.`, '#f9e2af');
     }
     this.registry.set('save', this.save);
-    try { SaveManager.save(this.save, window.localStorage); } catch { /* ignore — playtest builds */ }
+    savePersist();
     this.scene.start('OverworldScene', { regionId: region.id });
   }
 

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import type { GameContent, SaveData, SkillDef } from '../content/types';
 import { setLoadout } from './loadout';
-import { SaveManager } from '../systems/SaveManager';
+import { persist as savePersist } from '../persist';
 import { totalXpForLevel, xpToNextLevel } from '../systems/Progression';
 
 interface MenuSceneData { returnTo?: string; returnData?: Record<string, unknown> }
@@ -232,7 +232,7 @@ export class MenuScene extends Phaser.Scene {
 
   private persist(): void {
     this.registry.set('save', this.save);
-    try { SaveManager.save(this.save, window.localStorage); } catch { /* ignore — playtest builds */ }
+    savePersist();
   }
 
   private toast(msg: string): void {

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import type { GameContent, ClassDef, SaveData, SaveSettings } from '../content/types';
 import { SaveManager } from '../systems/SaveManager';
+import { persist as savePersist } from '../persist';
 
 const W = 480;
 const H = 320;
@@ -145,7 +146,7 @@ export class ClassSelectScene extends Phaser.Scene {
     }
 
     this.registry.set('save', save);
-    SaveManager.save(save, window.localStorage);
+    savePersist();
     this.scene.start('WorldMapScene');
   }
 }

@@ -10,6 +10,7 @@ import { ChainMeter } from '../ui/ChainMeter';
 import { QuizPanel } from '../ui/QuizPanel';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
 import { SaveManager } from '../systems/SaveManager';
+import { persist as savePersist } from '../persist';
 import type { QuizEngine } from '../systems/QuizEngine';
 
 export interface BattleSceneData {
@@ -760,7 +761,7 @@ export class BattleScene extends Phaser.Scene {
 
   private persist(): void {
     this.registry.set('save', this.save);
-    try { SaveManager.save(this.save, window.localStorage); } catch { /* ignore — playtest builds */ }
+    savePersist();
   }
 
   private returnHome(): void {

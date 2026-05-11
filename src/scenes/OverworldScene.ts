@@ -4,7 +4,7 @@ import { Player } from '../entities/Player';
 import { Npc } from '../entities/Npc';
 import { tileBlocks, isTallGrass, pickWildEncounter } from './overworldHelpers';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
-import { SaveManager } from '../systems/SaveManager';
+import { persist as savePersist } from '../persist';
 import { REFRESHER_TOAST_KEY } from './battlePresenter';
 import elementalReaches from '../content/data/tilemaps/elemental-reaches.json';
 
@@ -292,7 +292,7 @@ export class OverworldScene extends Phaser.Scene {
   private persist(): void {
     this.save.playerTile = { regionId: this.region.id, x: this.player.tileXY().x, y: this.player.tileXY().y };
     this.save.currentRegionId = this.region.id;
-    try { SaveManager.save(this.save, window.localStorage); } catch { /* ignore — playtest builds */ }
+    savePersist();
   }
 
   private regionProgress(): SaveData['regionProgress'][string] {

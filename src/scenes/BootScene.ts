@@ -4,11 +4,13 @@ import { ContentError } from '../content/ContentLoader';
 import { QuizEngine } from '../systems/QuizEngine';
 import { SaveManager } from '../systems/SaveManager';
 import { generatePlaceholderTextures } from '../ui/placeholderTextures';
+import { bindRegistry } from '../persist';
 
 export class BootScene extends Phaser.Scene {
   constructor() { super('BootScene'); }
 
   create(): void {
+    bindRegistry(this.registry);
     let content;
     try {
       content = loadGameContent();
