@@ -12,9 +12,9 @@ export { formatMultiplier };
  * "BURST READY" state. Logic-free — `setChain` is the only input.
  */
 export class ChainMeter extends Phaser.GameObjects.Container {
-  private static readonly SEG_W = 12;
-  private static readonly SEG_H = 8;
-  private static readonly GAP = 2;
+  private static readonly SEG_W = 48;
+  private static readonly SEG_H = 32;
+  private static readonly GAP = 8;
   private static readonly LIT = [0xfacc15, 0xf59e0b, 0xf97316, 0xea580c, 0xdc2626]; // amber → red
   private static readonly DIM = 0x33394a;
 
@@ -32,8 +32,8 @@ export class ChainMeter extends Phaser.GameObjects.Container {
       this.segs.push(r);
       this.add(r);
     }
-    this.label = scene.add.text(MAX_CHAIN * step + 6, 0, formatMultiplier(0), {
-      fontFamily: 'monospace', fontSize: '9px', color: '#cdd6f4',
+    this.label = scene.add.text(MAX_CHAIN * step + 24, 0, formatMultiplier(0), {
+      fontFamily: 'monospace', fontSize: '32px', color: '#cdd6f4',
     }).setOrigin(0, 0.5);
     this.add(this.label);
     scene.add.existing(this);

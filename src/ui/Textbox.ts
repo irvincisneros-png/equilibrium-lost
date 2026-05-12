@@ -39,26 +39,26 @@ export class Textbox extends Phaser.GameObjects.Container {
       .setOrigin(0, 0);
     this.add(panel);
 
-    // 1px border rect
+    // border rect
     const border = scene.add.rectangle(0, 0, this.opts.w, this.opts.h)
       .setOrigin(0, 0)
-      .setStrokeStyle(1, 0x415a77)
+      .setStrokeStyle(4, 0x415a77)
       .setFillStyle(0, 0); // transparent fill
     this.add(border);
 
     // Text object for content
-    this.textObj = scene.add.text(8, 8, '', {
+    this.textObj = scene.add.text(32, 32, '', {
       fontFamily: 'monospace',
-      fontSize: '12px',
+      fontSize: '44px',
       color: '#cdd6f4',
-      wordWrap: { width: this.opts.w - 16 },
+      wordWrap: { width: this.opts.w - 64 },
     }).setOrigin(0, 0);
     this.add(this.textObj);
 
     // Advance caret
-    this.caretObj = scene.add.text(this.opts.w - 16, this.opts.h - 16, '▼', {
+    this.caretObj = scene.add.text(this.opts.w - 64, this.opts.h - 64, '▼', {
       fontFamily: 'monospace',
-      fontSize: '10px',
+      fontSize: '36px',
       color: '#cdd6f4',
     }).setOrigin(0.5).setVisible(false);
     this.add(this.caretObj);
