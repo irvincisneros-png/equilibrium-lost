@@ -68,7 +68,19 @@
     "regionBossId": "the-ph-tyrant",
     "npcIds": ["apothecary-vitra", "salter-mordant", "shrinekeeper-litmus"],
     "shrine": { "questionTopic": "acids-bases", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 1150, "rewardItemIds": ["energy-cell", "buffer"] },
-    "unlocksRegionId": null,
+    "unlocksRegionId": "the-crucible",
     "bossReward": { "xp": 1300, "itemIds": ["reagent", "isotope-core"], "skillId": "corrosive-burn" }
+  },
+  {
+    "id": "the-crucible", "index": 7, "name": "The Crucible", "topic": "energy-changes",
+    "tilemapKey": "tilemap_the_crucible", "tilesetKey": "tiles_the_crucible", "battleBackgroundKey": "bg_battle_the_crucible",
+    "wildEnemyIds": ["cinderling", "exotherm", "cracklith", "endotherm"],
+    "encounterRatePerStep": 0.10,
+    "miniBossId": "the-flashpoint",
+    "regionBossId": "the-heat-sink",
+    "npcIds": ["thermologist-calor", "forgemaster-pyra", "shrinekeeper-ember"],
+    "shrine": { "questionTopic": "energy-changes", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 1300, "rewardItemIds": ["energy-cell", "buffer"] },
+    "unlocksRegionId": null,
+    "bossReward": { "xp": 1450, "itemIds": ["reagent", "isotope-core"], "skillId": "endothermic-drain" }
   }
 ]
