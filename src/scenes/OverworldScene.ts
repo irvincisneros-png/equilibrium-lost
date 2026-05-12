@@ -31,6 +31,7 @@ const MARKER_STYLE: Record<string, { color: number; glyph: string }> = {
 
 const FONT = 'monospace';
 const UI_DEPTH = 10000;
+const RENDER_TILE = 64; // on-screen tile size (the JSON data grid is still 16-unit; only the render scale changes)
 
 /**
  * The region overworld: a grid-locked map with NPCs (the "lesson layer"), tall-grass
@@ -73,7 +74,7 @@ export class OverworldScene extends Phaser.Scene {
     this.modal = [];
     this.objects = this.map.objects ?? [];
 
-    const ts = this.map.tileSize;
+    const ts = RENDER_TILE;
     const worldW = this.map.width * ts;
     const worldH = this.map.height * ts;
     this.cameras.main.setBackgroundColor('#0b0f17');
@@ -107,9 +108,9 @@ export class OverworldScene extends Phaser.Scene {
       const restored = o.type === 'bossGate' && this.regionProgress().bossDefeated;
       const color = restored ? 0x40a040 : style.color;
       const glyph = restored ? '✦' : style.glyph;
-      this.add.rectangle(o.x * ts + ts / 2, o.y * ts + ts / 2, ts - 2, ts - 2, color, 0.85)
-        .setStrokeStyle(1, 0x000000, 0.4).setDepth(0);
-      this.add.text(o.x * ts + ts / 2, o.y * ts + ts / 2, glyph, { fontFamily: FONT, fontSize: '10px', color: '#0b0f17' })
+      this.add.rectangle(o.x * ts + ts / 2, o.y * ts + ts / 2, ts - 8, ts - 8, color, 0.85)
+        .setStrokeStyle(4, 0x000000, 0.4).setDepth(0);
+      this.add.text(o.x * ts + ts / 2, o.y * ts + ts / 2, glyph, { fontFamily: FONT, fontSize: '36px', color: '#0b0f17' })
         .setOrigin(0.5).setDepth(0);
     }
 
@@ -128,8 +129,8 @@ export class OverworldScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true);
 
     // --- HUD hint ---
-    this.add.text(4, 4, `${region.name}  ·  Arrows: move   Space: talk   Esc: menu`,
-      { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4', backgroundColor: '#0b0f17cc', padding: { x: 3, y: 2 } })
+    this.add.text(16, 16, `${region.name}  ·  Arrows: move   Space: talk   Esc: menu`,
+      { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4', backgroundColor: '#0b0f17cc', padding: { x: 12, y: 8 } })
       .setScrollFactor(0).setDepth(UI_DEPTH);
 
     // --- input ---
@@ -338,11 +339,11 @@ export class OverworldScene extends Phaser.Scene {
     this.busy = true;
     const { width, height } = this.scale;
     const dim = this.add.rectangle(0, 0, width, height, 0x000000, 0.55).setOrigin(0, 0).setScrollFactor(0).setDepth(UI_DEPTH);
-    const panel = this.add.rectangle(width / 2, height / 2, Math.min(width - 40, 320), 70, 0x0d1b2a)
-      .setStrokeStyle(1, 0x415a77).setScrollFactor(0).setDepth(UI_DEPTH);
-    const text = this.add.text(width / 2, height / 2 - 14, message, { fontFamily: FONT, fontSize: '9px', color: '#cdd6f4', align: 'center', wordWrap: { width: panel.width - 16 } })
+    const panel = this.add.rectangle(width / 2, height / 2, Math.min(width - 160, 1280), 280, 0x0d1b2a)
+      .setStrokeStyle(4, 0x415a77).setScrollFactor(0).setDepth(UI_DEPTH);
+    const text = this.add.text(width / 2, height / 2 - 56, message, { fontFamily: FONT, fontSize: '32px', color: '#cdd6f4', align: 'center', wordWrap: { width: panel.width - 64 } })
       .setOrigin(0.5).setScrollFactor(0).setDepth(UI_DEPTH);
-    const hint = this.add.text(width / 2, height / 2 + 16, '[Enter/Z] Yes      [Esc/X] No', { fontFamily: FONT, fontSize: '8px', color: '#f9e2af' })
+    const hint = this.add.text(width / 2, height / 2 + 64, '[Enter/Z] Yes      [Esc/X] No', { fontFamily: FONT, fontSize: '28px', color: '#f9e2af' })
       .setOrigin(0.5).setScrollFactor(0).setDepth(UI_DEPTH);
     this.modal = [dim, panel, text, hint];
 
@@ -368,8 +369,8 @@ export class OverworldScene extends Phaser.Scene {
 
   private toast(message: string): void {
     const { width, height } = this.scale;
-    const t = this.add.text(width / 2, height / 2 - 24, message, {
-      fontFamily: FONT, fontSize: '9px', color: '#f38ba8', backgroundColor: '#0b0f17', padding: { x: 8, y: 4 }, align: 'center',
+    const t = this.add.text(width / 2, height / 2 - 96, message, {
+      fontFamily: FONT, fontSize: '32px', color: '#f38ba8', backgroundColor: '#0b0f17', padding: { x: 32, y: 16 }, align: 'center',
     }).setOrigin(0.5).setScrollFactor(0).setDepth(UI_DEPTH);
     this.tweens.add({ targets: t, alpha: 0, delay: 1400, duration: 500, onComplete: () => t.destroy() });
   }
