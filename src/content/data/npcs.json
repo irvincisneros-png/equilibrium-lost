@@ -27,5 +27,34 @@
       { "id": "q_enter", "speaker": "Shrinekeeper Quanta", "text": "Six questions. Miss no more than one. Begin when ready.", "end": true, "setFlag": "shrine_entered_elemental_reaches", "launch": "shrine" },
       { "id": "q_later", "speaker": "Shrinekeeper Quanta", "text": "The Shrine will wait. Come back when you've studied.", "end": true }
     ]
+  },
+  "smith-valentia": {
+    "id": "smith-valentia", "name": "Master Smith Valentia", "spriteKey": "npc_smith_valentia", "tile": { "x": 11, "y": 12 }, "facing": "down",
+    "dialogue": [
+      { "id": "v0", "speaker": "Master Smith Valentia", "text": "So — you cleared the Reaches. Good. But the Forge is where atoms learn to HOLD ON to one another. Want the basics, or are you ready to forge?", "choices": [ { "label": "Teach me.", "next": "v1" }, { "label": "I know bonding — let me forge.", "next": "v_skip" } ] },
+      { "id": "v1", "speaker": "Master Smith Valentia", "text": "Atoms bond to fill their outer shells — to copy a noble gas. METALS have spare outer electrons; NON-METALS have spaces. Put them together and electrons MOVE.", "next": "v2" },
+      { "id": "v2", "speaker": "Master Smith Valentia", "text": "That's an IONIC bond. The metal hands its electrons over and becomes a positive CATION; the non-metal takes them and becomes a negative ANION. Opposite charges lock into a giant LATTICE.", "next": "v3" },
+      { "id": "v3", "speaker": "Master Smith Valentia", "text": "Ionic compounds are hard, brittle, and melt at high temperatures. Solid, they don't conduct — the ions are pinned. But molten, or dissolved in water, the ions are free to move, so they DO conduct.", "next": "v4" },
+      { "id": "v4", "speaker": "Master Smith Valentia", "text": "Metals bond differently again: a lattice of positive ions in a SEA of loose, delocalised electrons. That sea is why metals conduct, why they bend instead of shatter, why they shine. Now — to the anvil.", "end": true, "setFlag": "lesson_bonding_seen" },
+      { "id": "v_skip", "speaker": "Master Smith Valentia", "text": "Confident! Then prove it on the corrupted bonds ahead. Remember — a wrong answer just fizzles the move; it never hurts you. Go.", "end": true, "setFlag": "lesson_bonding_seen" }
+    ]
+  },
+  "lorekeeper-octet": {
+    "id": "lorekeeper-octet", "name": "Lorekeeper Octet", "spriteKey": "npc_lorekeeper_octet", "tile": { "x": 7, "y": 8 }, "facing": "down",
+    "dialogue": [
+      { "id": "o0", "speaker": "Lorekeeper Octet", "text": "Valentia bangs metal; I keep the rule that governs it all — the OCTET RULE. Eight electrons in the outer shell and an atom is content. Listen.", "next": "o1" },
+      { "id": "o1", "speaker": "Lorekeeper Octet", "text": "When TWO NON-METALS meet, neither will give up electrons — so they SHARE. A shared pair is a COVALENT bond. Share two pairs and that's a double bond; three, a triple.", "next": "o2" },
+      { "id": "o2", "speaker": "Lorekeeper Octet", "text": "Covalent atoms clump into small MOLECULES — H₂O, CO₂, O₂. The bonds INSIDE a molecule are strong, but molecules barely cling to one another, so these substances melt and boil low — many are gases or liquids — and they don't conduct.", "next": "o3" },
+      { "id": "o3", "speaker": "Lorekeeper Octet", "text": "Why bond at all? Because a full outer shell is stable — the noble-gas configuration. Ionic, covalent, metallic: three roads, one destination.", "next": "o4" },
+      { "id": "o4", "speaker": "Lorekeeper Octet", "text": "One last thing: some ions travel in packs — SO₄²⁻ sulfate, NO₃⁻ nitrate, CO₃²⁻ carbonate, OH⁻ hydroxide, NH₄⁺ ammonium. Treat each pack as one charged unit when you write a formula. Now go.", "end": true }
+    ]
+  },
+  "shrinekeeper-mortar": {
+    "id": "shrinekeeper-mortar", "name": "Shrinekeeper Mortar", "spriteKey": "npc_shrinekeeper_mortar", "tile": { "x": 4, "y": 12 }, "facing": "right",
+    "dialogue": [
+      { "id": "s0", "speaker": "Shrinekeeper Mortar", "text": "The Mortar Shrine — no monsters, just questions on bonding. Clear it and you'll carry off an Energy Cell and a fresh Buffer. Step in?", "choices": [ { "label": "Enter the Shrine.", "next": "s_enter" }, { "label": "Not yet.", "next": "s_later" } ] },
+      { "id": "s_enter", "speaker": "Shrinekeeper Mortar", "text": "Six questions. One slip is forgiven; two and the Shrine spits you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_bonding-forge", "launch": "shrine" },
+      { "id": "s_later", "speaker": "Shrinekeeper Mortar", "text": "The Shrine is patient. Study, then return.", "end": true }
+    ]
   }
 }
