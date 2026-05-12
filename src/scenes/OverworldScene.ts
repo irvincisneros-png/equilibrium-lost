@@ -8,6 +8,7 @@ import { persist as savePersist } from '../persist';
 import { REFRESHER_TOAST_KEY } from './battlePresenter';
 import elementalReaches from '../content/data/tilemaps/elemental-reaches.json';
 import bondingForge from '../content/data/tilemaps/bonding-forge.json';
+import reactionHollow from '../content/data/tilemaps/reaction-hollow.json';
 
 interface OverworldSceneData { regionId: string }
 
@@ -18,6 +19,7 @@ interface TilemapData { width: number; height: number; tileSize: number; ground:
 const TILEMAPS: Record<string, TilemapData> = {
   tilemap_elemental_reaches: elementalReaches as unknown as TilemapData,
   tilemap_bonding_forge: bondingForge as unknown as TilemapData,
+  tilemap_reaction_hollow: reactionHollow as unknown as TilemapData,
 };
 
 // Per-biome tile colours, keyed by region.tilesetKey. Walkable: floor (id 0), path (id 1),
@@ -39,6 +41,11 @@ const BIOMES: Record<string, BiomePalette> = {
     floor: 0x4f4a44, path: 0xa86b3a, tallGrass: 0x6e4126,
     wallFace: 0x33302a, wallTop: 0x4d4840, wallBase: 0x1a1814, wallLine: 0x0d0c0a,
     waterFill: 0x2a1810, waterLine: 0x140c08,
+  },
+  tiles_reaction_hollow: {
+    floor: 0x2b2622, path: 0x9a4a1c, tallGrass: 0x7d4014,
+    wallFace: 0x1c1814, wallTop: 0x35302a, wallBase: 0x0d0b08, wallLine: 0x060504,
+    waterFill: 0x4a1808, waterLine: 0x2a0c02,
   },
 };
 

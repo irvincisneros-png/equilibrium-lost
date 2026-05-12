@@ -20,7 +20,19 @@
     "regionBossId": "the-sundered-lattice",
     "npcIds": ["smith-valentia", "lorekeeper-octet", "shrinekeeper-mortar"],
     "shrine": { "questionTopic": "bonding", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 520, "rewardItemIds": ["energy-cell", "buffer"] },
-    "unlocksRegionId": null,
+    "unlocksRegionId": "reaction-hollow",
     "bossReward": { "xp": 640, "itemIds": ["reagent", "isotope-core"], "skillId": "lattice-collapse" }
+  },
+  {
+    "id": "reaction-hollow", "index": 3, "name": "Reaction Hollow", "topic": "reaction-types",
+    "tilemapKey": "tilemap_reaction_hollow", "tilesetKey": "tiles_reaction_hollow", "battleBackgroundKey": "bg_battle_reaction_hollow",
+    "wildEnemyIds": ["synthor", "combustix", "decomposeer", "displacid"],
+    "encounterRatePerStep": 0.10,
+    "miniBossId": "volatile-mixture",
+    "regionBossId": "the-eternal-flame",
+    "npcIds": ["alchemist-vera", "pyrologist-ignis", "shrinekeeper-cinder"],
+    "shrine": { "questionTopic": "reaction-types", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 700, "rewardItemIds": ["energy-cell", "buffer"] },
+    "unlocksRegionId": null,
+    "bossReward": { "xp": 850, "itemIds": ["reagent", "isotope-core"], "skillId": "combustion-flare" }
   }
 ]

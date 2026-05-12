@@ -16,7 +16,6 @@ const NODE_CURRENT = 0x2a5298;
 
 // Labels for the not-yet-built regions; the first content.regions.length nodes come from content.
 const LOCKED_REGION_LABELS = [
-  'Reaction Hollow',
   'The Balance Halls',
   'Catalyst Crags',
   'The Acid Wastes',
