@@ -4,11 +4,11 @@ import { resolvePlaceholderSpec } from '../../src/ui/placeholderSpec';
 import { loadGameContent } from '../../src/content/loadGameContent';
 
 describe('game config', () => {
-  it('is a GBA-ish resolution scaled up, pixelArt, with a scene list starting at BootScene', () => {
+  it('is a 1920x1080 16:9 canvas, non-pixel-art, with a scene list starting at BootScene', () => {
     const cfg = makeGameConfig([{ key: 'BootScene' }] as any);
-    expect(GAME_WIDTH).toBe(480);   // 2x GBA width (240)
-    expect(GAME_HEIGHT).toBe(320);  // 2x GBA height (160)
-    expect(cfg.pixelArt).toBe(true);
+    expect(GAME_WIDTH).toBe(1920);
+    expect(GAME_HEIGHT).toBe(1080);
+    expect(cfg.pixelArt).toBe(false);
     expect(cfg.scale?.mode).toBeDefined();
     expect((cfg.scene as any[])[0].key).toBe('BootScene');
   });

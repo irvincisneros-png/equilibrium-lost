@@ -41,6 +41,6 @@ export function addPlaceholderLabel(
   const spec = manifest.placeholders.find(p => p.key === key);
   if (!spec?.label) return null;
   return scene.add
-    .text(x, y, spec.label, { fontFamily: 'monospace', fontSize: '7px', color: '#0b0f17' })
+    .text(x, y, spec.label, { fontFamily: 'monospace', fontSize: '24px', color: '#0b0f17' })
     .setOrigin(0.5);
 }
