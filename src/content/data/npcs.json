@@ -143,5 +143,34 @@
       { "id": "s_enter", "speaker": "Shrinekeeper Tally", "text": "Six questions. One miss is forgiven; two and the stopwatch stops you. Begin when ready.", "end": true, "setFlag": "shrine_entered_catalyst-crags", "launch": "shrine" },
       { "id": "s_later", "speaker": "Shrinekeeper Tally", "text": "The stopwatch is always ready. Come back when you've studied.", "end": true }
     ]
+  },
+  "apothecary-vitra": {
+    "id": "apothecary-vitra", "name": "Apothecary Vitra", "spriteKey": "npc_apothecary_vitra", "tile": { "x": 11, "y": 12 }, "facing": "down",
+    "dialogue": [
+      { "id": "v0", "speaker": "Apothecary Vitra", "text": "The Acid Wastes. Everything here is either eating something or being eaten — that's pH for you. Want the chemistry of acids and bases, or do you know it?", "choices": [ { "label": "Show me the chemistry.", "next": "v1" }, { "label": "I know acids and bases — let me through.", "next": "v_skip" } ] },
+      { "id": "v1", "speaker": "Apothecary Vitra", "text": "What makes an acid an ACID: in water it releases H⁺ — hydrogen ions. A BASE releases OH⁻ — hydroxide ions. A base that dissolves in water is an ALKALI. That single difference — H⁺ versus OH⁻ — is the whole story.", "next": "v2" },
+      { "id": "v2", "speaker": "Apothecary Vitra", "text": "The pH SCALE runs 0 to 14. Below 7 = acidic, 7 = neutral, above 7 = alkaline. The LOWER the number, the more acidic — and each step is roughly a tenfold change in how acidic.", "next": "v3" },
+      { "id": "v3", "speaker": "Apothecary Vitra", "text": "INDICATORS read the pH for you. LITMUS: red in acid, blue in alkali. UNIVERSAL INDICATOR: a whole rainbow — red→orange→yellow→green→blue→purple from strong acid to strong alkali. pH paper or a pH meter give you a number.", "next": "v4" },
+      { "id": "v4", "speaker": "Apothecary Vitra", "text": "And mind the wording: STRONG vs WEAK is about how FULLY the acid ionises; DILUTE vs CONCENTRATED is just about how much WATER is in it. Two different things. Salter Mordant up ahead has neutralisation and naming salts. Off you go.", "end": true, "setFlag": "lesson_acids-bases_seen" },
+      { "id": "v_skip", "speaker": "Apothecary Vitra", "text": "Confident! Then handle the corrosive things prowling the Wastes. Remember — a wrong answer just fizzles the move; it never hurts you. Go.", "end": true, "setFlag": "lesson_acids-bases_seen" }
+    ]
+  },
+  "salter-mordant": {
+    "id": "salter-mordant", "name": "Salter Mordant", "spriteKey": "npc_salter_mordant", "tile": { "x": 7, "y": 8 }, "facing": "down",
+    "dialogue": [
+      { "id": "o0", "speaker": "Salter Mordant", "text": "Vitra told you what acids and bases ARE. I'll show you what they DO to each other.", "next": "o1" },
+      { "id": "o1", "speaker": "Salter Mordant", "text": "NEUTRALISATION: acid + base → SALT + WATER. The H⁺ from the acid grabs the OH⁻ from the base and they make water; whatever's left over pairs up to form the salt. Add just enough base and the pH lands on 7.", "next": "o2" },
+      { "id": "o2", "speaker": "Salter Mordant", "text": "Acids react with more than bases. Acid + reactive METAL → salt + HYDROGEN (the gas that pops). Acid + metal CARBONATE → salt + water + CARBON DIOXIDE (fizzes, turns limewater milky). Acid + metal OXIDE → salt + water.", "next": "o3" },
+      { "id": "o3", "speaker": "Salter Mordant", "text": "NAMING the salt: the metal part comes from the BASE; the rest comes from the ACID. HYDROCHLORIC acid → chlorides. SULFURIC acid → sulfates. NITRIC acid → nitrates. So sodium hydroxide + hydrochloric acid → sodium chloride.", "next": "o4" },
+      { "id": "o4", "speaker": "Salter Mordant", "text": "Acids, bases, pH, indicators, neutralisation, salts — that's the full kit. The pH Tyrant at the top of the Wastes has dragged everything down to pH 0. Go and neutralise it.", "end": true }
+    ]
+  },
+  "shrinekeeper-litmus": {
+    "id": "shrinekeeper-litmus", "name": "Shrinekeeper Litmus", "spriteKey": "npc_shrinekeeper_litmus", "tile": { "x": 4, "y": 12 }, "facing": "right",
+    "dialogue": [
+      { "id": "s0", "speaker": "Shrinekeeper Litmus", "text": "The Litmus Shrine — no monsters, just questions on acids, bases and neutralisation. Clear it and you'll carry off an Energy Cell and a fresh Buffer. Step in?", "choices": [ { "label": "Enter the Shrine.", "next": "s_enter" }, { "label": "Not yet.", "next": "s_later" } ] },
+      { "id": "s_enter", "speaker": "Shrinekeeper Litmus", "text": "Six questions. One miss is forgiven; two and the indicator turns you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_acid-wastes", "launch": "shrine" },
+      { "id": "s_later", "speaker": "Shrinekeeper Litmus", "text": "The litmus paper waits. Come back when you've studied.", "end": true }
+    ]
   }
 }

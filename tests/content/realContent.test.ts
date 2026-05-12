@@ -5,6 +5,7 @@ import bondingForge from '../../src/content/data/tilemaps/bonding-forge.json';
 import reactionHollow from '../../src/content/data/tilemaps/reaction-hollow.json';
 import balanceHalls from '../../src/content/data/tilemaps/balance-halls.json';
 import catalystCrags from '../../src/content/data/tilemaps/catalyst-crags.json';
+import acidWastes from '../../src/content/data/tilemaps/acid-wastes.json';
 import type { DialogueNode } from '../../src/content/types';
 
 type AuditTileObject = { type: string; id?: string; x: number; y: number };
@@ -141,6 +142,7 @@ describe('shipped content', () => {
       'reaction-hollow': reactionHollow as AuditTilemap,
       'balance-halls': balanceHalls as AuditTilemap,
       'catalyst-crags': catalystCrags as AuditTilemap,
+      'acid-wastes': acidWastes as AuditTilemap,
     };
     for (const region of content.regions) {
       const map = maps[region.id];
@@ -255,6 +257,34 @@ describe('shipped content', () => {
   });
   it('the catalyst-crags tilemap parses to a 24×18 grid with the expected interactive objects', () => {
     const tm = catalystCrags as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
+    expect(tm.width).toBe(24);
+    expect(tm.height).toBe(18);
+    expect(tm.ground.length).toBe(18);
+    expect(tm.ground.every(row => row.length === 24)).toBe(true);
+    const types = tm.objects.map(o => o.type);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    expect(types.filter(t => t === 'npc').length).toBe(3);
+  });
+  it('Region 6 (acid-wastes) exists, index 6, topic "acids-bases", with a valid mini-boss and region boss; Region 5 unlocks it', () => {
+    const { content } = loadGameContent();
+    const r6 = content.regions.find(r => r.index === 6)!;
+    expect(r6.id).toBe('acid-wastes');
+    expect(r6.topic).toBe('acids-bases');
+    expect(content.enemies[r6.miniBossId]?.role).toBe('miniBoss');
+    expect(content.enemies[r6.regionBossId]?.role).toBe('regionBoss');
+    const r5 = content.regions.find(r => r.index === 5)!;
+    expect(r5.unlocksRegionId).toBe('acid-wastes');
+  });
+  it('acids-bases question bank has 40–60 questions spanning all three difficulties (with at least one balanceEquation)', () => {
+    const { content } = loadGameContent();
+    const qs = content.questions['acids-bases']!;
+    expect(qs.length).toBeGreaterThanOrEqual(40);
+    expect(qs.length).toBeLessThanOrEqual(60);
+    for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
+    expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
+  });
+  it('the acid-wastes tilemap parses to a 24×18 grid with the expected interactive objects', () => {
+    const tm = acidWastes as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
     expect(tm.width).toBe(24);
     expect(tm.height).toBe(18);
     expect(tm.ground.length).toBe(18);
