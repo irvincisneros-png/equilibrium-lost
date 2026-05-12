@@ -110,9 +110,25 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     }).setOrigin(0, 0);
     this.add(box);
     this.widgets.push(box);
-    const holdMs = correct ? 1300 : CORRECTION_MS;
+    const cont = this.scene.add.text(this.panelW / 2, this.panelH - 16, '▸ Press Enter (or click) to continue', { fontFamily: FONT, fontSize: '22px', color: '#8fa3c0' }).setOrigin(0.5, 1);
+    this.add(cont);
+    this.widgets.push(cont);
+    // Resolve on a keypress/click, or auto-advance after a generous read time — whichever first.
     return new Promise<void>(resolve => {
-      this.scene.time.delayedCall(holdMs, () => { box.destroy(); resolve(); });
+      const kb = this.scene.input.keyboard;
+      const onPointer = (): void => finish();
+      let done = false;
+      const finish = (): void => {
+        if (done) return;
+        done = true;
+        kb?.off('keydown-ENTER', finish); kb?.off('keydown-SPACE', finish);
+        this.scene.input?.off('pointerdown', onPointer);
+        resolve();
+      };
+      kb?.on('keydown-ENTER', finish);
+      kb?.on('keydown-SPACE', finish);
+      this.scene.input.on('pointerdown', onPointer);
+      this.scene.time.delayedCall(correct ? CORRECTION_MS : CORRECTION_MS + 1800, finish);
     });
   }
 

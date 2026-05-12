@@ -18,10 +18,9 @@ const TILEMAPS: Record<string, TilemapData> = {
   tilemap_elemental_reaches: elementalReaches as unknown as TilemapData,
 };
 
-// Tile-id → colour (placeholder ground). Walkable tiles are *light*; blocked ones (water/wall)
-// are *dark* so the difference reads at a glance: 0 grass · 1 path · 2 water(blocked) · 3 wall(blocked) · 4 tall-grass.
-const TILE_COLOR: Record<number, number> = { 0: 0x5a8c66, 1: 0xd6b485, 2: 0x14304e, 3: 0x1c1712, 4: 0x33623c };
-const BLOCKED_TILE_IDS = new Set([2, 3]);
+// Walkable tile-id → colour: 0 grass · 1 path · 4 tall-grass. Blocked tiles (2 water, 3 wall) are
+// drawn specially (water = dark + sunken outline; wall = a beveled stone block) so they read as impassable.
+const TILE_COLOR: Record<number, number> = { 0: 0x4d7a5a, 1: 0xddc193, 4: 0x33623c };
 
 // Marker glyphs/colours for object tiles.
 const MARKER_STYLE: Record<string, { color: number; glyph: string }> = {
@@ -49,8 +48,13 @@ export class OverworldScene extends Phaser.Scene {
   private save!: SaveData;
 
   private player!: Player;
-  private playerMarker!: Phaser.GameObjects.Text;   // bobbing "▼" so the player can tell which sprite is them
+  private playerMarker!: Phaser.GameObjects.Text;   // bobbing "▼ YOU" so the player can tell which sprite is them
   private actionPrompt!: Phaser.GameObjects.Text;   // bottom-of-screen "Press SPACE to …" when something's interactable
+  private objectiveText!: Phaser.GameObjects.Text;  // compact persistent quest tracker in the HUD
+  private npcSpeechBubble!: Phaser.GameObjects.Text; // "▶ Space" floating above an adjacent NPC
+  private questNpc: Npc | null = null;              // the first-lesson NPC, marked while the lesson is unread
+  private questMarker: Phaser.GameObjects.Text | null = null;
+  private grassSteps = 0;                           // counts tall-grass steps before the first wild battle
   private npcs: Npc[] = [];
   private objects: TileObject[] = [];
   private rng: () => number = Math.random;
@@ -76,6 +80,9 @@ export class OverworldScene extends Phaser.Scene {
     this.busy = false;
     this.npcs = [];
     this.modal = [];
+    this.grassSteps = 0;
+    this.questNpc = null;
+    this.questMarker = null;
     this.objects = this.map.objects ?? [];
 
     const ts = RENDER_TILE;
@@ -85,15 +92,22 @@ export class OverworldScene extends Phaser.Scene {
 
     // --- ground layer (one Graphics for the whole grid) ---
     const ground = this.add.graphics().setDepth(-1000);
+    const lip = Math.max(4, Math.round(ts / 8));
     for (let y = 0; y < this.map.height; y++) {
       const row = this.map.ground[y] ?? [];
       for (let x = 0; x < this.map.width; x++) {
         const id = row[x] ?? 0;
-        ground.fillStyle(TILE_COLOR[id] ?? 0xff00ff, 1);
-        ground.fillRect(x * ts, y * ts, ts, ts);
-        if (BLOCKED_TILE_IDS.has(id)) { // outline impassable tiles so they read as "wall", not "road"
-          ground.lineStyle(3, 0x3a342c, 1);
-          ground.strokeRect(x * ts + 1, y * ts + 1, ts - 2, ts - 2);
+        const px = x * ts, py = y * ts;
+        if (id === 3) { // wall — a beveled stone block: clearly impassable
+          ground.fillStyle(0x4a443c, 1); ground.fillRect(px, py, ts, ts);
+          ground.fillStyle(0x6b6258, 1); ground.fillRect(px, py, ts, lip);             // lit top
+          ground.fillStyle(0x2a2620, 1); ground.fillRect(px, py + ts - lip, ts, lip);  // shadowed base
+          ground.lineStyle(2, 0x161210, 1); ground.strokeRect(px, py, ts, ts);
+        } else if (id === 2) { // water — blocked, sunken
+          ground.fillStyle(0x163454, 1); ground.fillRect(px, py, ts, ts);
+          ground.lineStyle(3, 0x0c1e34, 1); ground.strokeRect(px + 1, py + 1, ts - 2, ts - 2);
+        } else { // grass / path / tall-grass — walkable
+          ground.fillStyle(TILE_COLOR[id] ?? 0xff00ff, 1); ground.fillRect(px, py, ts, ts);
         }
       }
     }
@@ -135,6 +149,8 @@ export class OverworldScene extends Phaser.Scene {
     // "▼ YOU" marker so the player can tell which sprite is them (placeholder boxes all look alike).
     this.playerMarker = this.add.text(this.player.x, this.player.y, '▼ YOU', { fontFamily: FONT, fontSize: '24px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, align: 'center' })
       .setOrigin(0.5, 1).setDepth(9999);
+    this.npcSpeechBubble = this.add.text(0, 0, '▶ Space', { fontFamily: FONT, fontSize: '22px', color: '#0b0f17', backgroundColor: '#f9e2af', padding: { x: 8, y: 4 } })
+      .setOrigin(0.5, 1).setDepth(9999).setVisible(false);
 
     // --- camera + world bounds ---
     this.cameras.main.setBounds(0, 0, worldW, worldH);
@@ -145,15 +161,18 @@ export class OverworldScene extends Phaser.Scene {
     this.add.text(16, 16, `${region.name}   ·   ← ↑ → ↓ move   ·   Space: interact   ·   Esc: menu`,
       { fontFamily: FONT, fontSize: '26px', color: '#cdd6f4', backgroundColor: '#0b0f17cc', padding: { x: 12, y: 8 } })
       .setScrollFactor(0).setDepth(UI_DEPTH);
+    this.objectiveText = this.add.text(16, 70, '', { fontFamily: FONT, fontSize: '24px', color: '#a6e3a1', backgroundColor: '#0b0f17cc', padding: { x: 12, y: 6 } })
+      .setScrollFactor(0).setDepth(UI_DEPTH);
     this.actionPrompt = this.add.text(this.scale.width / 2, this.scale.height - 28, '', { fontFamily: FONT, fontSize: '28px', color: '#f9e2af', backgroundColor: '#0b0f17cc', padding: { x: 14, y: 8 }, align: 'center' })
       .setOrigin(0.5, 1).setScrollFactor(0).setDepth(UI_DEPTH).setVisible(false);
 
-    // First-time-here objective (cleared once you've had the atomic-structure lesson from Bohrlin).
+    // --- mark the first-lesson NPC (a bobbing "★" while the lesson is unread) + a one-time welcome banner ---
     if (!this.flag('lesson_atomic_structure_seen')) {
       const npc0 = region.npcIds[0] ? this.content.npcs[region.npcIds[0]] : undefined;
-      const label0 = npc0 ? (this.content.assets.placeholders.find(p => p.key === npc0.spriteKey)?.label ?? '?') : '?';
-      const who = npc0 ? `${npc0.name} — the "${label0}" character to the north` : 'a mentor';
-      this.showBanner(`Welcome to ${region.name}.\nFirst objective: walk up to ${who} and press Space to talk.\nThen explore — the dark green tall-grass patches hold battles, and ↩ near the bottom leaves the region.`, 7000);
+      this.questNpc = npc0 ? (this.npcs.find(n => n.npcId === npc0.id) ?? null) : null;
+      if (this.questNpc) this.questMarker = this.add.text(0, 0, '★', { fontFamily: FONT, fontSize: '34px', color: '#f9e2af', stroke: '#000000', strokeThickness: 5 }).setOrigin(0.5, 1).setDepth(9998);
+      const who = npc0 ? `${npc0.name} (look for the ★)` : 'a mentor';
+      this.showBanner(`Welcome to ${region.name}.\nFirst objective: walk up to ${who} and press Space to talk — then explore.`, 4500);
     }
 
     // --- input ---
@@ -184,14 +203,29 @@ export class OverworldScene extends Phaser.Scene {
 
   override update(): void {
     if (!this.busy) this.player.update();
-    // "▼ YOU" marker bobs above the player.
     const bob = Math.sin(this.time.now / 220) * 6;
     this.playerMarker.setPosition(this.player.x, this.player.y - this.player.displayHeight / 2 - 6 + bob);
-    // Contextual "Press SPACE to …" prompt.
-    if (this.busy) { this.actionPrompt.setVisible(false); return; }
+
+    // Persistent quest tracker.
+    this.objectiveText.setText('▸ ' + this.currentObjective());
+
+    // The "★" over the first-lesson NPC, until the lesson's been read.
+    if (this.questMarker) {
+      if (this.questNpc && !this.flag('lesson_atomic_structure_seen')) {
+        this.questMarker.setPosition(this.questNpc.x, this.questNpc.y - this.questNpc.displayHeight / 2 - 6 + bob).setVisible(true);
+      } else { this.questMarker.destroy(); this.questMarker = null; }
+    }
+
+    if (this.busy) { this.actionPrompt.setVisible(false); this.npcSpeechBubble.setVisible(false); return; }
     const here = this.player.tileXY();
     const ahead = this.player.facingTile();
     const npc = this.npcs.find(n => n.tileX === ahead.x && n.tileY === ahead.y) ?? this.npcs.find(n => n.isAdjacentTo(here));
+
+    // "▶ Space" bubble floating over the adjacent NPC.
+    if (npc) this.npcSpeechBubble.setPosition(npc.x, npc.y - npc.displayHeight / 2 - 8 + bob).setVisible(true);
+    else this.npcSpeechBubble.setVisible(false);
+
+    // Contextual bottom-of-screen prompt.
     const mbHere = this.objAt('minibossTrigger', here);
     let prompt = '';
     if (npc) prompt = `Press SPACE to talk to ${this.content.npcs[npc.npcId]?.name ?? npc.npcId}`;
@@ -200,6 +234,15 @@ export class OverworldScene extends Phaser.Scene {
     else { const g = this.objAt('bossGate', here) ?? this.objAt('bossGate', ahead); if (g && !this.regionProgress().bossDefeated && this.flag(String(g.requiresFlag))) prompt = `Press SPACE to challenge ${this.enemyName(String(g.enemyId))}`; }
     if (!prompt && (this.objAt('exit', here) ?? this.objAt('exit', ahead))) prompt = 'Press SPACE to leave the region';
     this.actionPrompt.setText(prompt).setVisible(prompt !== '');
+  }
+
+  /** One short line describing what to do next, for the HUD quest tracker. */
+  private currentObjective(): string {
+    if (!this.flag('lesson_atomic_structure_seen')) return `Talk to ${this.content.npcs[this.region.npcIds[0] ?? '']?.name ?? 'the mentor'} (look for the ★)`;
+    const rp = this.regionProgress();
+    if (rp.bossDefeated) return 'Region restored — leave via ↩ (bottom of the map)';
+    if (!this.flag(`miniboss_${this.region.id}_done`)) return `Beat the guardian at the ⚔ chokepoint, then reach the boss gate (top)`;
+    return `Defeat ${this.enemyName(this.region.regionBossId)} at the ╬ boss gate (top of the map)`;
   }
 
   // ---------------------------------------------------------------------------
@@ -233,12 +276,20 @@ export class OverworldScene extends Phaser.Scene {
     const gate = this.objAt('bossGate', tile);
     if (gate && this.regionProgress().bossDefeated) return this.toWorldMap();
 
-    if (isTallGrass(this.tileAt(tile.x, tile.y)) && this.rng() < this.region.encounterRatePerStep) {
-      const enc = pickWildEncounter(this.region, this.rng, id => this.enemyLevel(id));
-      this.startBattle({
-        enemyId: enc.enemyId, level: enc.level,
-        isBoss: false, returnTo: 'OverworldScene', returnData: { regionId: this.region.id },
-      });
+    if (isTallGrass(this.tileAt(tile.x, tile.y))) {
+      const firstSeen = this.flag('first_wild_seen');
+      // First-ever wild fight comes quickly (guaranteed by the 3rd tall-grass step) so new players see the loop;
+      // after that, the region's normal rate applies.
+      if (!firstSeen) this.grassSteps++;
+      const rate = firstSeen ? this.region.encounterRatePerStep : (this.grassSteps >= 3 ? 1 : 0.45);
+      if (this.rng() < rate) {
+        if (!firstSeen) this.save.storyFlags['first_wild_seen'] = true;
+        const enc = pickWildEncounter(this.region, this.rng, id => this.enemyLevel(id));
+        this.startBattle({
+          enemyId: enc.enemyId, level: enc.level,
+          isBoss: false, returnTo: 'OverworldScene', returnData: { regionId: this.region.id },
+        });
+      }
     }
   }
 
