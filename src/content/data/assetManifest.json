@@ -48,6 +48,18 @@
     "npc_alchemist_vera": "assets/images/npc_alchemist_vera.png",
     "npc_pyrologist_ignis": "assets/images/npc_pyrologist_ignis.png",
     "npc_shrinekeeper_cinder": "assets/images/npc_shrinekeeper_cinder.png",
+    "tiles_balance_halls": "assets/images/tiles_balance_halls.png",
+    "bg_battle_balance_halls": "assets/images/bg_battle_balance_halls.png",
+    "enemy_equilet": "assets/images/enemy_equilet.png",
+    "enemy_coeffix": "assets/images/enemy_coeffix.png",
+    "enemy_tilted_flask": "assets/images/enemy_tilted_flask.png",
+    "enemy_tilted_flask_half": "assets/images/enemy_tilted_flask_half.png",
+    "enemy_mass_thief": "assets/images/enemy_mass_thief.png",
+    "enemy_unbalanced_flask": "assets/images/enemy_unbalanced_flask.png",
+    "enemy_lopsided_equation": "assets/images/enemy_lopsided_equation.png",
+    "npc_archivist_pollux": "assets/images/npc_archivist_pollux.png",
+    "npc_weighmaster_libra": "assets/images/npc_weighmaster_libra.png",
+    "npc_shrinekeeper_scale": "assets/images/npc_shrinekeeper_scale.png",
     "ui_textbox": "assets/images/ui_textbox.png",
     "ui_chainmeter": "assets/images/ui_chainmeter.png",
     "icon_status_oxidised": "assets/images/icon_status_oxidised.png",
@@ -58,7 +70,7 @@
     "icon_status_combusting": "assets/images/icon_status_combusting.png",
     "title_art": "assets/images/title_art.png"
   },
-  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json" },
+  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json" },
   "audio": {},
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
@@ -117,6 +129,18 @@
     { "key": "enemy_eternal_flame", "w": 256, "h": 256, "color": "#e2461a", "label": "ETERNAL FLAME" },
     { "key": "npc_alchemist_vera", "w": 64, "h": 96, "color": "#5a8a6a", "label": "Ve" },
     { "key": "npc_pyrologist_ignis", "w": 64, "h": 96, "color": "#c2562a", "label": "Ig" },
-    { "key": "npc_shrinekeeper_cinder", "w": 64, "h": 96, "color": "#8a5a3a", "label": "Ci" }
+    { "key": "npc_shrinekeeper_cinder", "w": 64, "h": 96, "color": "#8a5a3a", "label": "Ci" },
+    { "key": "tiles_balance_halls", "w": 64, "h": 64, "color": "#6b6a5e", "label": "" },
+    { "key": "bg_battle_balance_halls", "w": 1920, "h": 896, "color": "#2e2e28", "label": "" },
+    { "key": "enemy_equilet", "w": 96, "h": 96, "color": "#9a9a8a", "label": "Equilet" },
+    { "key": "enemy_coeffix", "w": 128, "h": 128, "color": "#a4b07a", "label": "Coeffix" },
+    { "key": "enemy_tilted_flask", "w": 160, "h": 160, "color": "#7a8a8e", "label": "Tilted Flask" },
+    { "key": "enemy_tilted_flask_half", "w": 96, "h": 96, "color": "#8d9a9c", "label": "Frag" },
+    { "key": "enemy_mass_thief", "w": 128, "h": 128, "color": "#8a7a9a", "label": "Mass Thief" },
+    { "key": "enemy_unbalanced_flask", "w": 192, "h": 192, "color": "#b09a5a", "label": "Unbal. Flask" },
+    { "key": "enemy_lopsided_equation", "w": 256, "h": 256, "color": "#c2a23a", "label": "LOPSIDED EQUATION" },
+    { "key": "npc_archivist_pollux", "w": 64, "h": 96, "color": "#6a8a9a", "label": "Po" },
+    { "key": "npc_weighmaster_libra", "w": 64, "h": 96, "color": "#b0903a", "label": "Li" },
+    { "key": "npc_shrinekeeper_scale", "w": 64, "h": 96, "color": "#8a8a6a", "label": "Sc" }
   ]
 }
