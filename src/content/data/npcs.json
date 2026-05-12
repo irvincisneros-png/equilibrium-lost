@@ -85,5 +85,34 @@
       { "id": "s_enter", "speaker": "Shrinekeeper Cinder", "text": "Six questions. One miss is forgiven; two and the embers spit you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_reaction-hollow", "launch": "shrine" },
       { "id": "s_later", "speaker": "Shrinekeeper Cinder", "text": "The Shrine keeps its embers warm. Come back when you've studied.", "end": true }
     ]
+  },
+  "archivist-pollux": {
+    "id": "archivist-pollux", "name": "Archivist Pollux", "spriteKey": "npc_archivist_pollux", "tile": { "x": 11, "y": 12 }, "facing": "down",
+    "dialogue": [
+      { "id": "p0", "speaker": "Archivist Pollux", "text": "The Balance Halls. Here, an equation that doesn't balance simply won't work — the magic refuses it. Want the rules, or can you balance equations already?", "choices": [ { "label": "Show me the rules.", "next": "p1" }, { "label": "I can balance equations — let me through.", "next": "p_skip" } ] },
+      { "id": "p1", "speaker": "Archivist Pollux", "text": "Rule one — the LAW OF CONSERVATION OF MASS: in a reaction, atoms are only rearranged, never created or destroyed. So the total mass before equals the total mass after. If mass seems to vanish, a gas escaped — collect it and it's all still there.", "next": "p2" },
+      { "id": "p2", "speaker": "Archivist Pollux", "text": "Rule two — write the SYMBOLS first. Turn each name into its formula: 'methane + oxygen → carbon dioxide + water' becomes CH₄ + O₂ → CO₂ + H₂O. THEN you balance it.", "next": "p3" },
+      { "id": "p3", "speaker": "Archivist Pollux", "text": "Rule three — STATE SYMBOLS: (s) solid, (l) liquid, (g) gas, (aq) dissolved in water. They tell you what form each substance is in — and (g) is why open containers seem to 'lose' mass.", "next": "p4" },
+      { "id": "p4", "speaker": "Archivist Pollux", "text": "And once it's balanced, READ it as a ratio: 2H₂ + O₂ → 2H₂O means '2 of these react with 1 of those to make 2 of these'. Weighmaster Libra further up drills the actual balancing. Off you go.", "end": true, "setFlag": "lesson_balancing-equations_seen" },
+      { "id": "p_skip", "speaker": "Archivist Pollux", "text": "Confident! Then balance the warped equations roaming the Halls as you fight them. Remember — a wrong answer just fizzles the move; it never hurts you. Go.", "end": true, "setFlag": "lesson_balancing-equations_seen" }
+    ]
+  },
+  "weighmaster-libra": {
+    "id": "weighmaster-libra", "name": "Weighmaster Libra", "spriteKey": "npc_weighmaster_libra", "tile": { "x": 7, "y": 8 }, "facing": "down",
+    "dialogue": [
+      { "id": "o0", "speaker": "Weighmaster Libra", "text": "Pollux gave you the laws. I give you the method. Listen close.", "next": "o1" },
+      { "id": "o1", "speaker": "Weighmaster Libra", "text": "THE GOLDEN RULE: balance with COEFFICIENTS — the big numbers in FRONT of formulae. NEVER change a subscript (the little number inside). Changing H₂O to H₂O₂ doesn't balance anything — it makes a different chemical.", "next": "o2" },
+      { "id": "o2", "speaker": "Weighmaster Libra", "text": "THE METHOD: count each element on both sides. Pick one that's unequal, put a coefficient in front to fix it, then re-count everything. Repeat. Save the awkward element — often oxygen, or hydrogen — for last.", "next": "o3" },
+      { "id": "o3", "speaker": "Weighmaster Libra", "text": "A SHORTCUT: if a polyatomic ion — SO₄, NO₃, OH — survives the reaction intact, balance it as a single chunk instead of element by element. Less counting, fewer mistakes.", "next": "o4" },
+      { "id": "o4", "speaker": "Weighmaster Libra", "text": "Worked example: __Fe + __O₂ → __Fe₂O₃. Fe₂O₃ has 2 Fe and 3 O. Try 2 of it → 4 Fe and 6 O → so 4 Fe and 3 O₂ on the left. Answer: 4Fe + 3O₂ → 2Fe₂O₃. The Lopsided Equation at the top of the Halls has never once balanced. Go and balance it.", "end": true }
+    ]
+  },
+  "shrinekeeper-scale": {
+    "id": "shrinekeeper-scale", "name": "Shrinekeeper Scale", "spriteKey": "npc_shrinekeeper_scale", "tile": { "x": 4, "y": 12 }, "facing": "right",
+    "dialogue": [
+      { "id": "s0", "speaker": "Shrinekeeper Scale", "text": "The Scale Shrine — no monsters, just questions on conservation and balancing. Clear it and you'll carry off an Energy Cell and a fresh Buffer. Step in?", "choices": [ { "label": "Enter the Shrine.", "next": "s_enter" }, { "label": "Not yet.", "next": "s_later" } ] },
+      { "id": "s_enter", "speaker": "Shrinekeeper Scale", "text": "Six questions. One miss is forgiven; two and the scales tip you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_balance-halls", "launch": "shrine" },
+      { "id": "s_later", "speaker": "Shrinekeeper Scale", "text": "The scales hold steady. Come back when you've practised.", "end": true }
+    ]
   }
 }
