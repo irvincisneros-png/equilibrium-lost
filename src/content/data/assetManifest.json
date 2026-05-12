@@ -84,6 +84,18 @@
     "npc_apothecary_vitra": "assets/images/npc_apothecary_vitra.png",
     "npc_salter_mordant": "assets/images/npc_salter_mordant.png",
     "npc_shrinekeeper_litmus": "assets/images/npc_shrinekeeper_litmus.png",
+    "tiles_the_crucible": "assets/images/tiles_the_crucible.png",
+    "bg_battle_the_crucible": "assets/images/bg_battle_the_crucible.png",
+    "enemy_cinderling": "assets/images/enemy_cinderling.png",
+    "enemy_exotherm": "assets/images/enemy_exotherm.png",
+    "enemy_cracklith": "assets/images/enemy_cracklith.png",
+    "enemy_cracklith_half": "assets/images/enemy_cracklith_half.png",
+    "enemy_endotherm": "assets/images/enemy_endotherm.png",
+    "enemy_flashpoint": "assets/images/enemy_flashpoint.png",
+    "enemy_heat_sink": "assets/images/enemy_heat_sink.png",
+    "npc_thermologist_calor": "assets/images/npc_thermologist_calor.png",
+    "npc_forgemaster_pyra": "assets/images/npc_forgemaster_pyra.png",
+    "npc_shrinekeeper_ember": "assets/images/npc_shrinekeeper_ember.png",
     "ui_textbox": "assets/images/ui_textbox.png",
     "ui_chainmeter": "assets/images/ui_chainmeter.png",
     "icon_status_oxidised": "assets/images/icon_status_oxidised.png",
@@ -94,7 +106,7 @@
     "icon_status_combusting": "assets/images/icon_status_combusting.png",
     "title_art": "assets/images/title_art.png"
   },
-  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json", "tilemap_acid_wastes": "src/content/data/tilemaps/acid-wastes.json" },
+  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json", "tilemap_acid_wastes": "src/content/data/tilemaps/acid-wastes.json", "tilemap_the_crucible": "src/content/data/tilemaps/the-crucible.json" },
   "audio": {},
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
@@ -189,6 +201,18 @@
     { "key": "enemy_ph_tyrant", "w": 256, "h": 256, "color": "#c2c23a", "label": "pH TYRANT" },
     { "key": "npc_apothecary_vitra", "w": 64, "h": 96, "color": "#9aaa5a", "label": "Vi" },
     { "key": "npc_salter_mordant", "w": 64, "h": 96, "color": "#aa8a5a", "label": "Mo" },
-    { "key": "npc_shrinekeeper_litmus", "w": 64, "h": 96, "color": "#7a8aaa", "label": "Li" }
+    { "key": "npc_shrinekeeper_litmus", "w": 64, "h": 96, "color": "#7a8aaa", "label": "Li" },
+    { "key": "tiles_the_crucible", "w": 64, "h": 64, "color": "#3a322a", "label": "" },
+    { "key": "bg_battle_the_crucible", "w": 1920, "h": 896, "color": "#1e1812", "label": "" },
+    { "key": "enemy_cinderling", "w": 96, "h": 96, "color": "#e2864a", "label": "Cinderling" },
+    { "key": "enemy_exotherm", "w": 128, "h": 128, "color": "#e2562a", "label": "Exotherm" },
+    { "key": "enemy_cracklith", "w": 160, "h": 160, "color": "#7a6e5a", "label": "Cracklith" },
+    { "key": "enemy_cracklith_half", "w": 96, "h": 96, "color": "#8e826a", "label": "Frag" },
+    { "key": "enemy_endotherm", "w": 128, "h": 128, "color": "#5a7aaa", "label": "Endotherm" },
+    { "key": "enemy_flashpoint", "w": 192, "h": 192, "color": "#e26a1a", "label": "Flashpoint" },
+    { "key": "enemy_heat_sink", "w": 256, "h": 256, "color": "#3a6aaa", "label": "HEAT SINK" },
+    { "key": "npc_thermologist_calor", "w": 64, "h": 96, "color": "#aa7a4a", "label": "Ca" },
+    { "key": "npc_forgemaster_pyra", "w": 64, "h": 96, "color": "#c2562a", "label": "Py" },
+    { "key": "npc_shrinekeeper_ember", "w": 64, "h": 96, "color": "#aa5a2a", "label": "Em" }
   ]
 }
