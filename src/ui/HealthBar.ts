@@ -16,12 +16,6 @@ export class HealthBar extends Phaser.GameObjects.Container {
     super(scene, x, y);
     this.barW = w - LABEL_W - BAR_PADDING;
 
-    // Label
-    scene.add.text(0, 0, label, {
-      fontFamily: 'monospace',
-      fontSize: '28px',
-      color: '#cdd6f4',
-    }).setOrigin(0, 0.5).setY(BAR_H / 2);
     this.add(scene.add.text(0, BAR_H / 2, label, {
       fontFamily: 'monospace',
       fontSize: '28px',
