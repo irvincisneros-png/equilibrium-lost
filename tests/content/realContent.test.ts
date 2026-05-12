@@ -75,7 +75,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['atomic-structure']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true); // at least one widget question (used by the boss)
   });
@@ -121,7 +121,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['bonding']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -197,7 +197,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['reaction-types']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -225,7 +225,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['balancing-equations']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -253,7 +253,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['reaction-rates']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -281,7 +281,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['acids-bases']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -309,7 +309,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['energy-changes']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -323,4 +323,115 @@ describe('shipped content', () => {
     for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
+});
+
+describe('expanded question banks', () => {
+  // formula -> { element: atomCount }; handles nested parens and a trailing ionic charge
+  function parseFormula(formula: string): Record<string, number> {
+    const f = formula.replace(/\s+/g, '').replace(/[+-]+\d*$|\d*[+-]+$/, '');
+    let i = 0;
+    const read = (): Record<string, number> => {
+      const loc: Record<string, number> = {};
+      const add = (el: string, n: number): void => { loc[el] = (loc[el] ?? 0) + n; };
+      while (i < f.length && f[i] !== ')') {
+        const ch = f[i]!;
+        if (ch === '(') {
+          i++;
+          const sub = read();
+          if (f[i] !== ')') throw new Error(`unbalanced parens in ${formula}`);
+          i++;
+          let num = '';
+          while (i < f.length && /\d/.test(f[i]!)) num += f[i++];
+          const m = num ? parseInt(num, 10) : 1;
+          for (const [el, n] of Object.entries(sub)) add(el, n * m);
+        } else if (/[A-Z]/.test(ch)) {
+          let el = f[i++]!;
+          while (i < f.length && /[a-z]/.test(f[i]!)) el += f[i++];
+          let num = '';
+          while (i < f.length && /\d/.test(f[i]!)) num += f[i++];
+          add(el, num ? parseInt(num, 10) : 1);
+        } else { i++; }
+      }
+      return loc;
+    };
+    return read();
+  }
+  function equationBalances(eq: { reactants: { formula: string; coeff: number }[]; products: { formula: string; coeff: number }[] }): boolean {
+    const side = (terms: { formula: string; coeff: number }[]): Record<string, number> => {
+      const tot: Record<string, number> = {};
+      for (const t of terms) for (const [el, n] of Object.entries(parseFormula(t.formula))) tot[el] = (tot[el] ?? 0) + n * t.coeff;
+      return tot;
+    };
+    const L = side(eq.reactants), R = side(eq.products);
+    for (const el of new Set([...Object.keys(L), ...Object.keys(R)])) if ((L[el] ?? 0) !== (R[el] ?? 0)) return false;
+    return true;
+  }
+
+  const BANKS: Array<{ topic: string; needsBalance: boolean }> = [
+    { topic: 'atomic-structure', needsBalance: false },
+    { topic: 'bonding', needsBalance: true },
+    { topic: 'reaction-types', needsBalance: true },
+    { topic: 'balancing-equations', needsBalance: true },
+    { topic: 'reaction-rates', needsBalance: true },
+    { topic: 'acids-bases', needsBalance: true },
+    { topic: 'energy-changes', needsBalance: true },
+  ];
+
+  const { content } = loadGameContent();
+  const norm = (s: string): string => s.toLowerCase().replace(/\s+/g, ' ').replace(/[^a-z0-9 ]/g, '').trim();
+
+  for (const { topic, needsBalance } of BANKS) {
+    describe(topic, () => {
+      const qs = content.questions[topic]!;
+
+      it('has 250–400 questions', () => {
+        expect(qs.length).toBeGreaterThanOrEqual(250);
+        expect(qs.length).toBeLessThanOrEqual(400);
+      });
+
+      it('each difficulty 1/2/3 has at least 30 questions', () => {
+        for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length, `difficulty ${d}`).toBeGreaterThanOrEqual(30);
+      });
+
+      it('every question has a non-empty hint and explanation', () => {
+        for (const q of qs) {
+          expect(!!q.hint && q.hint.trim().length > 0, `${q.id} hint`).toBe(true);
+          expect(q.explanation.trim().length > 0, `${q.id} explanation`).toBe(true);
+        }
+      });
+
+      it('mcq answerIndex is spread — each of 0..3 is the answer for at least 18% of mcq items', () => {
+        const mcq = qs.filter(q => q.format === 'mcq');
+        expect(mcq.length).toBeGreaterThan(0);
+        for (const idx of [0, 1, 2, 3]) {
+          const share = mcq.filter(q => q.answerIndex === idx).length / mcq.length;
+          expect(share, `answerIndex ${idx} share = ${(share * 100).toFixed(1)}%`).toBeGreaterThanOrEqual(0.18);
+        }
+      });
+
+      it('ids are unique and prompts are not duplicated', () => {
+        const ids = qs.map(q => q.id);
+        expect(new Set(ids).size, 'unique ids').toBe(ids.length);
+        const prompts = qs.map(q => norm(q.prompt));
+        expect(new Set(prompts).size, 'unique normalised prompts').toBe(prompts.length);
+      });
+
+      if (needsBalance) {
+        it('has at least one balanceEquation question', () => {
+          expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
+        });
+      }
+
+      it('every balanceEquation balances with all coefficients between 1 and 9', () => {
+        for (const q of qs.filter(q => q.format === 'balanceEquation')) {
+          expect(q.equation, `${q.id} equation`).toBeDefined();
+          const eq = q.equation!;
+          for (const t of [...eq.reactants, ...eq.products]) {
+            expect(Number.isInteger(t.coeff) && t.coeff >= 1 && t.coeff <= 9, `${q.id} coeff for ${t.formula} = ${t.coeff}`).toBe(true);
+          }
+          expect(equationBalances(eq), `${q.id} does not balance`).toBe(true);
+        }
+      });
+    });
+  }
 });
