@@ -6,7 +6,7 @@ import { totalXpForLevel, xpToNextLevel } from '../systems/Progression';
 
 interface MenuSceneData { returnTo?: string; returnData?: Record<string, unknown> }
 
-const W = 480, H = 320, FONT = 'monospace';
+const W = 1920, H = 1080, FONT = 'monospace';
 const TABS = ['Skills', 'Items', 'Status', 'Save', 'Settings', 'Quit'] as const;
 type Tab = typeof TABS[number];
 
@@ -44,14 +44,14 @@ export class MenuScene extends Phaser.Scene {
     this.tabIndex = 0; this.rowIdx = 0; this.tabObjs = []; this.rowButtons = [];
 
     this.add.rectangle(0, 0, W, H, 0x05080d, 0.94).setOrigin(0, 0).setDepth(0);
-    this.add.text(W / 2, 8, '— Menu —', { fontFamily: FONT, fontSize: '11px', color: '#cdd6f4' }).setOrigin(0.5, 0).setDepth(1);
-    this.add.text(W / 2, H - 26, '←/→ tab   ↑/↓ select   Enter use   Esc close', { fontFamily: FONT, fontSize: '7px', color: '#566074' }).setOrigin(0.5, 0).setDepth(1);
-    this.toastText = this.add.text(W / 2, H - 14, '', { fontFamily: FONT, fontSize: '8px', color: '#f9e2af' }).setOrigin(0.5, 0).setDepth(1);
+    this.add.text(W / 2, 24, '— Menu —', { fontFamily: FONT, fontSize: '40px', color: '#cdd6f4' }).setOrigin(0.5, 0).setDepth(1);
+    this.add.text(W / 2, H - 80, '←/→ tab   ↑/↓ select   Enter use   Esc close', { fontFamily: FONT, fontSize: '24px', color: '#566074' }).setOrigin(0.5, 0).setDepth(1);
+    this.toastText = this.add.text(W / 2, H - 44, '', { fontFamily: FONT, fontSize: '28px', color: '#f9e2af' }).setOrigin(0.5, 0).setDepth(1);
 
     // tab headers
-    const startX = 24, gap = (W - 48) / TABS.length;
+    const startX = 96, gap = (W - 192) / TABS.length;
     this.tabHeaders = TABS.map((t, i) => {
-      const txt = this.add.text(startX + i * gap + gap / 2, 24, t, { fontFamily: FONT, fontSize: '9px', color: '#8fa3c0' }).setOrigin(0.5, 0).setDepth(1).setInteractive({ useHandCursor: true });
+      const txt = this.add.text(startX + i * gap + gap / 2, 96, t, { fontFamily: FONT, fontSize: '32px', color: '#8fa3c0' }).setOrigin(0.5, 0).setDepth(1).setInteractive({ useHandCursor: true });
       txt.on('pointerdown', () => { this.tabIndex = i; this.rowIdx = 0; this.buildTab(); });
       return txt;
     });
@@ -112,7 +112,7 @@ export class MenuScene extends Phaser.Scene {
 
   private addRow(y: number, onClick: () => void): Phaser.GameObjects.Text {
     const idx = this.rowButtons.length;
-    const txt = this.add.text(40, y, '', { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(1).setInteractive({ useHandCursor: true });
+    const txt = this.add.text(160, y, '', { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(1).setInteractive({ useHandCursor: true });
     txt.on('pointerover', () => { this.rowIdx = idx; this.highlightRows(); });
     txt.on('pointerdown', () => { this.rowIdx = idx; onClick(); });
     this.addObj(txt);
@@ -121,11 +121,11 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private buildSkillsTab(): void {
-    this.addObj(this.add.text(40, 40, `Equipped ${this.save.equippedSkillIds.length}/5  ·  Enter toggles`, { fontFamily: FONT, fontSize: '8px', color: '#8fa3c0' }).setDepth(1));
+    this.addObj(this.add.text(160, 168, `Equipped ${this.save.equippedSkillIds.length}/5  ·  Enter toggles`, { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
     const skills = this.save.unlockedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     skills.forEach((s, i) => {
       const equipped = this.save.equippedSkillIds.includes(s.id);
-      const row = this.addRow(54 + i * 12, () => this.toggleSkill(s.id));
+      const row = this.addRow(224 + i * 48, () => this.toggleSkill(s.id));
       row.setData('label', `${equipped ? '◆' : '◇'} ${s.name}  [${s.affinity}] P${s.power} E${s.energyCost}${s.topic === null ? ' ·basic' : ''}`);
     });
   }
@@ -139,11 +139,11 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private buildItemsTab(): void {
-    this.addObj(this.add.text(40, 40, 'Items  ·  Enter to use (out of battle)', { fontFamily: FONT, fontSize: '8px', color: '#8fa3c0' }).setDepth(1));
-    if (this.save.items.length === 0) { this.addObj(this.add.text(40, 56, '(empty)', { fontFamily: FONT, fontSize: '8px', color: '#566074' }).setDepth(1)); return; }
+    this.addObj(this.add.text(160, 168, 'Items  ·  Enter to use (out of battle)', { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
+    if (this.save.items.length === 0) { this.addObj(this.add.text(160, 224, '(empty)', { fontFamily: FONT, fontSize: '28px', color: '#566074' }).setDepth(1)); return; }
     this.save.items.forEach((entry, i) => {
       const def = this.content.items[entry.itemId];
-      const row = this.addRow(54 + i * 12, () => this.useItem(entry.itemId));
+      const row = this.addRow(224 + i * 48, () => this.useItem(entry.itemId));
       row.setData('label', `${def?.name ?? entry.itemId}  ×${entry.qty}  — ${def?.description ?? ''}`);
     });
   }
@@ -183,14 +183,14 @@ export class MenuScene extends Phaser.Scene {
     const stats = Object.values(s.quizStats);
     if (stats.length === 0) lines.push('  (no questions answered yet)');
     else for (const q of stats) lines.push(`  ${q.topic}: ${q.correct}/${q.asked}${q.recentMisses ? `  (misses: ${q.recentMisses})` : ''}`);
-    this.addObj(this.add.text(40, 42, lines.join('\n'), { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4', lineSpacing: 3 }).setDepth(1));
+    this.addObj(this.add.text(160, 176, lines.join('\n'), { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4', lineSpacing: 12 }).setDepth(1));
   }
 
   private buildSettingsTab(): void {
-    this.addObj(this.add.text(40, 40, 'Settings  ·  Enter / ←→ toggles', { fontFamily: FONT, fontSize: '8px', color: '#8fa3c0' }).setDepth(1));
-    const r0 = this.addRow(56, () => this.toggleSetting('studyMode'));
+    this.addObj(this.add.text(160, 168, 'Settings  ·  Enter / ←→ toggles', { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
+    const r0 = this.addRow(224, () => this.toggleSetting('studyMode'));
     r0.setData('label', `Study Mode: ${this.save.settings.studyMode ? 'ON' : 'off'}   — hints on, chain pressure off`);
-    const r1 = this.addRow(70, () => this.toggleSetting('answerTimer'));
+    const r1 = this.addRow(272, () => this.toggleSetting('answerTimer'));
     r1.setData('label', `Answer Timer: ${this.save.settings.answerTimer ? 'ON' : 'off'}   — fast answers can crit`);
   }
 
@@ -202,7 +202,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private buildButtonTab(label: string): void {
-    const row = this.addRow(56, () => this.activateRow(0));
+    const row = this.addRow(224, () => this.activateRow(0));
     row.setData('label', `▶ ${label}`);
   }
 
