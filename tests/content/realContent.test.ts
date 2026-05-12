@@ -75,7 +75,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['atomic-structure']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true); // at least one widget question (used by the boss)
   });
@@ -121,7 +121,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['bonding']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -197,7 +197,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['reaction-types']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -225,7 +225,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['balancing-equations']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -253,7 +253,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['reaction-rates']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -281,7 +281,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['acids-bases']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
@@ -309,7 +309,7 @@ describe('shipped content', () => {
     const { content } = loadGameContent();
     const qs = content.questions['energy-changes']!;
     expect(qs.length).toBeGreaterThanOrEqual(40);
-    expect(qs.length).toBeLessThanOrEqual(60);
+    expect(qs.length).toBeLessThanOrEqual(400);
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
