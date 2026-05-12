@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { loadGameContent } from '../../src/content/loadGameContent';
+import bondingForge from '../../src/content/data/tilemaps/bonding-forge.json';
+import type { DialogueNode } from '../../src/content/types';
 
 describe('shipped content', () => {
   it('loads without throwing and reports no cross-reference warnings', () => {
@@ -57,6 +59,52 @@ describe('shipped content', () => {
     for (const key of referenced) {
       expect(content.assets.images[key], `images[${key}]`).toBeDefined();
       expect(placeholderKeys.has(key), `placeholder[${key}]`).toBe(true);
+    }
+  });
+  it('Region 2 (bonding-forge) exists, index 2, topic "bonding", with a valid mini-boss and region boss; Region 1 unlocks it', () => {
+    const { content } = loadGameContent();
+    const r2 = content.regions.find(r => r.index === 2)!;
+    expect(r2.id).toBe('bonding-forge');
+    expect(r2.topic).toBe('bonding');
+    expect(content.enemies[r2.miniBossId]?.role).toBe('miniBoss');
+    expect(content.enemies[r2.regionBossId]?.role).toBe('regionBoss');
+    const r1 = content.regions.find(r => r.index === 1)!;
+    expect(r1.unlocksRegionId).toBe('bonding-forge');
+  });
+  it('bonding question bank has 40–60 questions spanning all three difficulties (with at least one balanceEquation)', () => {
+    const { content } = loadGameContent();
+    const qs = content.questions['bonding']!;
+    expect(qs.length).toBeGreaterThanOrEqual(40);
+    expect(qs.length).toBeLessThanOrEqual(60);
+    for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
+    expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
+  });
+  it('the bonding-forge tilemap parses to a 24×18 grid with the expected interactive objects', () => {
+    const tm = bondingForge as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
+    expect(tm.width).toBe(24);
+    expect(tm.height).toBe(18);
+    expect(tm.ground.length).toBe(18);
+    expect(tm.ground.every(row => row.length === 24)).toBe(true);
+    const types = tm.objects.map(o => o.type);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    expect(types.filter(t => t === 'npc').length).toBe(3);
+  });
+  it('every NPC dialogue tree is walkable to a terminal node down every branch', () => {
+    const { content } = loadGameContent();
+    const walk = (tree: DialogueNode[], id: string, seen: Set<string>): void => {
+      if (seen.has(id)) return; // guard against cycles
+      seen.add(id);
+      const node = tree.find(n => n.id === id);
+      expect(node, `dangling node "${id}"`).toBeDefined();
+      if (!node) return;
+      const terminal = node.end === true || (!node.next && !(node.choices && node.choices.length));
+      if (terminal) return;
+      if (node.choices && node.choices.length) for (const c of node.choices) walk(tree, c.next, new Set(seen));
+      else if (node.next) walk(tree, node.next, new Set(seen));
+    };
+    for (const npc of Object.values(content.npcs)) {
+      expect(npc.dialogue.length, `${npc.id} has no dialogue`).toBeGreaterThan(0);
+      walk(npc.dialogue, npc.dialogue[0]!.id, new Set());
     }
   });
 });

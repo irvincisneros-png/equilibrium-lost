@@ -8,7 +8,19 @@
     "regionBossId": "the-unstable-isotope",
     "npcIds": ["professor-bohrlin", "archivist-mendel", "shrinekeeper-quanta"],
     "shrine": { "questionTopic": "atomic-structure", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 220, "rewardItemIds": ["energy-cell", "isotope-core"] },
-    "unlocksRegionId": null,
+    "unlocksRegionId": "bonding-forge",
     "bossReward": { "xp": 300, "itemIds": ["reagent", "isotope-core"], "skillId": "thermal-vent" }
+  },
+  {
+    "id": "bonding-forge", "index": 2, "name": "The Bonding Forge", "topic": "bonding",
+    "tilemapKey": "tilemap_bonding_forge", "tilesetKey": "tiles_bonding_forge", "battleBackgroundKey": "bg_battle_bonding_forge",
+    "wildEnemyIds": ["bond-mote", "ion-shard", "covalent-wisp", "slag-golem"],
+    "encounterRatePerStep": 0.10,
+    "miniBossId": "unstable-halide",
+    "regionBossId": "the-sundered-lattice",
+    "npcIds": ["smith-valentia", "lorekeeper-octet", "shrinekeeper-mortar"],
+    "shrine": { "questionTopic": "bonding", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 400, "rewardItemIds": ["energy-cell", "buffer"] },
+    "unlocksRegionId": null,
+    "bossReward": { "xp": 500, "itemIds": ["reagent", "isotope-core"], "skillId": "lattice-collapse" }
   }
 ]

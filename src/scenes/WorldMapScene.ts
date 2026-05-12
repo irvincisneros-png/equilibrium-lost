@@ -14,9 +14,8 @@ const NODE_BORDER_UNLOCKED = 0x89b4fa;
 const NODE_BORDER_LOCKED = 0x2a3f5c;
 const NODE_CURRENT = 0x2a5298;
 
-// Nodes 2–8 labels (Region 1 comes from content.regions[0])
+// Labels for the not-yet-built regions; the first content.regions.length nodes come from content.
 const LOCKED_REGION_LABELS = [
-  'The Bonding Forge',
   'Reaction Hollow',
   'The Balance Halls',
   'Catalyst Crags',
@@ -43,20 +42,27 @@ export class WorldMapScene extends Phaser.Scene {
       fontFamily: FONT, fontSize: '36px', color: TEXT_COLOR
     }).setOrigin(0.5, 0);
 
-    // Region 1 from content; nodes 2–8 from LOCKED_REGION_LABELS
-    const region1: RegionDef | undefined = content.regions[0];
-
-    interface NodeInfo { id: string; label: string; isContent: boolean; }
-    const nodes: NodeInfo[] = [];
-
-    if (region1) {
-      nodes.push({ id: region1.id, label: region1.name, isContent: true });
-    }
+    // Real nodes for every shipped region, padded out to 8 with the locked labels.
+    interface NodeInfo { id: string; label: string; region?: RegionDef; }
+    const nodes: NodeInfo[] = content.regions.map(r => ({ id: r.id, label: r.name, region: r }));
     LOCKED_REGION_LABELS.forEach((label, i) => {
-      nodes.push({ id: 'locked-region-' + (i + 2), label, isContent: false });
+      nodes.push({ id: 'locked-region-' + (content.regions.length + i + 1), label });
     });
 
-    // Layout: 8 nodes arranged vertically, two columns (alternating left/right)
+    // A content region is unlocked when it's the first region, or some other region whose
+    // unlocksRegionId points at it has had its boss defeated.
+    const isContentUnlocked = (r: RegionDef): boolean =>
+      r.index === 1 || content.regions.some(prev => prev.unlocksRegionId === r.id && (save.regionProgress[prev.id]?.bossDefeated ?? false));
+
+    // "◀ START HERE" follows the first unlocked content region that hasn't been cleared yet.
+    const startHereId = (() => {
+      for (const r of content.regions) {
+        if (isContentUnlocked(r) && !(save.regionProgress[r.id]?.bossDefeated ?? false)) return r.id;
+      }
+      return null;
+    })();
+
+    // Layout: nodes arranged vertically, two columns (alternating left/right)
     const nodeW = 560;
     const nodeH = 90;
     const colLeft = 200;
@@ -70,8 +76,7 @@ export class WorldMapScene extends Phaser.Scene {
       const ny = startY + i * stepY;
 
       const regionProgress = save.regionProgress[node.id];
-      const isRegion1 = node.id === region1?.id;
-      const isUnlocked = isRegion1 ? true : (regionProgress?.entered ?? false);
+      const isUnlocked = node.region ? isContentUnlocked(node.region) : false;
       const isBossDefeated = regionProgress?.bossDefeated ?? false;
       const isCurrent = save.currentRegionId === node.id;
 
@@ -102,8 +107,8 @@ export class WorldMapScene extends Phaser.Scene {
         }).setOrigin(1, 0.5);
       }
 
-      // "Start here" hint on the first region until it's been cleared
-      if (i === 0 && node.isContent && !isBossDefeated) {
+      // "Start here" hint on the first uncleared unlocked region
+      if (node.id === startHereId) {
         this.add.text(nx + nodeW + 20, ny + nodeH / 2, '◀ START HERE', {
           fontFamily: FONT, fontSize: '24px', color: '#a6e3a1', fontStyle: 'bold'
         }).setOrigin(0, 0.5);
@@ -133,8 +138,9 @@ export class WorldMapScene extends Phaser.Scene {
       });
     });
 
-    // Completion banner (Region 1 boss defeated — end of M1 slice)
-    if (region1 && (save.regionProgress[region1.id]?.bossDefeated ?? false)) {
+    // Completion banner — shows once the last shipped region's boss is down.
+    const lastRegion: RegionDef | undefined = content.regions[content.regions.length - 1];
+    if (lastRegion && (save.regionProgress[lastRegion.id]?.bossDefeated ?? false)) {
       const bannerY = H - 60;
       this.add.rectangle(W / 2, bannerY, W - 80, 72, 0x1a2f1a)
         .setStrokeStyle(4, 0x40a040);

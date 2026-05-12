@@ -25,6 +25,17 @@
     "npc_shrinekeeper_quanta": "assets/images/npc_shrinekeeper_quanta.png",
     "tiles_elemental_reaches": "assets/images/tiles_elemental_reaches.png",
     "bg_battle_elemental_reaches": "assets/images/bg_battle_elemental_reaches.png",
+    "tiles_bonding_forge": "assets/images/tiles_bonding_forge.png",
+    "bg_battle_bonding_forge": "assets/images/bg_battle_bonding_forge.png",
+    "enemy_bond_mote": "assets/images/enemy_bond_mote.png",
+    "enemy_ion_shard": "assets/images/enemy_ion_shard.png",
+    "enemy_covalent_wisp": "assets/images/enemy_covalent_wisp.png",
+    "enemy_slag_golem": "assets/images/enemy_slag_golem.png",
+    "enemy_unstable_halide": "assets/images/enemy_unstable_halide.png",
+    "enemy_sundered_lattice": "assets/images/enemy_sundered_lattice.png",
+    "npc_smith_valentia": "assets/images/npc_smith_valentia.png",
+    "npc_lorekeeper_octet": "assets/images/npc_lorekeeper_octet.png",
+    "npc_shrinekeeper_mortar": "assets/images/npc_shrinekeeper_mortar.png",
     "ui_textbox": "assets/images/ui_textbox.png",
     "ui_chainmeter": "assets/images/ui_chainmeter.png",
     "icon_status_oxidised": "assets/images/icon_status_oxidised.png",
@@ -35,7 +46,7 @@
     "icon_status_combusting": "assets/images/icon_status_combusting.png",
     "title_art": "assets/images/title_art.png"
   },
-  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json" },
+  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json" },
   "audio": {},
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
@@ -71,6 +82,17 @@
     { "key": "icon_status_catalysed", "w": 48, "h": 48, "color": "#ffd166", "label": "Ca" },
     { "key": "icon_status_precipitated", "w": 48, "h": 48, "color": "#adb5bd", "label": "Pp" },
     { "key": "icon_status_endothermicChill", "w": 48, "h": 48, "color": "#4cc9f0", "label": "Ch" },
-    { "key": "icon_status_combusting", "w": 48, "h": 48, "color": "#f3722c", "label": "Cb" }
+    { "key": "icon_status_combusting", "w": 48, "h": 48, "color": "#f3722c", "label": "Cb" },
+    { "key": "tiles_bonding_forge", "w": 64, "h": 64, "color": "#4f4a44", "label": "" },
+    { "key": "bg_battle_bonding_forge", "w": 1920, "h": 896, "color": "#2a211a", "label": "" },
+    { "key": "enemy_bond_mote", "w": 96, "h": 96, "color": "#c7b07a", "label": "Bond Mote" },
+    { "key": "enemy_ion_shard", "w": 128, "h": 128, "color": "#c97f50", "label": "Ion Shard" },
+    { "key": "enemy_covalent_wisp", "w": 128, "h": 128, "color": "#9b8bd4", "label": "Cov. Wisp" },
+    { "key": "enemy_slag_golem", "w": 160, "h": 160, "color": "#7a7268", "label": "Slag Golem" },
+    { "key": "enemy_unstable_halide", "w": 192, "h": 192, "color": "#d98a3d", "label": "Halide" },
+    { "key": "enemy_sundered_lattice", "w": 256, "h": 256, "color": "#9a7a6a", "label": "SUNDERED LATTICE" },
+    { "key": "npc_smith_valentia", "w": 64, "h": 96, "color": "#b5651d", "label": "Va" },
+    { "key": "npc_lorekeeper_octet", "w": 64, "h": 96, "color": "#6a8caf", "label": "Oc" },
+    { "key": "npc_shrinekeeper_mortar", "w": 64, "h": 96, "color": "#8a6d3b", "label": "Mo" }
   ]
 }
