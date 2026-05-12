@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { loadGameContent } from '../../src/content/loadGameContent';
 import elementalReaches from '../../src/content/data/tilemaps/elemental-reaches.json';
 import bondingForge from '../../src/content/data/tilemaps/bonding-forge.json';
+import reactionHollow from '../../src/content/data/tilemaps/reaction-hollow.json';
 import type { DialogueNode } from '../../src/content/types';
 
 type AuditTileObject = { type: string; id?: string; x: number; y: number };
@@ -135,6 +136,7 @@ describe('shipped content', () => {
     const maps: Record<string, AuditTilemap> = {
       'elemental-reaches': elementalReaches as AuditTilemap,
       'bonding-forge': bondingForge as AuditTilemap,
+      'reaction-hollow': reactionHollow as AuditTilemap,
     };
     for (const region of content.regions) {
       const map = maps[region.id];
@@ -172,5 +174,33 @@ describe('shipped content', () => {
       expect(npc.dialogue.length, `${npc.id} has no dialogue`).toBeGreaterThan(0);
       walk(npc.dialogue, npc.dialogue[0]!.id, new Set());
     }
+  });
+  it('Region 3 (reaction-hollow) exists, index 3, topic "reaction-types", with a valid mini-boss and region boss; Region 2 unlocks it', () => {
+    const { content } = loadGameContent();
+    const r3 = content.regions.find(r => r.index === 3)!;
+    expect(r3.id).toBe('reaction-hollow');
+    expect(r3.topic).toBe('reaction-types');
+    expect(content.enemies[r3.miniBossId]?.role).toBe('miniBoss');
+    expect(content.enemies[r3.regionBossId]?.role).toBe('regionBoss');
+    const r2 = content.regions.find(r => r.index === 2)!;
+    expect(r2.unlocksRegionId).toBe('reaction-hollow');
+  });
+  it('reaction-types question bank has 40–60 questions spanning all three difficulties (with at least one balanceEquation)', () => {
+    const { content } = loadGameContent();
+    const qs = content.questions['reaction-types']!;
+    expect(qs.length).toBeGreaterThanOrEqual(40);
+    expect(qs.length).toBeLessThanOrEqual(60);
+    for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
+    expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
+  });
+  it('the reaction-hollow tilemap parses to a 24×18 grid with the expected interactive objects', () => {
+    const tm = reactionHollow as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
+    expect(tm.width).toBe(24);
+    expect(tm.height).toBe(18);
+    expect(tm.ground.length).toBe(18);
+    expect(tm.ground.every(row => row.length === 24)).toBe(true);
+    const types = tm.objects.map(o => o.type);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    expect(types.filter(t => t === 'npc').length).toBe(3);
   });
 });
