@@ -6,6 +6,7 @@ import reactionHollow from '../../src/content/data/tilemaps/reaction-hollow.json
 import balanceHalls from '../../src/content/data/tilemaps/balance-halls.json';
 import catalystCrags from '../../src/content/data/tilemaps/catalyst-crags.json';
 import acidWastes from '../../src/content/data/tilemaps/acid-wastes.json';
+import theCrucible from '../../src/content/data/tilemaps/the-crucible.json';
 import type { DialogueNode } from '../../src/content/types';
 
 type AuditTileObject = { type: string; id?: string; x: number; y: number };
@@ -143,6 +144,7 @@ describe('shipped content', () => {
       'balance-halls': balanceHalls as AuditTilemap,
       'catalyst-crags': catalystCrags as AuditTilemap,
       'acid-wastes': acidWastes as AuditTilemap,
+      'the-crucible': theCrucible as AuditTilemap,
     };
     for (const region of content.regions) {
       const map = maps[region.id];
@@ -285,6 +287,34 @@ describe('shipped content', () => {
   });
   it('the acid-wastes tilemap parses to a 24×18 grid with the expected interactive objects', () => {
     const tm = acidWastes as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
+    expect(tm.width).toBe(24);
+    expect(tm.height).toBe(18);
+    expect(tm.ground.length).toBe(18);
+    expect(tm.ground.every(row => row.length === 24)).toBe(true);
+    const types = tm.objects.map(o => o.type);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    expect(types.filter(t => t === 'npc').length).toBe(3);
+  });
+  it('Region 7 (the-crucible) exists, index 7, topic "energy-changes", with a valid mini-boss and region boss; Region 6 unlocks it', () => {
+    const { content } = loadGameContent();
+    const r7 = content.regions.find(r => r.index === 7)!;
+    expect(r7.id).toBe('the-crucible');
+    expect(r7.topic).toBe('energy-changes');
+    expect(content.enemies[r7.miniBossId]?.role).toBe('miniBoss');
+    expect(content.enemies[r7.regionBossId]?.role).toBe('regionBoss');
+    const r6 = content.regions.find(r => r.index === 6)!;
+    expect(r6.unlocksRegionId).toBe('the-crucible');
+  });
+  it('energy-changes question bank has 40–60 questions spanning all three difficulties (with at least one balanceEquation)', () => {
+    const { content } = loadGameContent();
+    const qs = content.questions['energy-changes']!;
+    expect(qs.length).toBeGreaterThanOrEqual(40);
+    expect(qs.length).toBeLessThanOrEqual(60);
+    for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
+    expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
+  });
+  it('the the-crucible tilemap parses to a 24×18 grid with the expected interactive objects', () => {
+    const tm = theCrucible as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
     expect(tm.width).toBe(24);
     expect(tm.height).toBe(18);
     expect(tm.ground.length).toBe(18);
