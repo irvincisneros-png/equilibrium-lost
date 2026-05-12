@@ -56,12 +56,12 @@ export class QuizPanel extends Phaser.GameObjects.Container {
   constructor(scene: Phaser.Scene, x: number, y: number, w: number, h: number) {
     super(scene, x, y);
     this.panelW = w; this.panelH = h;
-    this.add(scene.add.rectangle(0, 0, w, h, C_BG, 0.97).setOrigin(0, 0).setStrokeStyle(1, C_BORDER));
-    this.promptText = scene.add.text(8, 8, '', { fontFamily: FONT, fontSize: '10px', color: C_TEXT, wordWrap: { width: w - 16 } }).setOrigin(0, 0);
+    this.add(scene.add.rectangle(0, 0, w, h, C_BG, 0.97).setOrigin(0, 0).setStrokeStyle(4, C_BORDER));
+    this.promptText = scene.add.text(32, 32, '', { fontFamily: FONT, fontSize: '36px', color: C_TEXT, wordWrap: { width: w - 64 } }).setOrigin(0, 0);
     this.add(this.promptText);
-    this.hintText = scene.add.text(8, h - 8, '', { fontFamily: FONT, fontSize: '8px', color: '#89dceb', wordWrap: { width: w - 16 } }).setOrigin(0, 1);
+    this.hintText = scene.add.text(32, h - 32, '', { fontFamily: FONT, fontSize: '28px', color: '#89dceb', wordWrap: { width: w - 64 } }).setOrigin(0, 1);
     this.add(this.hintText);
-    this.timerBar = scene.add.rectangle(0, h - 2, w, 2, 0xf9e2af).setOrigin(0, 0).setVisible(false);
+    this.timerBar = scene.add.rectangle(0, h - 8, w, 8, 0xf9e2af).setOrigin(0, 0).setVisible(false);
     this.add(this.timerBar);
     scene.add.existing(this);
     this.setVisible(false);
@@ -95,8 +95,8 @@ export class QuizPanel extends Phaser.GameObjects.Container {
       const correct = [...question.equation.reactants, ...question.equation.products].map(t => t.coeff);
       answerStr = this.equationString(question.equation, correct);
     }
-    const box = this.scene.add.text(8, 28, `The answer was ${answerStr}\n— ${question.explanation}`, {
-      fontFamily: FONT, fontSize: '9px', color: C_OK, wordWrap: { width: this.panelW - 16 }, lineSpacing: 2,
+    const box = this.scene.add.text(32, 112, `The answer was ${answerStr}\n— ${question.explanation}`, {
+      fontFamily: FONT, fontSize: '32px', color: C_OK, wordWrap: { width: this.panelW - 64 }, lineSpacing: 8,
     }).setOrigin(0, 0);
     this.add(box);
     this.widgets.push(box);
@@ -112,10 +112,10 @@ export class QuizPanel extends Phaser.GameObjects.Container {
   // --- mcq -----------------------------------------------------------------
 
   private buildMcq(options: string[]): void {
-    const startY = 24;
+    const startY = 96;
     options.slice(0, 4).forEach((opt, i) => {
-      const txt = this.scene.add.text(12, startY + i * 14, `${String.fromCharCode(65 + i)}.  ${opt}`, {
-        fontFamily: FONT, fontSize: '9px', color: C_TEXT, wordWrap: { width: this.panelW - 24 },
+      const txt = this.scene.add.text(48, startY + i * 56, `${String.fromCharCode(65 + i)}.  ${opt}`, {
+        fontFamily: FONT, fontSize: '32px', color: C_TEXT, wordWrap: { width: this.panelW - 96 },
       }).setOrigin(0, 0).setInteractive({ useHandCursor: true });
       txt.on('pointerover', () => txt.setColor(C_ACCENT));
       txt.on('pointerout', () => txt.setColor(C_TEXT));
@@ -134,27 +134,27 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     const rCount = eq.reactants.length;
     this.coeffs = terms.map(() => 1);
     this.coeffLabels = [];
-    const midY = 38;
-    let x = 12;
+    const midY = 152;
+    let x = 48;
     terms.forEach((term, i) => {
-      const up = this.scene.add.text(x + 4, midY - 14, '▲', { fontFamily: FONT, fontSize: '8px', color: C_DIM }).setOrigin(0, 0.5).setInteractive({ useHandCursor: true });
+      const up = this.scene.add.text(x + 16, midY - 56, '▲', { fontFamily: FONT, fontSize: '28px', color: C_DIM }).setOrigin(0, 0.5).setInteractive({ useHandCursor: true });
       up.on('pointerdown', () => this.bump(i, +1));
-      const num = this.scene.add.text(x + 4, midY, '1', { fontFamily: FONT, fontSize: '11px', color: C_ACCENT }).setOrigin(0, 0.5);
+      const num = this.scene.add.text(x + 16, midY, '1', { fontFamily: FONT, fontSize: '40px', color: C_ACCENT }).setOrigin(0, 0.5);
       this.coeffLabels.push(num);
-      const down = this.scene.add.text(x + 4, midY + 14, '▼', { fontFamily: FONT, fontSize: '8px', color: C_DIM }).setOrigin(0, 0.5).setInteractive({ useHandCursor: true });
+      const down = this.scene.add.text(x + 16, midY + 56, '▼', { fontFamily: FONT, fontSize: '28px', color: C_DIM }).setOrigin(0, 0.5).setInteractive({ useHandCursor: true });
       down.on('pointerdown', () => this.bump(i, -1));
-      const f = this.scene.add.text(x + 16, midY, term.formula, { fontFamily: FONT, fontSize: '10px', color: C_TEXT }).setOrigin(0, 0.5);
+      const f = this.scene.add.text(x + 64, midY, term.formula, { fontFamily: FONT, fontSize: '36px', color: C_TEXT }).setOrigin(0, 0.5);
       this.add([up, num, down, f]);
       this.widgets.push(up, num, down, f);
-      x += 16 + f.width + 6;
+      x += 64 + f.width + 24;
       const sep = i === rCount - 1 ? '→' : (i < terms.length - 1 ? '+' : '');
       if (sep) {
-        const s = this.scene.add.text(x, midY, sep, { fontFamily: FONT, fontSize: '10px', color: C_DIM }).setOrigin(0, 0.5);
+        const s = this.scene.add.text(x, midY, sep, { fontFamily: FONT, fontSize: '36px', color: C_DIM }).setOrigin(0, 0.5);
         this.add(s); this.widgets.push(s);
-        x += s.width + 6;
+        x += s.width + 24;
       }
     });
-    const submit = this.scene.add.text(this.panelW - 12, midY, '[ Submit ⏎ ]', { fontFamily: FONT, fontSize: '9px', color: C_OK }).setOrigin(1, 0.5).setInteractive({ useHandCursor: true });
+    const submit = this.scene.add.text(this.panelW - 48, midY, '[ Submit ⏎ ]', { fontFamily: FONT, fontSize: '32px', color: C_OK }).setOrigin(1, 0.5).setInteractive({ useHandCursor: true });
     submit.on('pointerover', () => submit.setColor('#ffffff'));
     submit.on('pointerout', () => submit.setColor(C_OK));
     submit.on('pointerdown', () => this.submitBalance());
