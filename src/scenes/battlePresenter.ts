@@ -17,7 +17,7 @@ export function playerBattleInputFromSave(save: SaveData, content: GameContent):
   const stats = statsForLevel(cls, save.level, save.evolutionStage);
   const reachable = [...cls.startingSkillIds, ...cls.skillUnlocks.map(u => u.skillId)];
   const catalystBurstSkillId = reachable.find(id => content.skills[id]?.isCatalystBurst);
-  const attackPower = Math.max(10, Math.floor(stats.atk * 0.9)); // basic attack = a fraction of ATK
+  const attackPower = Math.max(14, Math.floor(stats.atk * 1.1)); // basic attack — a bit above ATK; the real damage is in skills
   return {
     name: cls.name,
     classId: cls.id,

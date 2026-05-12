@@ -3,7 +3,7 @@
     "id": "elemental-reaches", "index": 1, "name": "The Elemental Reaches", "topic": "atomic-structure",
     "tilemapKey": "tilemap_elemental_reaches", "tilesetKey": "tiles_elemental_reaches", "battleBackgroundKey": "bg_battle_elemental_reaches",
     "wildEnemyIds": ["protium", "electrid", "shellfracture", "ionized-drift"],
-    "encounterRatePerStep": 0.12,
+    "encounterRatePerStep": 0.08,
     "miniBossId": "unstable-deuteride",
     "regionBossId": "the-unstable-isotope",
     "npcIds": ["professor-bohrlin", "archivist-mendel", "shrinekeeper-quanta"],

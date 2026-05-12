@@ -20,10 +20,12 @@ export interface DamageParams {
 export function computeDamage(p: DamageParams): number {
   if (p.typeMult === 0) return 0;
   const rng = p.rng ?? Math.random;
+  // Pokémon-style: the attacker's level lives in `levelFactor` only — adding a separate `* level`
+  // (the old bug) made damage scale quadratically with level, which wrecked the difficulty curve.
   const levelFactor = Math.floor(2 * p.attacker.level / 5) + 2;
   const effAtk = applyStage(p.attacker.atk, p.attacker.buffs.atk ?? 0);
   const effDef = Math.max(1, applyStage(p.defenderDef, p.defenderBuffs.def ?? 0));
-  const base = Math.floor(Math.floor(Math.floor(levelFactor * p.attacker.level * p.power * effAtk / effDef) / 50) + 2);
+  const base = Math.floor(Math.floor(Math.floor(levelFactor * p.power * effAtk / effDef) / 50) + 2);
 
   const fizzled = p.isSkill && p.quizCorrect === false;
   const quizMult = fizzled ? 0.3 : 1.0;
