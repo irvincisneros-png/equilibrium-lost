@@ -30,6 +30,8 @@ export class DialogueScene extends Phaser.Scene {
   private choiceTexts: Phaser.GameObjects.Text[] = [];
   private choiceIndex = 0;
   private choiceVisible = false;
+  private choiceReady = false;
+  private choiceGeneration = 0;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
   constructor() { super('DialogueScene'); }
@@ -83,12 +85,14 @@ export class DialogueScene extends Phaser.Scene {
     if (this.input.keyboard) {
       this.cursors = this.input.keyboard.createCursorKeys();
       this.input.keyboard.on('keydown-ENTER', this.handleChoiceConfirm, this);
+      this.input.keyboard.on('keydown-SPACE', this.handleChoiceConfirm, this);
     }
 
     // Clean up keyboard listener when scene shuts down
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       if (this.input.keyboard) {
         this.input.keyboard.off('keydown-ENTER', this.handleChoiceConfirm, this);
+        this.input.keyboard.off('keydown-SPACE', this.handleChoiceConfirm, this);
       }
     });
 
@@ -151,6 +155,8 @@ export class DialogueScene extends Phaser.Scene {
 
   private showChoices(labels: string[]): void {
     this.choiceVisible = true;
+    this.choiceReady = false;
+    const generation = ++this.choiceGeneration;
     this.choiceIndex = 0;
 
     const { width, height } = this.scale;
@@ -178,6 +184,11 @@ export class DialogueScene extends Phaser.Scene {
     void width;
 
     this.refreshChoiceHighlight();
+    this.time.delayedCall(0, () => {
+      if (this.choiceVisible && this.choiceGeneration === generation) {
+        this.choiceReady = true;
+      }
+    });
   }
 
   private refreshChoiceHighlight(): void {
@@ -190,10 +201,12 @@ export class DialogueScene extends Phaser.Scene {
     for (const txt of this.choiceTexts) txt.destroy();
     this.choiceTexts = [];
     this.choiceVisible = false;
+    this.choiceReady = false;
+    this.choiceGeneration++;
   }
 
   private handleChoiceConfirm(): void {
-    if (!this.choiceVisible) return;
+    if (!this.choiceVisible || !this.choiceReady) return;
     this.confirmChoice();
   }
 

@@ -189,7 +189,7 @@ export class OverworldScene extends Phaser.Scene {
       .setOrigin(0.5, 1).setScrollFactor(0).setDepth(UI_DEPTH).setVisible(false);
 
     // --- mark the first-lesson NPC (a bobbing "★" while the lesson is unread) + a one-time welcome banner ---
-    if (!this.flag(`lesson_${region.topic}_seen`)) {
+    if (!this.lessonSeen()) {
       const npc0 = region.npcIds[0] ? this.content.npcs[region.npcIds[0]] : undefined;
       this.questNpc = npc0 ? (this.npcs.find(n => n.npcId === npc0.id) ?? null) : null;
       if (this.questNpc) this.questMarker = this.add.text(0, 0, '★', { fontFamily: FONT, fontSize: '34px', color: '#f9e2af', stroke: '#000000', strokeThickness: 5 }).setOrigin(0.5, 1).setDepth(9998);
@@ -233,7 +233,7 @@ export class OverworldScene extends Phaser.Scene {
 
     // The "★" over the first-lesson NPC, until the lesson's been read.
     if (this.questMarker) {
-      if (this.questNpc && !this.flag(`lesson_${this.region.topic}_seen`)) {
+      if (this.questNpc && !this.lessonSeen()) {
         this.questMarker.setPosition(this.questNpc.x, this.questNpc.y - this.questNpc.displayHeight / 2 - 6 + bob).setVisible(true);
       } else { this.questMarker.destroy(); this.questMarker = null; }
     }
@@ -260,7 +260,7 @@ export class OverworldScene extends Phaser.Scene {
 
   /** One short line describing what to do next, for the HUD quest tracker. */
   private currentObjective(): string {
-    if (!this.flag(`lesson_${this.region.topic}_seen`)) return `Talk to ${this.content.npcs[this.region.npcIds[0] ?? '']?.name ?? 'the mentor'} (look for the ★)`;
+    if (!this.lessonSeen()) return `Talk to ${this.content.npcs[this.region.npcIds[0] ?? '']?.name ?? 'the mentor'} (look for the ★)`;
     const rp = this.regionProgress();
     if (rp.bossDefeated) return 'Region restored — leave via ↩ (bottom of the map)';
     if (!this.flag(`miniboss_${this.region.id}_done`)) return `Beat the guardian at the ⚔ chokepoint, then reach the boss gate (top)`;
@@ -420,6 +420,12 @@ export class OverworldScene extends Phaser.Scene {
   }
 
   private flag(name: string): boolean { return Boolean(this.save.storyFlags[name]); }
+
+  private lessonSeen(): boolean {
+    const canonical = `lesson_${this.region.topic}_seen`;
+    const legacy = `lesson_${this.region.topic.replace(/-/g, '_')}_seen`;
+    return this.flag(canonical) || this.flag(legacy);
+  }
 
   // ---------------------------------------------------------------------------
   // Content lookups
