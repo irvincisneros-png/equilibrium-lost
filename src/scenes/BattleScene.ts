@@ -23,10 +23,10 @@ export interface BattleSceneData {
   returnData?: Record<string, unknown>;
 }
 
-const W = 480, H = 320;
+const W = 1920, H = 1080;
 const FONT = 'monospace';
-const ENEMY_X = 360, ENEMY_GROUND_Y = 150;
-const PLAYER_X = 110, PLAYER_GROUND_Y = 222;
+const ENEMY_X = 1440, ENEMY_GROUND_Y = 600;
+const PLAYER_X = 440, PLAYER_GROUND_Y = 800;
 const MENU_LABELS = ['Attack', 'Skills', 'Items', 'Run'] as const;
 
 type Fsm = 'menu' | 'skillMenu' | 'itemMenu' | 'animating' | 'ended';
@@ -124,8 +124,8 @@ export class BattleScene extends Phaser.Scene {
 
     // --- background ---
     this.cameras.main.setBackgroundColor('#0b0f17');
-    this.add.image(W / 2, 118, bgKey).setDisplaySize(W, 236).setDepth(-100);
-    this.add.rectangle(0, 236, W, H - 236, 0x0b1320).setOrigin(0, 0).setStrokeStyle(1, 0x415a77).setDepth(-50);
+    this.add.image(W / 2, 410, bgKey).setDisplaySize(W, 820).setDepth(-100);
+    this.add.rectangle(0, 820, W, H - 820, 0x0b1320).setOrigin(0, 0).setStrokeStyle(4, 0x415a77).setDepth(-50);
 
     // --- sprites ---
     this.playerSprite = this.add.image(PLAYER_X, PLAYER_GROUND_Y, this.heroBattleKey()).setOrigin(0.5, 1).setDepth(10);
@@ -134,31 +134,31 @@ export class BattleScene extends Phaser.Scene {
     this.setEnemyVisuals(enemyDef.id);
 
     // --- enemy panel (top) ---
-    this.enemyNameText = this.add.text(8, 8, '', { fontFamily: FONT, fontSize: '9px', color: '#cdd6f4' }).setOrigin(0, 0);
-    this.enemyHpBar = new HealthBar(this, 8, 22, 180, 'HP');
+    this.enemyNameText = this.add.text(32, 32, '', { fontFamily: FONT, fontSize: '32px', color: '#cdd6f4' }).setOrigin(0, 0);
+    this.enemyHpBar = new HealthBar(this, 32, 88, 720, 'HP');
     this.refreshEnemyName();
     this.enemyHpBar.setValue(this.state.enemy.hp, this.state.enemy.maxHp, false);
 
     // --- player panel (bottom-left) ---
-    this.add.text(8, 244, `${this.state.player.name}  Lv.${this.state.player.level}`, { fontFamily: FONT, fontSize: '9px', color: '#cdd6f4' });
-    this.playerHpBar = new HealthBar(this, 8, 258, 180, 'HP');
-    this.playerEnergyBar = new EnergyBar(this, 8, 270, 180, 'EN');
+    this.add.text(32, 830, `${this.state.player.name}  Lv.${this.state.player.level}`, { fontFamily: FONT, fontSize: '32px', color: '#cdd6f4' });
+    this.playerHpBar = new HealthBar(this, 32, 880, 720, 'HP');
+    this.playerEnergyBar = new EnergyBar(this, 32, 924, 720, 'EN');
     this.playerHpBar.setValue(this.state.player.hp, this.state.player.maxHp, false);
     this.playerEnergyBar.setValue(this.state.player.energy, this.state.player.maxEnergy, false);
-    this.chainMeter = new ChainMeter(this, 8, 290);
+    this.chainMeter = new ChainMeter(this, 32, 1000);
     this.chainMeter.setVisible(!this.studyMode);
-    if (this.studyMode) this.add.text(8, 286, '(Study Mode — chain off)', { fontFamily: FONT, fontSize: '7px', color: '#89dceb' });
+    if (this.studyMode) this.add.text(32, 988, '(Study Mode — chain off)', { fontFamily: FONT, fontSize: '24px', color: '#89dceb' });
 
     // --- battle log line ---
-    this.logLine = this.add.text(8, 304, '', { fontFamily: FONT, fontSize: '8px', color: '#f9e2af', wordWrap: { width: W - 200 } }).setOrigin(0, 0);
+    this.logLine = this.add.text(32, 1036, '', { fontFamily: FONT, fontSize: '28px', color: '#f9e2af', wordWrap: { width: W - 800 } }).setOrigin(0, 0);
 
     // --- quiz panel (hidden until a quizzed skill fires) ---
-    this.quizPanel = new QuizPanel(this, 20, 34, W - 40, 176);
+    this.quizPanel = new QuizPanel(this, 80, 136, W - 160, 660);
     this.quizPanel.setDepth(1000);
 
     // --- action menu (bottom-right) ---
     this.menuButtons = MENU_LABELS.map((label, i) => {
-      const t = this.add.text(W - 110, 246 + i * 16, label, { fontFamily: FONT, fontSize: '10px', color: '#cdd6f4' }).setOrigin(0, 0);
+      const t = this.add.text(W - 420, 830 + i * 52, label, { fontFamily: FONT, fontSize: '36px', color: '#cdd6f4' }).setOrigin(0, 0);
       t.setInteractive({ useHandCursor: true });
       t.on('pointerover', () => { if (this.fsm === 'menu') { this.menuIdx = i; this.refreshMenu(); } });
       t.on('pointerdown', () => { if (this.fsm === 'menu') { this.menuIdx = i; this.confirmMenu(); } });
@@ -254,12 +254,12 @@ export class BattleScene extends Phaser.Scene {
     const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     this.skillRowCount = skills.length + 1; // + a "Back" row
     this.skillIdx = 0;
-    const x = 150, y = 240, rowH = 12, w = W - x - 8, h = (this.skillRowCount + 1) * rowH + 6;
-    const bg = this.add.rectangle(x, y - 4, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(1, 0x415a77).setDepth(50);
+    const x = 700, y = 280, rowH = 48, w = W - x - 32, h = (this.skillRowCount + 1) * rowH + 24;
+    const bg = this.add.rectangle(x, y - 16, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(4, 0x415a77).setDepth(50);
     this.skillMenuObjs = [bg];
     this.skillRowButtons = skills.map((s, i) => {
       const affordable = s.energyCost <= this.state.player.energy;
-      const txt = this.add.text(x + 6, y + i * rowH, '', { fontFamily: FONT, fontSize: '8px', color: affordable ? '#cdd6f4' : '#566074' }).setOrigin(0, 0).setDepth(51);
+      const txt = this.add.text(x + 24, y + i * rowH, '', { fontFamily: FONT, fontSize: '28px', color: affordable ? '#cdd6f4' : '#566074' }).setOrigin(0, 0).setDepth(51);
       if (affordable) {
         txt.setInteractive({ useHandCursor: true });
         txt.on('pointerover', () => { this.skillIdx = i; this.refreshSkillMenu(); });
@@ -268,7 +268,7 @@ export class BattleScene extends Phaser.Scene {
       this.skillMenuObjs.push(txt);
       return txt;
     });
-    const back = this.add.text(x + 6, y + skills.length * rowH, '', { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51)
+    const back = this.add.text(x + 24, y + skills.length * rowH, '', { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51)
       .setInteractive({ useHandCursor: true });
     back.on('pointerover', () => { this.skillIdx = skills.length; this.refreshSkillMenu(); });
     back.on('pointerdown', () => { this.skillIdx = skills.length; this.confirmSkillMenu(); });
@@ -321,7 +321,7 @@ export class BattleScene extends Phaser.Scene {
       if (correct) {
         const bonus = 2 * skill.questionDifficulty;
         this.bonusXp += bonus;
-        this.floatText(this.playerSprite.x, this.playerSprite.y - this.playerSprite.displayHeight - 6, `Reaction mastered!  +${bonus} XP`, '#a6e3a1', '8px');
+        this.floatText(this.playerSprite.x, this.playerSprite.y - this.playerSprite.displayHeight - 24, `Reaction mastered!  +${bonus} XP`, '#a6e3a1', '28px');
       } else {
         await this.quizPanel.showCorrection(q);
       }
@@ -356,17 +356,17 @@ export class BattleScene extends Phaser.Scene {
     this.itemRowIds = items.map(i => i.itemId);
     this.itemRowCount = items.length + 1; // + a "Back" row
     this.itemIdx = 0;
-    const x = 150, y = 240, rowH = 12, w = W - x - 8, h = (this.itemRowCount + 1) * rowH + 6;
-    const bg = this.add.rectangle(x, y - 4, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(1, 0x415a77).setDepth(50);
+    const x = 700, y = 280, rowH = 48, w = W - x - 32, h = (this.itemRowCount + 1) * rowH + 24;
+    const bg = this.add.rectangle(x, y - 16, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(4, 0x415a77).setDepth(50);
     this.itemMenuObjs = [bg];
     this.itemRowButtons = items.map((_entry, i) => {
-      const txt = this.add.text(x + 6, y + i * rowH, '', { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51).setInteractive({ useHandCursor: true });
+      const txt = this.add.text(x + 24, y + i * rowH, '', { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51).setInteractive({ useHandCursor: true });
       txt.on('pointerover', () => { this.itemIdx = i; this.refreshItemMenu(); });
       txt.on('pointerdown', () => { this.itemIdx = i; this.confirmItemMenu(); });
       this.itemMenuObjs.push(txt);
       return txt;
     });
-    const back = this.add.text(x + 6, y + items.length * rowH, '', { fontFamily: FONT, fontSize: '8px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51).setInteractive({ useHandCursor: true });
+    const back = this.add.text(x + 24, y + items.length * rowH, '', { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(51).setInteractive({ useHandCursor: true });
     back.on('pointerover', () => { this.itemIdx = items.length; this.refreshItemMenu(); });
     back.on('pointerdown', () => { this.itemIdx = items.length; this.confirmItemMenu(); });
     this.itemRowButtons.push(back);
@@ -437,7 +437,7 @@ export class BattleScene extends Phaser.Scene {
   private refreshBurstButton(): void {
     if (this.fsm !== 'menu' || !this.state.catalystBurstReady) { this.hideBurstButton(); return; }
     if (!this.burstButton) {
-      this.burstButton = this.add.text(W / 2, 230, '★ CATALYST BURST  [B] ★', { fontFamily: FONT, fontSize: '11px', color: '#ffd166', backgroundColor: '#5a1320', padding: { x: 6, y: 3 } })
+      this.burstButton = this.add.text(W / 2, 760, '★ CATALYST BURST  [B] ★', { fontFamily: FONT, fontSize: '40px', color: '#ffd166', backgroundColor: '#5a1320', padding: { x: 24, y: 12 } })
         .setOrigin(0.5).setDepth(800).setInteractive({ useHandCursor: true });
       this.burstButton.on('pointerdown', () => { void this.doBurst(); });
     }
@@ -458,18 +458,18 @@ export class BattleScene extends Phaser.Scene {
   private refreshStatusIcons(): void {
     this.playerStatusObjs.forEach(o => o.destroy()); this.playerStatusObjs = [];
     this.enemyStatusObjs.forEach(o => o.destroy()); this.enemyStatusObjs = [];
-    this.layStatuses(this.state.enemy.statuses, 8, 33, this.enemyStatusObjs);
-    this.layStatuses(this.state.player.statuses, 8, 281, this.playerStatusObjs);
+    this.layStatuses(this.state.enemy.statuses, 32, 132, this.enemyStatusObjs);
+    this.layStatuses(this.state.player.statuses, 820, 832, this.playerStatusObjs);
   }
 
   private layStatuses(statuses: StatusEffectInstance[], x0: number, y0: number, sink: Phaser.GameObjects.GameObject[]): void {
     let x = x0;
     for (const s of statuses) {
-      const icon = this.add.image(x, y0, `icon_status_${s.id}`).setOrigin(0, 0).setDisplaySize(10, 10).setDepth(20);
-      const num = this.add.text(x + 11, y0, String(Math.max(0, s.turnsRemaining)), { fontFamily: FONT, fontSize: '7px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(20);
+      const icon = this.add.image(x, y0, `icon_status_${s.id}`).setOrigin(0, 0).setDisplaySize(40, 40).setDepth(20);
+      const num = this.add.text(x + 44, y0, String(Math.max(0, s.turnsRemaining)), { fontFamily: FONT, fontSize: '24px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(20);
       this.tweens.add({ targets: icon, scaleX: 1.25, scaleY: 1.25, yoyo: true, duration: 110 });
       sink.push(icon, num);
-      x += 11 + 8;
+      x += 44 + 16;
     }
   }
 
@@ -532,7 +532,7 @@ export class BattleScene extends Phaser.Scene {
         else { this.dispEnemyHp = Math.max(0, this.dispEnemyHp - ev.amount); this.enemyHpBar.setValue(this.dispEnemyHp, this.dispEnemyMaxHp); }
         const color = ev.effectiveness >= 2 ? '#ff6b6b' : ev.effectiveness <= 0.5 ? '#9aa0a8' : '#ffffff';
         this.floatText(sprite.x, sprite.y - sprite.displayHeight / 2, `-${ev.amount}`, color);
-        if (ev.crit) this.floatText(sprite.x, sprite.y - sprite.displayHeight, '★ Critical Reaction!', '#f9e2af', '7px');
+        if (ev.crit) this.floatText(sprite.x, sprite.y - sprite.displayHeight, '★ Critical Reaction!', '#f9e2af', '24px');
         if (ev.effectiveness >= 2) this.log("It's a runaway reaction!");
         else if (ev.effectiveness <= 0.5 && ev.effectiveness > 0) this.log('It barely reacts…');
         break;
@@ -690,7 +690,7 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private showBanner(text: string, holdMs = 900): Promise<void> {
-    const t = this.add.text(W / 2, 96, text, { fontFamily: FONT, fontSize: '12px', color: '#f9e2af', backgroundColor: '#0b0f17cc', padding: { x: 8, y: 4 }, align: 'center', wordWrap: { width: W - 40 } })
+    const t = this.add.text(W / 2, 384, text, { fontFamily: FONT, fontSize: '44px', color: '#f9e2af', backgroundColor: '#0b0f17cc', padding: { x: 32, y: 16 }, align: 'center', wordWrap: { width: W - 160 } })
       .setOrigin(0.5).setDepth(1200).setScale(0.6);
     return new Promise<void>(resolve => {
       this.tweens.add({
@@ -739,9 +739,9 @@ export class BattleScene extends Phaser.Scene {
     this.time.delayedCall(90, () => sprite.clearTint());
   }
 
-  private floatText(x: number, y: number, text: string, color: string, size = '13px'): void {
-    const t = this.add.text(x, y, text, { fontFamily: FONT, fontSize: size, color, stroke: '#000000', strokeThickness: 3 }).setOrigin(0.5).setDepth(500);
-    this.tweens.add({ targets: t, y: y - 26, alpha: 0, duration: 650, ease: 'Sine.easeOut', onComplete: () => t.destroy() });
+  private floatText(x: number, y: number, text: string, color: string, size = '48px'): void {
+    const t = this.add.text(x, y, text, { fontFamily: FONT, fontSize: size, color, stroke: '#000000', strokeThickness: 6 }).setOrigin(0.5).setDepth(500);
+    this.tweens.add({ targets: t, y: y - 104, alpha: 0, duration: 650, ease: 'Sine.easeOut', onComplete: () => t.destroy() });
   }
 
   private snapBars(): void {
