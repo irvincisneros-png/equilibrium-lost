@@ -32,7 +32,19 @@
     "regionBossId": "the-eternal-flame",
     "npcIds": ["alchemist-vera", "pyrologist-ignis", "shrinekeeper-cinder"],
     "shrine": { "questionTopic": "reaction-types", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 700, "rewardItemIds": ["energy-cell", "buffer"] },
-    "unlocksRegionId": null,
+    "unlocksRegionId": "balance-halls",
     "bossReward": { "xp": 850, "itemIds": ["reagent", "isotope-core"], "skillId": "combustion-flare" }
+  },
+  {
+    "id": "balance-halls", "index": 4, "name": "The Balance Halls", "topic": "balancing-equations",
+    "tilemapKey": "tilemap_balance_halls", "tilesetKey": "tiles_balance_halls", "battleBackgroundKey": "bg_battle_balance_halls",
+    "wildEnemyIds": ["equilet", "coeffix", "tilted-flask", "mass-thief"],
+    "encounterRatePerStep": 0.10,
+    "miniBossId": "the-unbalanced-flask",
+    "regionBossId": "the-lopsided-equation",
+    "npcIds": ["archivist-pollux", "weighmaster-libra", "shrinekeeper-scale"],
+    "shrine": { "questionTopic": "balancing-equations", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 850, "rewardItemIds": ["energy-cell", "buffer"] },
+    "unlocksRegionId": null,
+    "bossReward": { "xp": 1000, "itemIds": ["reagent", "isotope-core"], "skillId": "equilibrate" }
   }
 ]
