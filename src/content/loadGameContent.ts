@@ -7,6 +7,7 @@ import typeChart from './data/typeChart.json';
 import assets from './data/assetManifest.json';
 import npcs from './data/npcs.json';
 import atomicStructure from './data/questions/atomic-structure.json';
+import bonding from './data/questions/bonding.json';
 import { ContentLoader } from './ContentLoader';
 import type { GameContent } from './types';
 
@@ -18,7 +19,7 @@ export function loadGameContent(): { content: GameContent; warnings: string[] } 
     regions: regions as unknown[],
     items: items as Record<string, unknown>,
     typeChart,
-    questions: { 'atomic-structure': atomicStructure as unknown[] },
+    questions: { 'atomic-structure': atomicStructure as unknown[], 'bonding': bonding as unknown[] },
     npcs: npcs as Record<string, unknown>,
     assets
   });
