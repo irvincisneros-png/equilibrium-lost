@@ -96,11 +96,16 @@ export class Textbox extends Phaser.GameObjects.Container {
       this.textObj.setText(page.join('\n'));
     }
     const isLast = this.pageIdx >= this.pages.length - 1;
-    this.caretObj.setVisible(!isLast);
+    // Always show the ▼ caret once a page is fully revealed — it means "press to continue"
+    // (next page within this textbox, or — on the last page — whatever the consumer does next).
+    this.caretObj.setVisible(true);
     // Mirror revealPage()'s natural-completion path: a skipped *last* page must still
     // fire 'complete', or consumers (e.g. DialogueScene) stall forever. (Was the freeze bug.)
     if (isLast) this.emit('complete');
   }
+
+  /** Show/hide the advance caret (DialogueScene hides it while a choice list is up). */
+  setCaretVisible(visible: boolean): void { this.caretObj.setVisible(visible); }
 
   private revealPage(): void {
     const page = this.pages[this.pageIdx];
@@ -122,7 +127,7 @@ export class Textbox extends Phaser.GameObjects.Container {
           this.stopTicker();
           this.revealing = false;
           const isLast = this.pageIdx >= this.pages.length - 1;
-          this.caretObj.setVisible(!isLast);
+          this.caretObj.setVisible(true);
           if (isLast) {
             this.emit('complete');
           }
