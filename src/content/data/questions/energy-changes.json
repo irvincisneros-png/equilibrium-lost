@@ -1,0 +1,759 @@
+[
+  {
+    "id": "ec-001",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "An EXOTHERMIC reaction is one that…",
+    "options": [
+      "gives out heat to the surroundings",
+      "produces no energy change",
+      "always needs electricity",
+      "takes in heat from the surroundings"
+    ],
+    "answerIndex": 0,
+    "explanation": "Exothermic = energy released to the surroundings, so they warm up. (Endothermic = takes energy in, surroundings cool down.)",
+    "hint": "Exo = exit — the energy leaves."
+  },
+  {
+    "id": "ec-002",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "An ENDOTHERMIC reaction makes the surroundings…",
+    "options": [
+      "explode",
+      "warmer",
+      "colder",
+      "stay exactly the same temperature"
+    ],
+    "answerIndex": 2,
+    "explanation": "Endothermic = energy taken IN from the surroundings, so the surroundings get colder.",
+    "hint": "It takes energy in — where from?"
+  },
+  {
+    "id": "ec-003",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Which of these is an exothermic process?",
+    "options": [
+      "photosynthesis",
+      "burning natural gas",
+      "an instant cold pack working",
+      "electrolysis"
+    ],
+    "answerIndex": 1,
+    "explanation": "Combustion (burning a fuel) releases heat — exothermic. Photosynthesis, cold packs and electrolysis all take energy in.",
+    "hint": "Which one gets hot?"
+  },
+  {
+    "id": "ec-004",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Breaking a chemical bond…",
+    "options": [
+      "has no effect on energy",
+      "destroys atoms",
+      "releases energy",
+      "absorbs (takes in) energy"
+    ],
+    "answerIndex": 3,
+    "explanation": "Breaking bonds always absorbs energy (an endothermic step); making new bonds always releases energy (an exothermic step).",
+    "hint": "You have to put energy IN to pull a bond apart."
+  },
+  {
+    "id": "ec-005",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Making a new chemical bond…",
+    "options": [
+      "has no effect on energy",
+      "creates new atoms",
+      "releases energy",
+      "absorbs energy"
+    ],
+    "answerIndex": 2,
+    "explanation": "Making bonds releases energy (exothermic step); breaking bonds absorbs energy (endothermic step). The overall change is the balance of the two.",
+    "hint": "Atoms 'snapping together' lets energy OUT."
+  },
+  {
+    "id": "ec-006",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "On an energy-profile diagram for an EXOTHERMIC reaction, the products are drawn…",
+    "options": [
+      "lower in energy than the reactants",
+      "at exactly the same energy as the reactants",
+      "off the graph",
+      "higher in energy than the reactants"
+    ],
+    "answerIndex": 0,
+    "explanation": "Exothermic: energy was released, so the products end up at a LOWER energy than the reactants.",
+    "hint": "Energy left the system, so the products are lower down."
+  },
+  {
+    "id": "ec-007",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "On an energy-profile diagram for an ENDOTHERMIC reaction, the products are drawn…",
+    "options": [
+      "at the same level as the reactants",
+      "as a flat line",
+      "lower than the reactants",
+      "higher than the reactants"
+    ],
+    "answerIndex": 3,
+    "explanation": "Endothermic: energy was taken in, so the products end up HIGHER in energy than the reactants.",
+    "hint": "Energy was added to the system, so the products are higher up."
+  },
+  {
+    "id": "ec-008",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "The 'hump' on an energy-profile diagram represents the…",
+    "options": [
+      "amount of product made",
+      "activation energy — the minimum energy a collision needs to react",
+      "temperature of the room",
+      "mass of the reactants"
+    ],
+    "answerIndex": 1,
+    "explanation": "The barrier the reactants must get over is the activation energy; once past it, the reaction proceeds to the products.",
+    "hint": "It's the 'hill' the reaction has to climb to get started."
+  },
+  {
+    "id": "ec-009",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Combustion, respiration and neutralisation are all…",
+    "options": [
+      "exothermic",
+      "neither — they involve no energy change",
+      "physical changes only",
+      "endothermic"
+    ],
+    "answerIndex": 0,
+    "explanation": "All three release energy to the surroundings — they're exothermic reactions.",
+    "hint": "They all give out heat."
+  },
+  {
+    "id": "ec-010",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "An 'instant cold pack' gets cold when a salt dissolves in water inside it. Dissolving that salt is therefore…",
+    "options": [
+      "a chemical reaction that makes a gas",
+      "exothermic",
+      "endothermic",
+      "neither"
+    ],
+    "answerIndex": 2,
+    "explanation": "The pack cools down because the dissolving takes energy IN from the surroundings — an endothermic process.",
+    "hint": "It gets cold — so energy is being absorbed."
+  },
+  {
+    "id": "ec-011",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "A reaction is run in a polystyrene cup. The temperature of the mixture RISES. The reaction is…",
+    "options": [
+      "impossible",
+      "exothermic",
+      "endothermic",
+      "neither"
+    ],
+    "answerIndex": 1,
+    "explanation": "A temperature rise means energy was released to the mixture — the reaction is exothermic.",
+    "hint": "It got hotter — energy came OUT of the reaction."
+  },
+  {
+    "id": "ec-012",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Adding a catalyst changes an energy-profile diagram by…",
+    "options": [
+      "moving the products higher",
+      "removing the reactants",
+      "raising the activation-energy hump",
+      "lowering the activation-energy hump (but not moving the reactants or products)"
+    ],
+    "answerIndex": 3,
+    "explanation": "A catalyst gives a lower-energy pathway, so the hump is smaller; the reactant and product energies (and ΔH) are unchanged.",
+    "hint": "It makes the hill shorter — but the start and finish heights stay the same."
+  },
+  {
+    "id": "ec-013",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Why does a fuel often need a spark or flame to start burning, even though combustion is exothermic?",
+    "options": [
+      "the spark cools the fuel down",
+      "combustion is actually endothermic",
+      "the reaction still has an activation-energy barrier to get over before the energy starts coming out",
+      "the spark removes the oxygen"
+    ],
+    "answerIndex": 2,
+    "explanation": "Even exothermic reactions need enough energy to get over the activation-energy hump; the spark provides that initial push.",
+    "hint": "There's still a 'hill' to climb before the downhill part."
+  },
+  {
+    "id": "ec-014",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Photosynthesis (plants making glucose from CO₂ and water using light) is…",
+    "options": [
+      "an endothermic reaction",
+      "a reaction with no energy change",
+      "a physical change",
+      "an exothermic reaction"
+    ],
+    "answerIndex": 0,
+    "explanation": "Photosynthesis takes in energy (from sunlight) to build glucose — it's endothermic.",
+    "hint": "It needs an energy source (the Sun) to happen."
+  },
+  {
+    "id": "ec-015",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "Which sign of ΔH goes with an EXOTHERMIC reaction?",
+    "options": [
+      "ΔH is always zero",
+      "exothermic reactions have no ΔH",
+      "ΔH positive (energy in)",
+      "ΔH negative (energy out)"
+    ],
+    "answerIndex": 3,
+    "explanation": "Exothermic releases energy, so ΔH is negative; endothermic absorbs energy, so ΔH is positive.",
+    "hint": "Energy leaves the system → the energy change is negative."
+  },
+  {
+    "id": "ec-016",
+    "topic": "energy-changes",
+    "difficulty": 1,
+    "format": "mcq",
+    "prompt": "A hand-warmer that works by iron slowly reacting with oxygen (rusting) is…",
+    "options": [
+      "endothermic",
+      "exothermic",
+      "neither — rusting has no energy change",
+      "a physical change"
+    ],
+    "answerIndex": 1,
+    "explanation": "Oxidation reactions like rusting release heat — that's how the hand-warmer works. It's exothermic.",
+    "hint": "It warms your hands — so it must be giving OUT heat."
+  },
+  {
+    "id": "ec-017",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "A reaction releases 200 kJ when new bonds form but needed 150 kJ to break the old bonds. Overall, the reaction is…",
+    "options": [
+      "exothermic, ΔH negative — more energy came out than went in",
+      "neither — the energy is exactly balanced",
+      "impossible",
+      "endothermic, ΔH positive"
+    ],
+    "answerIndex": 0,
+    "explanation": "Out (200) > in (150), so there's a net release of 50 kJ — the reaction is exothermic.",
+    "hint": "Compare the energy that came OUT with the energy that went IN."
+  },
+  {
+    "id": "ec-018",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "A reaction needs 300 kJ to break bonds but only releases 250 kJ when new bonds form. The reaction is…",
+    "options": [
+      "explosive",
+      "exothermic",
+      "endothermic — more energy went in than came out",
+      "neither"
+    ],
+    "answerIndex": 2,
+    "explanation": "In (300) > out (250), so there's a net absorption of 50 kJ — the reaction is endothermic.",
+    "hint": "Compare the energy in with the energy out — which is bigger?"
+  },
+  {
+    "id": "ec-019",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Thermal decomposition (e.g. heating calcium carbonate to make calcium oxide + CO₂) is endothermic. This means…",
+    "options": [
+      "it releases heat as it happens",
+      "it must be continuously heated to keep going (it takes energy in)",
+      "it gives off light",
+      "it works better when cooled"
+    ],
+    "answerIndex": 1,
+    "explanation": "Endothermic reactions absorb energy; you have to keep supplying heat (e.g. a Bunsen flame) or the decomposition stops.",
+    "hint": "You have to keep the heat ON for it to continue."
+  },
+  {
+    "id": "ec-020",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Two students mix an acid and an alkali in a cup and the temperature rises by 6 °C. They conclude the neutralisation is…",
+    "options": [
+      "neither",
+      "a physical change",
+      "endothermic",
+      "exothermic"
+    ],
+    "answerIndex": 3,
+    "explanation": "Temperature rose → energy released to the mixture → exothermic. Neutralisation reactions are exothermic.",
+    "hint": "Rising temperature = exothermic."
+  },
+  {
+    "id": "ec-021",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "On an energy-profile diagram, ΔH (the overall energy change) is the difference between…",
+    "options": [
+      "the masses of the reactants and products",
+      "the height of the activation-energy hump and the reactants",
+      "the energy of the products and the energy of the reactants",
+      "the room temperature and 0 °C"
+    ],
+    "answerIndex": 2,
+    "explanation": "ΔH = (energy of products) − (energy of reactants). Negative ⇒ exothermic (products lower); positive ⇒ endothermic (products higher).",
+    "hint": "It's the vertical gap between where you START and where you FINISH."
+  },
+  {
+    "id": "ec-022",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Which statement about a catalyst on an energy-profile diagram is TRUE?",
+    "options": [
+      "it lowers the activation energy but leaves ΔH unchanged",
+      "it raises the products' energy",
+      "it removes the activation energy completely",
+      "it changes ΔH"
+    ],
+    "answerIndex": 0,
+    "explanation": "A catalyst only lowers the activation-energy barrier; the start (reactants) and finish (products) energies — and so ΔH — are exactly the same.",
+    "hint": "It changes the SIZE of the hill, not where the start and end points sit."
+  },
+  {
+    "id": "ec-023",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Why is it that 'every reaction is endothermic in its first step'?",
+    "options": [
+      "because the reactants are always cold",
+      "this statement is false — no reaction breaks bonds",
+      "because all reactions cool the surroundings",
+      "because the first thing a reaction must do is BREAK existing bonds, and breaking bonds always absorbs energy"
+    ],
+    "answerIndex": 3,
+    "explanation": "To rearrange atoms, a reaction must first break the old bonds (energy in); making new bonds (energy out) comes after. Whether it's exothermic OVERALL depends on which is bigger.",
+    "hint": "What has to happen to the OLD bonds before new ones can form?"
+  },
+  {
+    "id": "ec-024",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Burning methane, CH₄ + 2O₂ → CO₂ + 2H₂O, is strongly exothermic. On its energy-profile diagram…",
+    "options": [
+      "there is no activation-energy hump",
+      "the products are well below the reactants",
+      "the products are well above the reactants",
+      "the products are level with the reactants"
+    ],
+    "answerIndex": 1,
+    "explanation": "Exothermic + 'strongly' → the products sit well below the reactants on the diagram (a lot of energy was released); there's still a small hump (the spark needed to light it).",
+    "hint": "Lots of energy out → the products end up a long way DOWN."
+  },
+  {
+    "id": "ec-025",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Which pair are BOTH endothermic?",
+    "options": [
+      "photosynthesis and the thermal decomposition of a carbonate",
+      "rusting and neutralisation",
+      "burning magnesium and a hand-warmer",
+      "combustion and respiration"
+    ],
+    "answerIndex": 0,
+    "explanation": "Photosynthesis and thermal decomposition both take energy in. The others are all exothermic.",
+    "hint": "Which two need an energy SUPPLY to happen?"
+  },
+  {
+    "id": "ec-026",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "If a reaction's energy-profile diagram shows the products HIGHER than the reactants, then during the reaction the surroundings…",
+    "options": [
+      "boiled",
+      "got warmer",
+      "got colder",
+      "stayed at the same temperature"
+    ],
+    "answerIndex": 2,
+    "explanation": "Products higher = endothermic = energy was absorbed FROM the surroundings, so the surroundings cooled down.",
+    "hint": "Energy went INTO the chemicals — where did it come from?"
+  },
+  {
+    "id": "ec-027",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "A catalyst speeds a reaction up. It does NOT…",
+    "options": [
+      "get recovered for re-use at the end",
+      "change whether the reaction is exothermic or endothermic",
+      "lower the activation energy",
+      "let more collisions succeed"
+    ],
+    "answerIndex": 1,
+    "explanation": "A catalyst can't change ΔH or which way the energy flows — it only lowers the activation-energy barrier so the reaction reaches the same end-point faster.",
+    "hint": "Three of these a catalyst DOES do; one it can't."
+  },
+  {
+    "id": "ec-028",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Respiration in your cells (glucose + oxygen → carbon dioxide + water) releases the energy that keeps you warm. Respiration is therefore…",
+    "options": [
+      "neither",
+      "a physical change",
+      "endothermic",
+      "exothermic"
+    ],
+    "answerIndex": 3,
+    "explanation": "Respiration releases energy (it's why you're warm) — an exothermic reaction, essentially a slow, controlled 'combustion' of glucose.",
+    "hint": "It keeps you warm — so it gives OUT energy."
+  },
+  {
+    "id": "ec-029",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "Electrolysis (splitting a compound using electricity, e.g. water → hydrogen + oxygen) is endothermic because…",
+    "options": [
+      "it produces a gas",
+      "it releases heat",
+      "it requires a continuous input of electrical energy to keep splitting the compound",
+      "it gives off light"
+    ],
+    "answerIndex": 2,
+    "explanation": "Electrolysis must be driven by an energy supply (electricity); stop the current and it stops — the hallmark of an endothermic process.",
+    "hint": "Cut the power and it stops — so it needs energy going IN."
+  },
+  {
+    "id": "ec-030",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "mcq",
+    "prompt": "A reaction profile has a tall activation-energy hump but the products are only slightly below the reactants. This reaction is…",
+    "options": [
+      "exothermic but with a high activation energy, so it may need a strong 'push' to start",
+      "endothermic with a high activation energy",
+      "impossible",
+      "endothermic and fast"
+    ],
+    "answerIndex": 0,
+    "explanation": "Products below reactants = exothermic; a tall hump = a high activation energy, so a big initial energy input (a strong spark/heat) is needed before the energy starts coming out.",
+    "hint": "Products are lower (exo), but the hill in between is tall."
+  },
+  {
+    "id": "ec-031",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "balanceEquation",
+    "prompt": "Balance the (exothermic) combustion of methane: __ CH₄ + __ O₂ → __ CO₂ + __ H₂O",
+    "equation": {
+      "reactants": [
+        {
+          "formula": "CH4",
+          "coeff": 1
+        },
+        {
+          "formula": "O2",
+          "coeff": 2
+        }
+      ],
+      "products": [
+        {
+          "formula": "CO2",
+          "coeff": 1
+        },
+        {
+          "formula": "H2O",
+          "coeff": 2
+        }
+      ]
+    },
+    "explanation": "CH₄ + 2O₂ → CO₂ + 2H₂O — 1 C, 4 H and 4 O on each side. This releases a lot of energy — strongly exothermic.",
+    "hint": "Balance C, then H (you'll need 2 H₂O), then count the oxygens on the right and match with O₂."
+  },
+  {
+    "id": "ec-032",
+    "topic": "energy-changes",
+    "difficulty": 2,
+    "format": "balanceEquation",
+    "prompt": "Balance the (exothermic) burning of hydrogen: __ H₂ + __ O₂ → __ H₂O",
+    "equation": {
+      "reactants": [
+        {
+          "formula": "H2",
+          "coeff": 2
+        },
+        {
+          "formula": "O2",
+          "coeff": 1
+        }
+      ],
+      "products": [
+        {
+          "formula": "H2O",
+          "coeff": 2
+        }
+      ]
+    },
+    "explanation": "2H₂ + O₂ → 2H₂O — 4 H and 2 O on each side. Hydrogen burning in oxygen is strongly exothermic.",
+    "hint": "O₂ has 2 oxygens, so make 2 H₂O — then balance the hydrogen."
+  },
+  {
+    "id": "ec-033",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "A reaction releases 400 kJ overall. The energy needed to break the reactant bonds was 600 kJ. How much energy was released when the new product bonds formed?",
+    "options": [
+      "600 kJ",
+      "200 kJ",
+      "400 kJ",
+      "1000 kJ"
+    ],
+    "answerIndex": 3,
+    "explanation": "Energy released overall = (energy out from making bonds) − (energy in to break bonds). 400 = out − 600, so out = 1000 kJ.",
+    "hint": "Out − In = the overall release; rearrange to find 'out'."
+  },
+  {
+    "id": "ec-034",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "Two reactions, A and B, have the same reactants and the same products, but B is run with a catalyst. Which statement is true?",
+    "options": [
+      "B has a smaller ΔH than A",
+      "A and B have the same ΔH; only B's activation energy is lower",
+      "B is exothermic while A is endothermic",
+      "B makes more product than A"
+    ],
+    "answerIndex": 1,
+    "explanation": "A catalyst lowers the activation energy but doesn't touch the reactant or product energies — same start, same finish, same ΔH; just a smaller barrier and a faster reaction.",
+    "hint": "ΔH depends only on the start and end points — does the catalyst move those?"
+  },
+  {
+    "id": "ec-035",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "On an energy-profile diagram, the activation energy is measured from…",
+    "options": [
+      "the reactants up to the top of the hump",
+      "the top of the hump down to the products",
+      "the room temperature up to the products",
+      "the products up to the top of the hump"
+    ],
+    "answerIndex": 0,
+    "explanation": "The activation energy is the energy gap between the reactants and the peak of the hump — the energy a collision needs to start the reaction.",
+    "hint": "Start at the REACTANTS — how far up is the top of the hill?"
+  },
+  {
+    "id": "ec-036",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "Why does a 'self-heating' food can (which uses an exothermic reaction) NOT need to be heated first to work?",
+    "options": [
+      "exothermic reactions always start on their own",
+      "the reaction is actually endothermic",
+      "the reaction releases energy as it goes, and its activation energy is low enough that just mixing the reactants starts it",
+      "the can is already hot in the shop"
+    ],
+    "answerIndex": 2,
+    "explanation": "It's exothermic (releases energy) AND has a low enough activation energy that bringing the reactants together gets it going — no external heat needed, unlike a Bunsen-flame-needing combustion.",
+    "hint": "Two things matter: which way the energy flows, AND how big the starting hill is."
+  },
+  {
+    "id": "ec-037",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "A polystyrene cup is used instead of a glass beaker for measuring a reaction's temperature change because polystyrene…",
+    "options": [
+      "reacts with the chemicals",
+      "is a poor conductor, so less heat escapes to (or enters from) the surroundings — giving a truer temperature change",
+      "is heavier than glass",
+      "changes colour with temperature"
+    ],
+    "answerIndex": 1,
+    "explanation": "Polystyrene insulates well, minimising heat exchange with the room, so the measured temperature change more accurately reflects the reaction's energy change.",
+    "hint": "You want to keep the heat IN (or out) so your reading is fair — what property does that?"
+  },
+  {
+    "id": "ec-038",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "Hydrogen is studied as a fuel: 2H₂ + O₂ → 2H₂O. Compared with the energy needed to break the bonds (in H₂ and O₂), the energy released when the new bonds (in H₂O) form…",
+    "options": [
+      "is exactly equal, so ΔH is zero",
+      "is zero — no energy is released",
+      "is less, so the reaction is endothermic",
+      "is more, so the reaction is exothermic — a net release of energy"
+    ],
+    "answerIndex": 3,
+    "explanation": "Burning hydrogen is exothermic, so making the O–H bonds in water releases more energy than was absorbed breaking the H–H and O=O bonds — a net release.",
+    "hint": "Burning hydrogen gives out heat — so which step 'wins', breaking or making?"
+  },
+  {
+    "id": "ec-039",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "Which of these would NOT change ΔH for a given reaction?",
+    "options": [
+      "the reaction not happening at all",
+      "doing the reaction with completely different reactants",
+      "adding a catalyst",
+      "forming different products"
+    ],
+    "answerIndex": 2,
+    "explanation": "ΔH is fixed by the reactants and products; a catalyst changes only the route (and so the rate), not the start and end energies. Different reactants or products would give a different ΔH.",
+    "hint": "ΔH depends on the start and end states — which option doesn't change those?"
+  },
+  {
+    "id": "ec-040",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "A reaction profile shows: reactants at energy 50, peak at 90, products at 30 (arbitrary units). The activation energy and the type of reaction are…",
+    "options": [
+      "40 units; exothermic (products below reactants)",
+      "60 units; endothermic",
+      "20 units; exothermic",
+      "90 units; endothermic"
+    ],
+    "answerIndex": 0,
+    "explanation": "Activation energy = peak − reactants = 90 − 50 = 40. Products (30) are below reactants (50) → energy was released → exothermic.",
+    "hint": "Activation energy = peak minus reactants; exo/endo from where the products sit versus the reactants."
+  },
+  {
+    "id": "ec-041",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "Why is 'a reaction is exothermic' not enough on its own to guarantee it happens quickly at room temperature?",
+    "options": [
+      "exothermic reactions only happen when cooled",
+      "ΔH controls the rate",
+      "exothermic reactions are always instant",
+      "it might have a high activation energy — a big barrier to get over before the energy is released — so it can be very slow without a spark or catalyst"
+    ],
+    "answerIndex": 3,
+    "explanation": "ΔH (exo/endo) tells you the OVERALL energy direction, but the activation energy controls how easily the reaction starts; a high barrier means a slow (or stalled) reaction even though it's exothermic.",
+    "hint": "Energy direction is one thing; the size of the starting hill is another."
+  },
+  {
+    "id": "ec-042",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "A student claims 'adding a catalyst makes the reaction give out more heat'. Why is this wrong?",
+    "options": [
+      "catalysts always cool reactions down",
+      "ΔH — the heat given out (or taken in) per amount reacted — is set by the reactants and products; a catalyst only speeds the reaction up, so the same total heat comes out, just faster",
+      "catalysts are used up, so they add their own heat",
+      "catalysts make less product"
+    ],
+    "answerIndex": 1,
+    "explanation": "The total energy change depends only on what reacts and what's formed; a catalyst changes the speed (the activation energy), not the amount of energy released.",
+    "hint": "Faster ≠ more energy — the total heat is fixed by the reactants and products."
+  },
+  {
+    "id": "ec-043",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "In an exothermic reaction run in an open beaker, where does the released energy mostly go?",
+    "options": [
+      "it heats up the reaction mixture and then the surroundings (the air, the beaker, the bench)",
+      "it turns into new atoms",
+      "it is stored in the products as extra bonds",
+      "it disappears"
+    ],
+    "answerIndex": 0,
+    "explanation": "The energy released warms the mixture, then spreads out into the surroundings — which is exactly why the surroundings get warmer for an exothermic reaction.",
+    "hint": "If the surroundings get warmer, the energy went... where?"
+  },
+  {
+    "id": "ec-044",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "mcq",
+    "prompt": "Two reactions both convert reactants at energy 60 to products at energy 20. Reaction X has a peak at 100; reaction Y has a peak at 75. Which is faster (at the same temperature), and do they have the same ΔH?",
+    "options": [
+      "they are equally fast; different ΔH",
+      "X is faster; different ΔH",
+      "Y is faster; same ΔH (both ΔH = −40)",
+      "X is faster; same ΔH"
+    ],
+    "answerIndex": 2,
+    "explanation": "Y has the lower activation energy (75 − 60 = 15, versus 100 − 60 = 40), so Y is faster; both go from 60 to 20, so both have ΔH = −40 (exothermic) — same ΔH, different barrier.",
+    "hint": "Lower hump = faster; ΔH depends only on the start (60) and the end (20)."
+  },
+  {
+    "id": "ec-045",
+    "topic": "energy-changes",
+    "difficulty": 3,
+    "format": "balanceEquation",
+    "prompt": "Balance the (endothermic) thermal decomposition of calcium carbonate: __ CaCO₃ → __ CaO + __ CO₂",
+    "equation": {
+      "reactants": [
+        {
+          "formula": "CaCO3",
+          "coeff": 1
+        }
+      ],
+      "products": [
+        {
+          "formula": "CaO",
+          "coeff": 1
+        },
+        {
+          "formula": "CO2",
+          "coeff": 1
+        }
+      ]
+    },
+    "explanation": "CaCO₃ → CaO + CO₂ — already 1:1:1; 1 Ca, 1 C and 3 O on each side. It must be kept hot — an endothermic reaction.",
+    "hint": "Count each element — a thermal-decomposition equation is sometimes already balanced as written."
+  }
+]
