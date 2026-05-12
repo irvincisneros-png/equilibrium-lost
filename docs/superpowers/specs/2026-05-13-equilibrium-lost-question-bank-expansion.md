@@ -58,6 +58,8 @@ Each item is one JSON object in the bank's top-level array:
 }
 ```
 
+**Text encoding:** `prompt`, `options`, `explanation`, `hint` strings MAY use Unicode subscripts (`₀₁₂₃₄₅₆₇₈₉`), the arrow `→`, `Δ`, `°`, `·`, en-dashes etc. for readability (existing data does, e.g. `H₂O`, `CO₂`) — but the `equation.reactants[].formula` / `equation.products[].formula` fields MUST stay plain ASCII (`H2O`, `CO2`, `H2SO4`, `Mg(OH)2`, `NH4NO3`) for consistency with existing data. **balanceEquation prompts must be distinct from one another** — name the reaction or context ("Balance the combustion of methane:", "Magnesium ribbon burns in air — balance the equation:", "Find the coefficients: __ Zn + __ HCl → __ ZnCl₂ + __ H₂"), never a bare repeated "Balance this equation."
+
 `validateQuestion` (in `src/content/schema.ts`) is the contract. A malformed item is **skipped with a warning**, never a hard error — but for this milestone any `validateQuestion` warning on any item is a defect to fix. Hard rules that bite:
 
 - `difficulty` is `1`, `2`, or `3` — nothing else (no `0`, no `4`, not a string).
