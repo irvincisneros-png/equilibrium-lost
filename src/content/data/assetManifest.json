@@ -60,6 +60,18 @@
     "npc_archivist_pollux": "assets/images/npc_archivist_pollux.png",
     "npc_weighmaster_libra": "assets/images/npc_weighmaster_libra.png",
     "npc_shrinekeeper_scale": "assets/images/npc_shrinekeeper_scale.png",
+    "tiles_catalyst_crags": "assets/images/tiles_catalyst_crags.png",
+    "bg_battle_catalyst_crags": "assets/images/bg_battle_catalyst_crags.png",
+    "enemy_sparkrate": "assets/images/enemy_sparkrate.png",
+    "enemy_collidon": "assets/images/enemy_collidon.png",
+    "enemy_surfax": "assets/images/enemy_surfax.png",
+    "enemy_surfax_half": "assets/images/enemy_surfax_half.png",
+    "enemy_enzymoid": "assets/images/enemy_enzymoid.png",
+    "enemy_rate_spike": "assets/images/enemy_rate_spike.png",
+    "enemy_runaway_reaction": "assets/images/enemy_runaway_reaction.png",
+    "npc_kineticist_vasco": "assets/images/npc_kineticist_vasco.png",
+    "npc_chemurge_sela": "assets/images/npc_chemurge_sela.png",
+    "npc_shrinekeeper_tally": "assets/images/npc_shrinekeeper_tally.png",
     "ui_textbox": "assets/images/ui_textbox.png",
     "ui_chainmeter": "assets/images/ui_chainmeter.png",
     "icon_status_oxidised": "assets/images/icon_status_oxidised.png",
@@ -70,7 +82,7 @@
     "icon_status_combusting": "assets/images/icon_status_combusting.png",
     "title_art": "assets/images/title_art.png"
   },
-  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json" },
+  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json" },
   "audio": {},
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
@@ -141,6 +153,18 @@
     { "key": "enemy_lopsided_equation", "w": 256, "h": 256, "color": "#c2a23a", "label": "LOPSIDED EQUATION" },
     { "key": "npc_archivist_pollux", "w": 64, "h": 96, "color": "#6a8a9a", "label": "Po" },
     { "key": "npc_weighmaster_libra", "w": 64, "h": 96, "color": "#b0903a", "label": "Li" },
-    { "key": "npc_shrinekeeper_scale", "w": 64, "h": 96, "color": "#8a8a6a", "label": "Sc" }
+    { "key": "npc_shrinekeeper_scale", "w": 64, "h": 96, "color": "#8a8a6a", "label": "Sc" },
+    { "key": "tiles_catalyst_crags", "w": 64, "h": 64, "color": "#4a4d52", "label": "" },
+    { "key": "bg_battle_catalyst_crags", "w": 1920, "h": 896, "color": "#262830", "label": "" },
+    { "key": "enemy_sparkrate", "w": 96, "h": 96, "color": "#c2b85a", "label": "Sparkrate" },
+    { "key": "enemy_collidon", "w": 128, "h": 128, "color": "#8a9aa6", "label": "Collidon" },
+    { "key": "enemy_surfax", "w": 160, "h": 160, "color": "#7a7e6a", "label": "Surfax" },
+    { "key": "enemy_surfax_half", "w": 96, "h": 96, "color": "#8e9282", "label": "Frag" },
+    { "key": "enemy_enzymoid", "w": 128, "h": 128, "color": "#9aa05a", "label": "Enzymoid" },
+    { "key": "enemy_rate_spike", "w": 192, "h": 192, "color": "#c2a83a", "label": "Rate Spike" },
+    { "key": "enemy_runaway_reaction", "w": 256, "h": 256, "color": "#e2562a", "label": "RUNAWAY REACTION" },
+    { "key": "npc_kineticist_vasco", "w": 64, "h": 96, "color": "#7a8a9a", "label": "Va" },
+    { "key": "npc_chemurge_sela", "w": 64, "h": 96, "color": "#8aaa5a", "label": "Se" },
+    { "key": "npc_shrinekeeper_tally", "w": 64, "h": 96, "color": "#b0a83a", "label": "Ta" }
   ]
 }

@@ -10,6 +10,7 @@ import elementalReaches from '../content/data/tilemaps/elemental-reaches.json';
 import bondingForge from '../content/data/tilemaps/bonding-forge.json';
 import reactionHollow from '../content/data/tilemaps/reaction-hollow.json';
 import balanceHalls from '../content/data/tilemaps/balance-halls.json';
+import catalystCrags from '../content/data/tilemaps/catalyst-crags.json';
 
 interface OverworldSceneData { regionId: string }
 
@@ -22,6 +23,7 @@ const TILEMAPS: Record<string, TilemapData> = {
   tilemap_bonding_forge: bondingForge as unknown as TilemapData,
   tilemap_reaction_hollow: reactionHollow as unknown as TilemapData,
   tilemap_balance_halls: balanceHalls as unknown as TilemapData,
+  tilemap_catalyst_crags: catalystCrags as unknown as TilemapData,
 };
 
 // Per-biome tile colours, keyed by region.tilesetKey. Walkable: floor (id 0), path (id 1),
@@ -53,6 +55,11 @@ const BIOMES: Record<string, BiomePalette> = {
     floor: 0x6b6a5e, path: 0x9a8a4a, tallGrass: 0x4a5e4e,
     wallFace: 0x3a3a34, wallTop: 0x55554c, wallBase: 0x1e1e1a, wallLine: 0x0e0e0c,
     waterFill: 0x2a3a44, waterLine: 0x141e24,
+  },
+  tiles_catalyst_crags: {
+    floor: 0x4a4d52, path: 0xb0a838, tallGrass: 0x6a5a2a,
+    wallFace: 0x2e3035, wallTop: 0x46484e, wallBase: 0x18191c, wallLine: 0x0c0d0f,
+    waterFill: 0x2a3a30, waterLine: 0x141e18,
   },
 };
 

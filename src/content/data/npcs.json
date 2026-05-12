@@ -114,5 +114,34 @@
       { "id": "s_enter", "speaker": "Shrinekeeper Scale", "text": "Six questions. One miss is forgiven; two and the scales tip you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_balance-halls", "launch": "shrine" },
       { "id": "s_later", "speaker": "Shrinekeeper Scale", "text": "The scales hold steady. Come back when you've practised.", "end": true }
     ]
+  },
+  "kineticist-vasco": {
+    "id": "kineticist-vasco", "name": "Kineticist Vasco", "spriteKey": "npc_kineticist_vasco", "tile": { "x": 11, "y": 12 }, "facing": "down",
+    "dialogue": [
+      { "id": "v0", "speaker": "Kineticist Vasco", "text": "Catalyst Crags — where everything wants to go FAST. Down here a reaction either crawls or runs away; there's no in-between unless you control the levers. Want the levers, or do you know your reaction rates already?", "choices": [ { "label": "Show me the levers.", "next": "v1" }, { "label": "I know reaction rates — let me through.", "next": "v_skip" } ] },
+      { "id": "v1", "speaker": "Kineticist Vasco", "text": "It all comes down to COLLISIONS. A reaction only happens when particles smack into each other hard enough — and lined up the right way. More collisions, harder collisions, faster reaction. Simple as that.", "next": "v2" },
+      { "id": "v2", "speaker": "Kineticist Vasco", "text": "Lever one — TEMPERATURE. Heat it up: particles move faster, so they collide more often AND a far bigger share of those collisions have enough punch to react. A modest rise can speed things up a lot.", "next": "v3" },
+      { "id": "v3", "speaker": "Kineticist Vasco", "text": "Lever two — CONCENTRATION (and PRESSURE for gases). Cram more particles into the same space and they bump into each other more often per second. More crowded, faster reaction.", "next": "v4" },
+      { "id": "v4", "speaker": "Kineticist Vasco", "text": "That's two of the levers. Chemurge Sela further up keeps the other two — SURFACE AREA and CATALYSTS. Learn all four and the Runaway Reaction at the top can't outpace you. Off you go.", "end": true, "setFlag": "lesson_reaction-rates_seen" },
+      { "id": "v_skip", "speaker": "Kineticist Vasco", "text": "Confident! Then keep up with the things racing around the Crags. Remember — a wrong answer just fizzles the move; it never hurts you. Go.", "end": true, "setFlag": "lesson_reaction-rates_seen" }
+    ]
+  },
+  "chemurge-sela": {
+    "id": "chemurge-sela", "name": "Chemurge Sela", "spriteKey": "npc_chemurge_sela", "tile": { "x": 7, "y": 8 }, "facing": "down",
+    "dialogue": [
+      { "id": "o0", "speaker": "Chemurge Sela", "text": "Vasco gave you heat and concentration. I hold the other two levers — and the trick for spotting how fast a reaction really is.", "next": "o1" },
+      { "id": "o1", "speaker": "Chemurge Sela", "text": "Lever three — SURFACE AREA. Only matters for a solid. Break it up — better yet, powder it — and you expose vastly more surface for the other reactant to collide with. A marble chip in acid just sits there; powdered marble fizzes furiously.", "next": "o2" },
+      { "id": "o2", "speaker": "Chemurge Sela", "text": "Lever four — CATALYSTS. A catalyst gives the reaction a shortcut: a pathway needing LESS energy to get going, so more collisions succeed. And it's NOT used up — a pinch of it works again and again. ENZYMES are nature's catalysts. A catalyst changes the SPEED, never the amount of product.", "next": "o3" },
+      { "id": "o3", "speaker": "Chemurge Sela", "text": "And to MEASURE the rate: collect the gas given off against time, or weigh the flask as gas escapes, or time a cross vanishing under a forming precipitate. On a graph, a STEEPER line means faster — and the line flattens the moment a reactant runs out.", "next": "o4" },
+      { "id": "o4", "speaker": "Chemurge Sela", "text": "Collisions, temperature, concentration, surface area, catalysts — five hands on the throttle. The Runaway Reaction has pulled every one of them. Go and slow it down.", "end": true }
+    ]
+  },
+  "shrinekeeper-tally": {
+    "id": "shrinekeeper-tally", "name": "Shrinekeeper Tally", "spriteKey": "npc_shrinekeeper_tally", "tile": { "x": 4, "y": 12 }, "facing": "right",
+    "dialogue": [
+      { "id": "s0", "speaker": "Shrinekeeper Tally", "text": "The Tally Shrine — no monsters, just questions on what makes reactions fast or slow. Clear it and you'll carry off an Energy Cell and a fresh Buffer. Step in?", "choices": [ { "label": "Enter the Shrine.", "next": "s_enter" }, { "label": "Not yet.", "next": "s_later" } ] },
+      { "id": "s_enter", "speaker": "Shrinekeeper Tally", "text": "Six questions. One miss is forgiven; two and the stopwatch stops you. Begin when ready.", "end": true, "setFlag": "shrine_entered_catalyst-crags", "launch": "shrine" },
+      { "id": "s_later", "speaker": "Shrinekeeper Tally", "text": "The stopwatch is always ready. Come back when you've studied.", "end": true }
+    ]
   }
 }
