@@ -19,8 +19,8 @@
     "miniBossId": "unstable-halide",
     "regionBossId": "the-sundered-lattice",
     "npcIds": ["smith-valentia", "lorekeeper-octet", "shrinekeeper-mortar"],
-    "shrine": { "questionTopic": "bonding", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 400, "rewardItemIds": ["energy-cell", "buffer"] },
+    "shrine": { "questionTopic": "bonding", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 520, "rewardItemIds": ["energy-cell", "buffer"] },
     "unlocksRegionId": null,
-    "bossReward": { "xp": 500, "itemIds": ["reagent", "isotope-core"], "skillId": "lattice-collapse" }
+    "bossReward": { "xp": 640, "itemIds": ["reagent", "isotope-core"], "skillId": "lattice-collapse" }
   }
 ]
