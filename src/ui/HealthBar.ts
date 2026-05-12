@@ -4,9 +4,9 @@ const HP_COLOR = 0x52b788;
 const HP_AMBER = 0xf3722c;
 const HP_RED   = 0xe63946;
 
-const BAR_H = 8;
-const LABEL_W = 32;
-const BAR_PADDING = 4;
+const BAR_H = 32;
+const LABEL_W = 128;
+const BAR_PADDING = 16;
 
 export class HealthBar extends Phaser.GameObjects.Container {
   private readonly barW: number;
@@ -19,12 +19,12 @@ export class HealthBar extends Phaser.GameObjects.Container {
     // Label
     scene.add.text(0, 0, label, {
       fontFamily: 'monospace',
-      fontSize: '8px',
+      fontSize: '28px',
       color: '#cdd6f4',
     }).setOrigin(0, 0.5).setY(BAR_H / 2);
     this.add(scene.add.text(0, BAR_H / 2, label, {
       fontFamily: 'monospace',
-      fontSize: '8px',
+      fontSize: '28px',
       color: '#cdd6f4',
     }).setOrigin(0, 0.5));
 

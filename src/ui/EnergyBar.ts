@@ -4,9 +4,9 @@ const EN_COLOR = 0x4cc9f0;
 const EN_AMBER = 0xf3722c;
 const EN_RED   = 0xe63946;
 
-const BAR_H = 8;
-const LABEL_W = 32;
-const BAR_PADDING = 4;
+const BAR_H = 32;
+const LABEL_W = 128;
+const BAR_PADDING = 16;
 
 export class EnergyBar extends Phaser.GameObjects.Container {
   private readonly barW: number;
@@ -19,7 +19,7 @@ export class EnergyBar extends Phaser.GameObjects.Container {
     // Label
     this.add(scene.add.text(0, BAR_H / 2, label, {
       fontFamily: 'monospace',
-      fontSize: '8px',
+      fontSize: '28px',
       color: '#cdd6f4',
     }).setOrigin(0, 0.5));
 
