@@ -59,13 +59,13 @@ export class DialogueScene extends Phaser.Scene {
     this.add.rectangle(0, 0, width, height, 0x000000, OVERLAY_ALPHA).setOrigin(0, 0);
 
     // Speaker name tag (sits just above the textbox)
-    const textboxY = height - 80;
-    this.speakerTag = this.add.text(8, textboxY - 16, '', {
+    const textboxY = height - 320;
+    this.speakerTag = this.add.text(32, textboxY - 56, '', {
       fontFamily: 'monospace',
-      fontSize: '9px',
+      fontSize: '32px',
       color: '#f9e2af',
       backgroundColor: '#1e1e2e',
-      padding: { x: 4, y: 2 },
+      padding: { x: 16, y: 8 },
     });
 
     // Textbox
@@ -73,10 +73,10 @@ export class DialogueScene extends Phaser.Scene {
       x: 0,
       y: textboxY,
       w: width,
-      h: 76,
-      charsPerLine: 52,
+      h: 304,
+      charsPerLine: 64,
       linesPerPage: 3,
-      speedMs: 30,
+      speedMs: 18,
     });
 
     // Keyboard cursor keys for choice navigation
@@ -154,12 +154,12 @@ export class DialogueScene extends Phaser.Scene {
     this.choiceIndex = 0;
 
     const { width, height } = this.scale;
-    const startY = height - 100 - labels.length * 18;
+    const startY = height - 400 - labels.length * 72;
 
     this.choiceTexts = labels.map((label, i) => {
-      const txt = this.add.text(16, startY + i * 18, '▷ ' + label, {
+      const txt = this.add.text(64, startY + i * 72, '▷ ' + label, {
         fontFamily: 'monospace',
-        fontSize: '10px',
+        fontSize: '36px',
         color: CHOICE_COLOR_DEFAULT,
       });
       txt.setInteractive({ useHandCursor: true });
