@@ -172,5 +172,34 @@
       { "id": "s_enter", "speaker": "Shrinekeeper Litmus", "text": "Six questions. One miss is forgiven; two and the indicator turns you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_acid-wastes", "launch": "shrine" },
       { "id": "s_later", "speaker": "Shrinekeeper Litmus", "text": "The litmus paper waits. Come back when you've studied.", "end": true }
     ]
+  },
+  "thermologist-calor": {
+    "id": "thermologist-calor", "name": "Thermologist Calor", "spriteKey": "npc_thermologist_calor", "tile": { "x": 11, "y": 12 }, "facing": "down",
+    "dialogue": [
+      { "id": "v0", "speaker": "Thermologist Calor", "text": "The Crucible. Every reaction here either gives out heat or drinks it in — never neither. Want me to walk you through energy changes, or do you already know them?", "choices": [ { "label": "Walk me through it.", "next": "v1" }, { "label": "I know energy changes — let me through.", "next": "v_skip" } ] },
+      { "id": "v1", "speaker": "Thermologist Calor", "text": "Two kinds. EXOTHERMIC: energy is RELEASED to the surroundings, so they warm UP — the products end up LOWER in energy than the reactants, and we say ΔH is NEGATIVE. ENDOTHERMIC: energy is TAKEN IN from the surroundings, so they cool DOWN — products end up HIGHER in energy, ΔH is POSITIVE.", "next": "v2" },
+      { "id": "v2", "speaker": "Thermologist Calor", "text": "Why? Look at the bonds. BREAKING a bond always ABSORBS energy (that step is endothermic). MAKING a bond always RELEASES energy (that step is exothermic). The overall change is just the BALANCE: if making the new bonds releases more than breaking the old ones cost, it's exothermic overall — and the other way round for endothermic.", "next": "v3" },
+      { "id": "v3", "speaker": "Thermologist Calor", "text": "Draw it as a REACTION PROFILE: reactants on the left, products on the right, and a HUMP between them. The height of the hump above the reactants is the ACTIVATION ENERGY — the minimum energy a collision needs before the reaction can happen at all. A CATALYST gives a lower path: it shrinks the hump, but it does NOT move the start or end heights, so it never changes ΔH.", "next": "v4" },
+      { "id": "v4", "speaker": "Thermologist Calor", "text": "Exo gives heat out, endo takes it in; bonds break in, make out; the profile shows the activation hump. That's the whole map. Forgemaster Pyra up ahead has the everyday examples. Go on.", "end": true, "setFlag": "lesson_energy-changes_seen" },
+      { "id": "v_skip", "speaker": "Thermologist Calor", "text": "Confident, then. Mind the things prowling the forge floor — a wrong answer just fizzles your move, it never burns you. Off you go.", "end": true, "setFlag": "lesson_energy-changes_seen" }
+    ]
+  },
+  "forgemaster-pyra": {
+    "id": "forgemaster-pyra", "name": "Forgemaster Pyra", "spriteKey": "npc_forgemaster_pyra", "tile": { "x": 7, "y": 8 }, "facing": "down",
+    "dialogue": [
+      { "id": "o0", "speaker": "Forgemaster Pyra", "text": "Calor gave you the theory. I'll show you where you've already met it.", "next": "o1" },
+      { "id": "o1", "speaker": "Forgemaster Pyra", "text": "EXOTHERMIC, everywhere: any COMBUSTION — fuels burning in the forge; RESPIRATION in your own cells; chemical HAND-WARMERS; NEUTRALISATION of an acid with a base; and most OXIDATIONS, even rusting. Touch the flask afterwards — it's HOT. Heat flowed OUT.", "next": "o2" },
+      { "id": "o2", "speaker": "Forgemaster Pyra", "text": "ENDOTHERMIC, also everywhere: THERMAL DECOMPOSITION — you must keep heating a carbonate to break it apart; PHOTOSYNTHESIS, which stores light energy; DISSOLVING certain salts, the trick behind an instant COLD PACK; and ELECTROLYSIS. Touch that flask and it's gone COLD. Heat flowed IN.", "next": "o3" },
+      { "id": "o3", "speaker": "Forgemaster Pyra", "text": "How to tell which, in the lab: do it in a POLYSTYRENE CUP and watch the thermometer. Temperature goes UP → exothermic, ΔH negative. Temperature goes DOWN → endothermic, ΔH positive. The cup just stops the heat leaking, so the reading is honest.", "next": "o4" },
+      { "id": "o4", "speaker": "Forgemaster Pyra", "text": "Examples, the cup test, the sign of ΔH — that's the practical half. The Heat Sink waits past the gate above. It pulls heat out of everything near it — go and put the balance right.", "end": true }
+    ]
+  },
+  "shrinekeeper-ember": {
+    "id": "shrinekeeper-ember", "name": "Shrinekeeper Ember", "spriteKey": "npc_shrinekeeper_ember", "tile": { "x": 4, "y": 12 }, "facing": "right",
+    "dialogue": [
+      { "id": "s0", "speaker": "Shrinekeeper Ember", "text": "The Ember Shrine — no monsters, only questions on energy changes: exo and endo, bond energy, reaction profiles. Clear it and you'll carry off an Energy Cell and a fresh Buffer. Step in?", "choices": [ { "label": "Enter the Shrine.", "next": "s_enter" }, { "label": "Not yet.", "next": "s_later" } ] },
+      { "id": "s_enter", "speaker": "Shrinekeeper Ember", "text": "Six questions. One miss is forgiven; two and the coals go cold on you. Begin when you're ready.", "end": true, "setFlag": "shrine_entered_the-crucible", "launch": "shrine" },
+      { "id": "s_later", "speaker": "Shrinekeeper Ember", "text": "The embers will keep. Come back when you've studied.", "end": true }
+    ]
   }
 }
