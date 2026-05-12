@@ -9,7 +9,7 @@ import { scoreGauntlet } from './shrineScoring';
 
 interface ShrineSceneData { regionId: string }
 
-const W = 480, H = 320, FONT = 'monospace';
+const W = 1920, H = 1080, FONT = 'monospace';
 
 /**
  * A monster-free quiz gauntlet: ask `shrine.questionCount` questions in sequence, then —
@@ -46,11 +46,11 @@ export class ChallengeShrineScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#070b12');
     this.add.rectangle(0, 0, W, H, 0x0a1018).setOrigin(0, 0);
-    this.add.text(W / 2, 14, `Challenge Shrine — ${region.name}`, { fontFamily: FONT, fontSize: '12px', color: '#cdd6f4' }).setOrigin(0.5);
-    this.add.text(W / 2, 28, `${shrine.questionCount} questions. Miss no more than ${allowedMisses}.`, { fontFamily: FONT, fontSize: '8px', color: '#8fa3c0' }).setOrigin(0.5);
-    this.progressText = this.add.text(W / 2, 222, '', { fontFamily: FONT, fontSize: '9px', color: '#f9e2af' }).setOrigin(0.5);
+    this.add.text(W / 2, 56, `Challenge Shrine — ${region.name}`, { fontFamily: FONT, fontSize: '44px', color: '#cdd6f4' }).setOrigin(0.5);
+    this.add.text(W / 2, 120, `${shrine.questionCount} questions. Miss no more than ${allowedMisses}.`, { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setOrigin(0.5);
+    this.progressText = this.add.text(W / 2, 850, '', { fontFamily: FONT, fontSize: '32px', color: '#f9e2af' }).setOrigin(0.5);
 
-    this.quizPanel = new QuizPanel(this, 20, 40, W - 40, 170);
+    this.quizPanel = new QuizPanel(this, 80, 180, W - 160, 600);
     this.quizPanel.setDepth(100);
 
     void this.runGauntlet(region, shrine);
@@ -105,7 +105,7 @@ export class ChallengeShrineScene extends Phaser.Scene {
   private wait(ms: number): Promise<void> { return new Promise(resolve => { this.time.delayedCall(ms, () => resolve()); }); }
 
   private banner(text: string, color: string): Promise<void> {
-    const t = this.add.text(W / 2, 110, text, { fontFamily: FONT, fontSize: '10px', color, backgroundColor: '#0b0f17cc', padding: { x: 8, y: 4 }, align: 'center', wordWrap: { width: W - 40 } }).setOrigin(0.5).setDepth(200);
+    const t = this.add.text(W / 2, 440, text, { fontFamily: FONT, fontSize: '36px', color, backgroundColor: '#0b0f17cc', padding: { x: 32, y: 16 }, align: 'center', wordWrap: { width: W - 160 } }).setOrigin(0.5).setDepth(200);
     return this.wait(1800).then(() => { t.destroy(); });
   }
 }
