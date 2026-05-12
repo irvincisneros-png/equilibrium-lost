@@ -7,20 +7,40 @@ import { addPlaceholderLabel } from '../ui/placeholderTextures';
 import { persist as savePersist } from '../persist';
 import { REFRESHER_TOAST_KEY } from './battlePresenter';
 import elementalReaches from '../content/data/tilemaps/elemental-reaches.json';
+import bondingForge from '../content/data/tilemaps/bonding-forge.json';
 
 interface OverworldSceneData { regionId: string }
 
 interface TileObject { type: string; x: number; y: number; [k: string]: unknown }
 interface TilemapData { width: number; height: number; tileSize: number; ground: number[][]; objects: TileObject[] }
 
-// In M1 there is one playable region; future regions add entries here.
+// One entry per playable region; new regions add their hand-authored grid here.
 const TILEMAPS: Record<string, TilemapData> = {
   tilemap_elemental_reaches: elementalReaches as unknown as TilemapData,
+  tilemap_bonding_forge: bondingForge as unknown as TilemapData,
 };
 
-// Walkable tile-id → colour: 0 grass · 1 path · 4 tall-grass. Blocked tiles (2 water, 3 wall) are
-// drawn specially (water = dark + sunken outline; wall = a beveled stone block) so they read as impassable.
-const TILE_COLOR: Record<number, number> = { 0: 0x4d7a5a, 1: 0xddc193, 4: 0x33623c };
+// Per-biome tile colours, keyed by region.tilesetKey. Walkable: floor (id 0), path (id 1),
+// tallGrass (id 4). Blocked: walls (id 3, a beveled block — face/top-lit/base-shadow/outline)
+// and water (id 2, a sunken pool). Placeholder-quality — just enough so regions read distinctly.
+interface BiomePalette {
+  floor: number; path: number; tallGrass: number;
+  wallFace: number; wallTop: number; wallBase: number; wallLine: number;
+  waterFill: number; waterLine: number;
+}
+const ELEMENTAL_BIOME: BiomePalette = {
+  floor: 0x4d7a5a, path: 0xddc193, tallGrass: 0x33623c,
+  wallFace: 0x4a443c, wallTop: 0x6b6258, wallBase: 0x2a2620, wallLine: 0x161210,
+  waterFill: 0x163454, waterLine: 0x0c1e34,
+};
+const BIOMES: Record<string, BiomePalette> = {
+  tiles_elemental_reaches: ELEMENTAL_BIOME,
+  tiles_bonding_forge: {
+    floor: 0x4f4a44, path: 0xa86b3a, tallGrass: 0x6e4126,
+    wallFace: 0x33302a, wallTop: 0x4d4840, wallBase: 0x1a1814, wallLine: 0x0d0c0a,
+    waterFill: 0x2a1810, waterLine: 0x140c08,
+  },
+};
 
 // Marker glyphs/colours for object tiles.
 const MARKER_STYLE: Record<string, { color: number; glyph: string }> = {
@@ -91,6 +111,7 @@ export class OverworldScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#0b0f17');
 
     // --- ground layer (one Graphics for the whole grid) ---
+    const pal = BIOMES[region.tilesetKey] ?? ELEMENTAL_BIOME;
     const ground = this.add.graphics().setDepth(-1000);
     const lip = Math.max(4, Math.round(ts / 8));
     for (let y = 0; y < this.map.height; y++) {
@@ -98,16 +119,17 @@ export class OverworldScene extends Phaser.Scene {
       for (let x = 0; x < this.map.width; x++) {
         const id = row[x] ?? 0;
         const px = x * ts, py = y * ts;
-        if (id === 3) { // wall — a beveled stone block: clearly impassable
-          ground.fillStyle(0x4a443c, 1); ground.fillRect(px, py, ts, ts);
-          ground.fillStyle(0x6b6258, 1); ground.fillRect(px, py, ts, lip);             // lit top
-          ground.fillStyle(0x2a2620, 1); ground.fillRect(px, py + ts - lip, ts, lip);  // shadowed base
-          ground.lineStyle(2, 0x161210, 1); ground.strokeRect(px, py, ts, ts);
+        if (id === 3) { // wall — a beveled block: clearly impassable
+          ground.fillStyle(pal.wallFace, 1); ground.fillRect(px, py, ts, ts);
+          ground.fillStyle(pal.wallTop, 1); ground.fillRect(px, py, ts, lip);             // lit top
+          ground.fillStyle(pal.wallBase, 1); ground.fillRect(px, py + ts - lip, ts, lip); // shadowed base
+          ground.lineStyle(2, pal.wallLine, 1); ground.strokeRect(px, py, ts, ts);
         } else if (id === 2) { // water — blocked, sunken
-          ground.fillStyle(0x163454, 1); ground.fillRect(px, py, ts, ts);
-          ground.lineStyle(3, 0x0c1e34, 1); ground.strokeRect(px + 1, py + 1, ts - 2, ts - 2);
-        } else { // grass / path / tall-grass — walkable
-          ground.fillStyle(TILE_COLOR[id] ?? 0xff00ff, 1); ground.fillRect(px, py, ts, ts);
+          ground.fillStyle(pal.waterFill, 1); ground.fillRect(px, py, ts, ts);
+          ground.lineStyle(3, pal.waterLine, 1); ground.strokeRect(px + 1, py + 1, ts - 2, ts - 2);
+        } else { // floor / path / tall-grass — walkable
+          ground.fillStyle(id === 1 ? pal.path : id === 4 ? pal.tallGrass : pal.floor, 1);
+          ground.fillRect(px, py, ts, ts);
         }
       }
     }
@@ -167,7 +189,7 @@ export class OverworldScene extends Phaser.Scene {
       .setOrigin(0.5, 1).setScrollFactor(0).setDepth(UI_DEPTH).setVisible(false);
 
     // --- mark the first-lesson NPC (a bobbing "★" while the lesson is unread) + a one-time welcome banner ---
-    if (!this.flag('lesson_atomic_structure_seen')) {
+    if (!this.flag(`lesson_${region.topic}_seen`)) {
       const npc0 = region.npcIds[0] ? this.content.npcs[region.npcIds[0]] : undefined;
       this.questNpc = npc0 ? (this.npcs.find(n => n.npcId === npc0.id) ?? null) : null;
       if (this.questNpc) this.questMarker = this.add.text(0, 0, '★', { fontFamily: FONT, fontSize: '34px', color: '#f9e2af', stroke: '#000000', strokeThickness: 5 }).setOrigin(0.5, 1).setDepth(9998);
@@ -211,7 +233,7 @@ export class OverworldScene extends Phaser.Scene {
 
     // The "★" over the first-lesson NPC, until the lesson's been read.
     if (this.questMarker) {
-      if (this.questNpc && !this.flag('lesson_atomic_structure_seen')) {
+      if (this.questNpc && !this.flag(`lesson_${this.region.topic}_seen`)) {
         this.questMarker.setPosition(this.questNpc.x, this.questNpc.y - this.questNpc.displayHeight / 2 - 6 + bob).setVisible(true);
       } else { this.questMarker.destroy(); this.questMarker = null; }
     }
@@ -238,7 +260,7 @@ export class OverworldScene extends Phaser.Scene {
 
   /** One short line describing what to do next, for the HUD quest tracker. */
   private currentObjective(): string {
-    if (!this.flag('lesson_atomic_structure_seen')) return `Talk to ${this.content.npcs[this.region.npcIds[0] ?? '']?.name ?? 'the mentor'} (look for the ★)`;
+    if (!this.flag(`lesson_${this.region.topic}_seen`)) return `Talk to ${this.content.npcs[this.region.npcIds[0] ?? '']?.name ?? 'the mentor'} (look for the ★)`;
     const rp = this.regionProgress();
     if (rp.bossDefeated) return 'Region restored — leave via ↩ (bottom of the map)';
     if (!this.flag(`miniboss_${this.region.id}_done`)) return `Beat the guardian at the ⚔ chokepoint, then reach the boss gate (top)`;
