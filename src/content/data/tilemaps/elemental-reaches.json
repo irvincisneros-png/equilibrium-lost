@@ -25,7 +25,7 @@
   "objects": [
     { "type": "player_spawn", "x": 4, "y": 14 },
     { "type": "exit", "x": 4, "y": 17, "to": "world" },
-    { "type": "npc", "id": "professor-bohrlin", "x": 6, "y": 5 },
+    { "type": "npc", "id": "professor-bohrlin", "x": 6, "y": 13 },
     { "type": "npc", "id": "archivist-mendel", "x": 12, "y": 9 },
     { "type": "npc", "id": "shrinekeeper-quanta", "x": 3, "y": 13 },
     { "type": "shrine_entrance", "x": 2, "y": 13, "regionId": "elemental-reaches" },

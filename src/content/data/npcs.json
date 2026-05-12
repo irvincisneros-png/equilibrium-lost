@@ -1,6 +1,6 @@
 {
   "professor-bohrlin": {
-    "id": "professor-bohrlin", "name": "Professor Bohrlin", "spriteKey": "npc_professor_bohrlin", "tile": { "x": 6, "y": 5 }, "facing": "down",
+    "id": "professor-bohrlin", "name": "Professor Bohrlin", "spriteKey": "npc_professor_bohrlin", "tile": { "x": 6, "y": 13 }, "facing": "down",
     "dialogue": [
       { "id": "n0", "speaker": "Prof. Bohrlin", "text": "Welcome to the Elemental Reaches, young chemist. Æquor is unravelling — but every atom still obeys the rules. Shall I refresh you?", "choices": [ { "label": "Please do.", "next": "n1" }, { "label": "I know this — let me through.", "next": "n_skip" } ] },
       { "id": "n1", "speaker": "Prof. Bohrlin", "text": "An atom has a tiny, dense NUCLEUS — protons (+1) and neutrons (0) — surrounded by electrons (−1) in SHELLS.", "next": "n2" },

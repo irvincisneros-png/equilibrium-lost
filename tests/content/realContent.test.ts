@@ -1,7 +1,48 @@
 import { describe, it, expect } from 'vitest';
 import { loadGameContent } from '../../src/content/loadGameContent';
+import elementalReaches from '../../src/content/data/tilemaps/elemental-reaches.json';
 import bondingForge from '../../src/content/data/tilemaps/bonding-forge.json';
 import type { DialogueNode } from '../../src/content/types';
+
+type AuditTileObject = { type: string; id?: string; x: number; y: number };
+type AuditTilemap = { width: number; height: number; ground: number[][]; objects: AuditTileObject[] };
+
+function reachableTilesBeforeGuardian(map: AuditTilemap): Set<string> {
+  const spawn = map.objects.find(o => o.type === 'player_spawn');
+  expect(spawn).toBeDefined();
+  const seen = new Set<string>();
+  const queue = [{ x: spawn!.x, y: spawn!.y }];
+  const blocks = (x: number, y: number): boolean => {
+    if (x < 0 || y < 0 || x >= map.width || y >= map.height) return true;
+    const tile = map.ground[y]?.[x] ?? 0;
+    if (tile === 2 || tile === 3) return true;
+    if (map.objects.some(o => o.type === 'npc' && o.x === x && o.y === y)) return true;
+    if (map.objects.some(o => o.type === 'minibossTrigger' && x === o.x && y === o.y - 1)) return true;
+    return false;
+  };
+  while (queue.length) {
+    const tile = queue.shift()!;
+    const key = `${tile.x},${tile.y}`;
+    if (seen.has(key) || blocks(tile.x, tile.y)) continue;
+    seen.add(key);
+    queue.push(
+      { x: tile.x + 1, y: tile.y },
+      { x: tile.x - 1, y: tile.y },
+      { x: tile.x, y: tile.y + 1 },
+      { x: tile.x, y: tile.y - 1 },
+    );
+  }
+  return seen;
+}
+
+function isAdjacentReachable(reachable: Set<string>, object: AuditTileObject): boolean {
+  return [
+    `${object.x + 1},${object.y}`,
+    `${object.x - 1},${object.y}`,
+    `${object.x},${object.y + 1}`,
+    `${object.x},${object.y - 1}`,
+  ].some(tile => reachable.has(tile));
+}
 
 describe('shipped content', () => {
   it('loads without throwing and reports no cross-reference warnings', () => {
@@ -88,6 +129,22 @@ describe('shipped content', () => {
     const types = tm.objects.map(o => o.type);
     for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
+  });
+  it('first-lesson NPCs are reachable before the mini-boss gate in every shipped region', () => {
+    const { content } = loadGameContent();
+    const maps: Record<string, AuditTilemap> = {
+      'elemental-reaches': elementalReaches as AuditTilemap,
+      'bonding-forge': bondingForge as AuditTilemap,
+    };
+    for (const region of content.regions) {
+      const map = maps[region.id];
+      expect(map, `${region.id} has no audit tilemap`).toBeDefined();
+      if (!map) throw new Error(`${region.id} has no audit tilemap`);
+      const firstNpcId = region.npcIds[0];
+      const firstNpc = map.objects.find(o => o.type === 'npc' && o.id === firstNpcId);
+      expect(firstNpc, `${region.id} missing first NPC ${firstNpcId}`).toBeDefined();
+      expect(isAdjacentReachable(reachableTilesBeforeGuardian(map), firstNpc!), `${firstNpcId} is sealed behind the guardian`).toBe(true);
+    }
   });
   it('every NPC dialogue tree is walkable to a terminal node down every branch', () => {
     const { content } = loadGameContent();
