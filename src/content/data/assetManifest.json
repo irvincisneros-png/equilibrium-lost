@@ -72,6 +72,18 @@
     "npc_kineticist_vasco": "assets/images/npc_kineticist_vasco.png",
     "npc_chemurge_sela": "assets/images/npc_chemurge_sela.png",
     "npc_shrinekeeper_tally": "assets/images/npc_shrinekeeper_tally.png",
+    "tiles_acid_wastes": "assets/images/tiles_acid_wastes.png",
+    "bg_battle_acid_wastes": "assets/images/bg_battle_acid_wastes.png",
+    "enemy_litmuse": "assets/images/enemy_litmuse.png",
+    "enemy_protolyte": "assets/images/enemy_protolyte.png",
+    "enemy_corrodent": "assets/images/enemy_corrodent.png",
+    "enemy_corrodent_half": "assets/images/enemy_corrodent_half.png",
+    "enemy_alkalith": "assets/images/enemy_alkalith.png",
+    "enemy_neutraliser": "assets/images/enemy_neutraliser.png",
+    "enemy_ph_tyrant": "assets/images/enemy_ph_tyrant.png",
+    "npc_apothecary_vitra": "assets/images/npc_apothecary_vitra.png",
+    "npc_salter_mordant": "assets/images/npc_salter_mordant.png",
+    "npc_shrinekeeper_litmus": "assets/images/npc_shrinekeeper_litmus.png",
     "ui_textbox": "assets/images/ui_textbox.png",
     "ui_chainmeter": "assets/images/ui_chainmeter.png",
     "icon_status_oxidised": "assets/images/icon_status_oxidised.png",
@@ -82,7 +94,7 @@
     "icon_status_combusting": "assets/images/icon_status_combusting.png",
     "title_art": "assets/images/title_art.png"
   },
-  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json" },
+  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json", "tilemap_acid_wastes": "src/content/data/tilemaps/acid-wastes.json" },
   "audio": {},
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
@@ -165,6 +177,18 @@
     { "key": "enemy_runaway_reaction", "w": 256, "h": 256, "color": "#e2562a", "label": "RUNAWAY REACTION" },
     { "key": "npc_kineticist_vasco", "w": 64, "h": 96, "color": "#7a8a9a", "label": "Va" },
     { "key": "npc_chemurge_sela", "w": 64, "h": 96, "color": "#8aaa5a", "label": "Se" },
-    { "key": "npc_shrinekeeper_tally", "w": 64, "h": 96, "color": "#b0a83a", "label": "Ta" }
+    { "key": "npc_shrinekeeper_tally", "w": 64, "h": 96, "color": "#b0a83a", "label": "Ta" },
+    { "key": "tiles_acid_wastes", "w": 64, "h": 64, "color": "#4a5238", "label": "" },
+    { "key": "bg_battle_acid_wastes", "w": 1920, "h": 896, "color": "#24281c", "label": "" },
+    { "key": "enemy_litmuse", "w": 96, "h": 96, "color": "#aab86a", "label": "Litmuse" },
+    { "key": "enemy_protolyte", "w": 128, "h": 128, "color": "#c2a05a", "label": "Protolyte" },
+    { "key": "enemy_corrodent", "w": 160, "h": 160, "color": "#7a7e5a", "label": "Corrodent" },
+    { "key": "enemy_corrodent_half", "w": 96, "h": 96, "color": "#8e926a", "label": "Frag" },
+    { "key": "enemy_alkalith", "w": 128, "h": 128, "color": "#6a9aaa", "label": "Alkalith" },
+    { "key": "enemy_neutraliser", "w": 192, "h": 192, "color": "#5aa0a0", "label": "Neutraliser" },
+    { "key": "enemy_ph_tyrant", "w": 256, "h": 256, "color": "#c2c23a", "label": "pH TYRANT" },
+    { "key": "npc_apothecary_vitra", "w": 64, "h": 96, "color": "#9aaa5a", "label": "Vi" },
+    { "key": "npc_salter_mordant", "w": 64, "h": 96, "color": "#aa8a5a", "label": "Mo" },
+    { "key": "npc_shrinekeeper_litmus", "w": 64, "h": 96, "color": "#7a8aaa", "label": "Li" }
   ]
 }
