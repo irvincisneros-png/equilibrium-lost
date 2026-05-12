@@ -44,7 +44,19 @@
     "regionBossId": "the-lopsided-equation",
     "npcIds": ["archivist-pollux", "weighmaster-libra", "shrinekeeper-scale"],
     "shrine": { "questionTopic": "balancing-equations", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 850, "rewardItemIds": ["energy-cell", "buffer"] },
-    "unlocksRegionId": null,
+    "unlocksRegionId": "catalyst-crags",
     "bossReward": { "xp": 1000, "itemIds": ["reagent", "isotope-core"], "skillId": "equilibrate" }
+  },
+  {
+    "id": "catalyst-crags", "index": 5, "name": "Catalyst Crags", "topic": "reaction-rates",
+    "tilemapKey": "tilemap_catalyst_crags", "tilesetKey": "tiles_catalyst_crags", "battleBackgroundKey": "bg_battle_catalyst_crags",
+    "wildEnemyIds": ["sparkrate", "collidon", "surfax", "enzymoid"],
+    "encounterRatePerStep": 0.10,
+    "miniBossId": "the-rate-spike",
+    "regionBossId": "the-runaway-reaction",
+    "npcIds": ["kineticist-vasco", "chemurge-sela", "shrinekeeper-tally"],
+    "shrine": { "questionTopic": "reaction-rates", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 1000, "rewardItemIds": ["energy-cell", "buffer"] },
+    "unlocksRegionId": null,
+    "bossReward": { "xp": 1150, "itemIds": ["reagent", "isotope-core"], "skillId": "activation-flare" }
   }
 ]
