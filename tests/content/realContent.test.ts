@@ -146,6 +146,15 @@ describe('shipped content', () => {
       expect(isAdjacentReachable(reachableTilesBeforeGuardian(map), firstNpc!), `${firstNpcId} is sealed behind the guardian`).toBe(true);
     }
   });
+  it('first-lesson NPCs set the topic-based lesson flag the overworld objective reads', () => {
+    const { content } = loadGameContent();
+    for (const region of content.regions) {
+      const firstNpc = content.npcs[region.npcIds[0] ?? ''];
+      expect(firstNpc, `${region.id} missing first NPC content`).toBeDefined();
+      const flags = firstNpc?.dialogue.map(node => node.setFlag).filter(Boolean);
+      expect(flags, `${region.id} first lesson flag`).toContain(`lesson_${region.topic}_seen`);
+    }
+  });
   it('every NPC dialogue tree is walkable to a terminal node down every branch', () => {
     const { content } = loadGameContent();
     const walk = (tree: DialogueNode[], id: string, seen: Set<string>): void => {
