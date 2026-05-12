@@ -97,6 +97,9 @@ export class Textbox extends Phaser.GameObjects.Container {
     }
     const isLast = this.pageIdx >= this.pages.length - 1;
     this.caretObj.setVisible(!isLast);
+    // Mirror revealPage()'s natural-completion path: a skipped *last* page must still
+    // fire 'complete', or consumers (e.g. DialogueScene) stall forever. (Was the freeze bug.)
+    if (isLast) this.emit('complete');
   }
 
   private revealPage(): void {
