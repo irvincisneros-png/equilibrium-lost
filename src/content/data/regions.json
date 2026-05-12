@@ -56,7 +56,19 @@
     "regionBossId": "the-runaway-reaction",
     "npcIds": ["kineticist-vasco", "chemurge-sela", "shrinekeeper-tally"],
     "shrine": { "questionTopic": "reaction-rates", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 1000, "rewardItemIds": ["energy-cell", "buffer"] },
-    "unlocksRegionId": null,
+    "unlocksRegionId": "acid-wastes",
     "bossReward": { "xp": 1150, "itemIds": ["reagent", "isotope-core"], "skillId": "activation-flare" }
+  },
+  {
+    "id": "acid-wastes", "index": 6, "name": "The Acid Wastes", "topic": "acids-bases",
+    "tilemapKey": "tilemap_acid_wastes", "tilesetKey": "tiles_acid_wastes", "battleBackgroundKey": "bg_battle_acid_wastes",
+    "wildEnemyIds": ["litmuse", "protolyte", "corrodent", "alkalith"],
+    "encounterRatePerStep": 0.10,
+    "miniBossId": "the-neutraliser",
+    "regionBossId": "the-ph-tyrant",
+    "npcIds": ["apothecary-vitra", "salter-mordant", "shrinekeeper-litmus"],
+    "shrine": { "questionTopic": "acids-bases", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 1150, "rewardItemIds": ["energy-cell", "buffer"] },
+    "unlocksRegionId": null,
+    "bossReward": { "xp": 1300, "itemIds": ["reagent", "isotope-core"], "skillId": "corrosive-burn" }
   }
 ]
