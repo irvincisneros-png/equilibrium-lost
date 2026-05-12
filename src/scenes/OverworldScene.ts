@@ -12,6 +12,7 @@ import reactionHollow from '../content/data/tilemaps/reaction-hollow.json';
 import balanceHalls from '../content/data/tilemaps/balance-halls.json';
 import catalystCrags from '../content/data/tilemaps/catalyst-crags.json';
 import acidWastes from '../content/data/tilemaps/acid-wastes.json';
+import theCrucible from '../content/data/tilemaps/the-crucible.json';
 
 interface OverworldSceneData { regionId: string }
 
@@ -26,6 +27,7 @@ const TILEMAPS: Record<string, TilemapData> = {
   tilemap_balance_halls: balanceHalls as unknown as TilemapData,
   tilemap_catalyst_crags: catalystCrags as unknown as TilemapData,
   tilemap_acid_wastes: acidWastes as unknown as TilemapData,
+  tilemap_the_crucible: theCrucible as unknown as TilemapData,
 };
 
 // Per-biome tile colours, keyed by region.tilesetKey. Walkable: floor (id 0), path (id 1),
@@ -67,6 +69,11 @@ const BIOMES: Record<string, BiomePalette> = {
     floor: 0x4a5238, path: 0x9aaa3a, tallGrass: 0x5a6a28,
     wallFace: 0x33392a, wallTop: 0x4d5440, wallBase: 0x1c2016, wallLine: 0x0e110a,
     waterFill: 0x4a5a14, waterLine: 0x2a3408,
+  },
+  tiles_the_crucible: {
+    floor: 0x3a322a, path: 0xc25a18, tallGrass: 0x8a4a14,
+    wallFace: 0x2a2420, wallTop: 0x443a30, wallBase: 0x161210, wallLine: 0x0a0806,
+    waterFill: 0x6e2c08, waterLine: 0x3a1404,
   },
 };
 
