@@ -58,7 +58,7 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     super(scene, x, y);
     this.panelW = w; this.panelH = h;
     this.add(scene.add.rectangle(0, 0, w, h, C_BG, 0.97).setOrigin(0, 0).setStrokeStyle(4, C_BORDER));
-    this.promptText = scene.add.text(32, 32, '', { fontFamily: FONT, fontSize: '36px', color: C_TEXT, wordWrap: { width: w - 64 } }).setOrigin(0, 0);
+    this.promptText = scene.add.text(32, 32, '', { fontFamily: FONT, fontSize: '36px', color: C_TEXT, wordWrap: { width: w - 64 }, lineSpacing: 6 }).setOrigin(0, 0);
     this.add(this.promptText);
     this.hintText = scene.add.text(32, h - 56, '', { fontFamily: FONT, fontSize: '28px', color: '#89dceb', wordWrap: { width: w - 64 } }).setOrigin(0, 1);
     this.add(this.hintText);
@@ -105,7 +105,7 @@ export class QuizPanel extends Phaser.GameObjects.Container {
       answerStr = this.equationString(question.equation, coeffs);
     }
     const heading = correct ? '✓ Correct!' : `✗ The answer was ${answerStr}`;
-    const box = this.scene.add.text(32, 112, `${heading}\n— ${question.explanation}`, {
+    const box = this.scene.add.text(32, this.contentTop(), `${heading}\n— ${question.explanation}`, {
       fontFamily: FONT, fontSize: '32px', color: correct ? C_OK : '#f9e2af', wordWrap: { width: this.panelW - 64 }, lineSpacing: 8,
     }).setOrigin(0, 0);
     this.add(box);
@@ -139,20 +139,26 @@ export class QuizPanel extends Phaser.GameObjects.Container {
   // --- mcq -----------------------------------------------------------------
 
   private buildMcq(options: string[]): void {
-    const startY = 96;
+    // Lay options out below the (possibly multi-line) prompt and stack them by their own
+    // wrapped height — so a long option that spills onto two lines never overlaps the next one.
+    let y = this.contentTop();
     options.slice(0, 4).forEach((opt, i) => {
-      const txt = this.scene.add.text(48, startY + i * 56, `${String.fromCharCode(65 + i)}.  ${opt}`, {
-        fontFamily: FONT, fontSize: '32px', color: C_TEXT, wordWrap: { width: this.panelW - 96 },
+      const txt = this.scene.add.text(48, y, `${String.fromCharCode(65 + i)}.  ${opt}`, {
+        fontFamily: FONT, fontSize: '30px', color: C_TEXT, wordWrap: { width: this.panelW - 96 }, lineSpacing: 4,
       }).setOrigin(0, 0).setInteractive({ useHandCursor: true });
       txt.on('pointerover', () => txt.setColor(C_ACCENT));
       txt.on('pointerout', () => txt.setColor(C_TEXT));
       txt.on('pointerdown', () => this.choose({ index: i, fastAnswer: this.snapFast() }));
       this.add(txt);
       this.widgets.push(txt);
+      y += Math.max(52, txt.height + 14);
     });
     DIGIT_KEYS.forEach((k, i) => this.onKey(`keydown-${k}`, () => this.choose({ index: i, fastAnswer: this.snapFast() })));
     LETTER_KEYS.forEach((k, i) => this.onKey(`keydown-${k}`, () => this.choose({ index: i, fastAnswer: this.snapFast() })));
   }
+
+  /** Y at which option/widget rows begin — just below the rendered prompt text. */
+  private contentTop(): number { return 32 + Math.max(40, this.promptText.height) + 28; }
 
   // --- balance equation ----------------------------------------------------
 
@@ -161,7 +167,7 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     const rCount = eq.reactants.length;
     this.coeffs = terms.map(() => 1);
     this.coeffLabels = [];
-    const midY = 152;
+    const midY = this.contentTop() + 64; // steppers extend ±56 from here; clears the prompt
     let x = 48;
     terms.forEach((term, i) => {
       const up = this.scene.add.text(x + 16, midY - 56, '▲', { fontFamily: FONT, fontSize: '28px', color: C_DIM }).setOrigin(0, 0.5).setInteractive({ useHandCursor: true });

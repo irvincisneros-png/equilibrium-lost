@@ -34,6 +34,12 @@ export class DialogueScene extends Phaser.Scene {
   private choiceGeneration = 0;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
+  // "press to continue" state — when a node's text is fully shown, hold it on screen and
+  // wait for an explicit press before advancing to the next node / ending the conversation.
+  private pendingAdvance: (() => void) | null = null;
+  private continueReady = false;
+  private continueGeneration = 0;
+
   constructor() { super('DialogueScene'); }
 
   create(data: DialogueSceneData): void {
@@ -81,19 +87,26 @@ export class DialogueScene extends Phaser.Scene {
       speedMs: 18,
     });
 
-    // Keyboard cursor keys for choice navigation
+    // Keyboard cursor keys for choice navigation; Enter/Space both confirm a choice AND advance
+    // the conversation past a fully-shown node; pointer-down also advances.
     if (this.input.keyboard) {
       this.cursors = this.input.keyboard.createCursorKeys();
       this.input.keyboard.on('keydown-ENTER', this.handleChoiceConfirm, this);
       this.input.keyboard.on('keydown-SPACE', this.handleChoiceConfirm, this);
+      this.input.keyboard.on('keydown-ENTER', this.advanceDialogue, this);
+      this.input.keyboard.on('keydown-SPACE', this.advanceDialogue, this);
     }
+    this.input.on('pointerdown', this.advanceDialogue, this);
 
-    // Clean up keyboard listener when scene shuts down
+    // Clean up listeners when scene shuts down
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       if (this.input.keyboard) {
         this.input.keyboard.off('keydown-ENTER', this.handleChoiceConfirm, this);
         this.input.keyboard.off('keydown-SPACE', this.handleChoiceConfirm, this);
+        this.input.keyboard.off('keydown-ENTER', this.advanceDialogue, this);
+        this.input.keyboard.off('keydown-SPACE', this.advanceDialogue, this);
       }
+      this.input.off('pointerdown', this.advanceDialogue, this);
     });
 
     // Begin at the entry node
@@ -110,6 +123,11 @@ export class DialogueScene extends Phaser.Scene {
 
   private enterNode(node: DialogueNode): void {
     this.currentNode = node;
+
+    // We're revealing fresh text — drop any armed "press to continue".
+    this.pendingAdvance = null;
+    this.continueReady = false;
+    this.continueGeneration++;
 
     // Apply setFlag if present
     this.applySetFlag(node.setFlag);
@@ -131,22 +149,35 @@ export class DialogueScene extends Phaser.Scene {
     if (node.choices && node.choices.length > 0) {
       // Show choice list — wait for player selection
       this.showChoices(node.choices.map(c => c.label));
-    } else {
-      // Linear: check for end first
-      if (node.end === true || (!node.next && !(node.choices?.length))) {
-        this.handleEnd(node);
-        return;
-      }
-      // Follow .next
-      const result = nextNode(this.tree, node.id);
-      this.applySetFlag(result.setFlag);
-      if (result.end) {
-        this.enterNode(result.node);
-        // When that node's textbox completes it will call handleEnd via handleTextComplete again
-      } else {
-        this.enterNode(result.node);
-      }
+      return;
     }
+    // Linear or terminal node — hold it on screen until the player presses to continue.
+    if (node.end === true || !node.next) {
+      this.armContinue(() => this.handleEnd(node));
+    } else {
+      const result = nextNode(this.tree, node.id);
+      this.armContinue(() => this.enterNode(result.node));
+    }
+  }
+
+  /** A node's text is fully shown. Show the ▼ caret and wait for the next press to run `action`. */
+  private armContinue(action: () => void): void {
+    this.pendingAdvance = action;
+    this.continueReady = false;
+    const gen = ++this.continueGeneration;
+    this.textbox.setCaretVisible(true);
+    // Defer "ready" one tick so the keypress that finished/skipped the reveal isn't *also*
+    // counted as the continue press (mirrors the choice-list debounce).
+    this.time.delayedCall(0, () => { if (this.continueGeneration === gen) this.continueReady = true; });
+  }
+
+  private advanceDialogue(): void {
+    if (!this.pendingAdvance || !this.continueReady) return;
+    const action = this.pendingAdvance;
+    this.pendingAdvance = null;
+    this.continueReady = false;
+    this.continueGeneration++;
+    action();
   }
 
   // -----------------------------------------------------------------------
@@ -156,6 +187,8 @@ export class DialogueScene extends Phaser.Scene {
   private showChoices(labels: string[]): void {
     this.choiceVisible = true;
     this.choiceReady = false;
+    this.pendingAdvance = null;
+    this.textbox.setCaretVisible(false);
     const generation = ++this.choiceGeneration;
     this.choiceIndex = 0;
 
