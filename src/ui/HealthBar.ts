@@ -11,6 +11,7 @@ const BAR_PADDING = 16;
 export class HealthBar extends Phaser.GameObjects.Container {
   private readonly barW: number;
   private fill: Phaser.GameObjects.Rectangle;
+  private valueText: Phaser.GameObjects.Text;
 
   constructor(scene: Phaser.Scene, x: number, y: number, w: number, label: string) {
     super(scene, x, y);
@@ -37,6 +38,16 @@ export class HealthBar extends Phaser.GameObjects.Container {
       .setFillStyle(0, 0);
     this.add(border);
 
+    // "value / max" readout, centred on the bar, stroked so it stays legible over any fill colour
+    this.valueText = scene.add.text(LABEL_W + this.barW / 2, BAR_H / 2, '', {
+      fontFamily: 'monospace',
+      fontSize: '22px',
+      color: '#ffffff',
+      stroke: '#0b1320',
+      strokeThickness: 4,
+    }).setOrigin(0.5);
+    this.add(this.valueText);
+
     scene.add.existing(this);
   }
 
@@ -45,6 +56,7 @@ export class HealthBar extends Phaser.GameObjects.Container {
     const targetW = Math.max(1, Math.round(this.barW * ratio));
     const color = ratio < 0.15 ? HP_RED : ratio < 0.30 ? HP_AMBER : HP_COLOR;
     this.fill.setFillStyle(color);
+    this.valueText.setText(`${Math.max(0, Math.round(value))} / ${Math.max(0, Math.round(max))}`);
 
     if (animate) {
       this.scene.tweens.add({
