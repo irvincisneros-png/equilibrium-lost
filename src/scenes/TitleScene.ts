@@ -3,8 +3,8 @@ import type { GameContent, SaveData, SaveSettings } from '../content/types';
 import { SaveManager } from '../systems/SaveManager';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
 
-const W = 480;
-const H = 320;
+const W = 1920;
+const H = 1080;
 
 const FONT = 'monospace';
 const TEXT_COLOR = '#cdd6f4';
@@ -23,25 +23,25 @@ export class TitleScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor('#0b0f17');
 
     // --- Title art placeholder ---
-    const art = this.add.image(W / 2, 100, 'title_art').setDisplaySize(W, 200);
-    addPlaceholderLabel(this, W / 2, 100, 'title_art', content.assets);
+    const art = this.add.image(W / 2, 340, 'title_art').setDisplaySize(W, 680);
+    addPlaceholderLabel(this, W / 2, 340, 'title_art', content.assets);
     void art; // used for layout
 
     // Subtitle
-    this.add.text(W / 2, 208, 'A Year 10 Chemistry RPG', {
-      fontFamily: FONT, fontSize: '10px', color: '#8fa3c0'
+    this.add.text(W / 2, 700, 'A Year 10 Chemistry RPG', {
+      fontFamily: FONT, fontSize: '36px', color: '#8fa3c0'
     }).setOrigin(0.5);
 
     // Corrupt-save warning
     if (!saveLoadResult.ok && saveLoadResult.reason === 'corrupt') {
-      this.add.text(W / 2, 228, 'Your saved game was corrupted and couldn\'t be loaded. Starting New Game will overwrite it.', {
-        fontFamily: FONT, fontSize: '8px', color: '#f38ba8',
-        wordWrap: { width: W - 32 }, align: 'center'
+      this.add.text(W / 2, 760, 'Your saved game was corrupted and couldn\'t be loaded. Starting New Game will overwrite it.', {
+        fontFamily: FONT, fontSize: '28px', color: '#f38ba8',
+        wordWrap: { width: W - 256 }, align: 'center'
       }).setOrigin(0.5);
     }
 
     // --- Menu ---
-    const menuY = 262;
+    const menuY = 860;
     const menuItems = [
       { label: 'New Game', key: 'new', enabled: true },
       { label: 'Continue', key: 'continue', enabled: save !== null },
@@ -53,8 +53,8 @@ export class TitleScene extends Phaser.Scene {
 
     menuItems.forEach((item, i) => {
       const color = item.enabled ? TEXT_COLOR : DIM_COLOR;
-      const t = this.add.text(W / 2, menuY + i * 18, item.label, {
-        fontFamily: FONT, fontSize: '12px', color
+      const t = this.add.text(W / 2, menuY + i * 64, item.label, {
+        fontFamily: FONT, fontSize: '44px', color
       }).setOrigin(0.5);
 
       if (item.enabled) {
@@ -70,8 +70,8 @@ export class TitleScene extends Phaser.Scene {
     });
 
     // Cursor marker
-    const cursor = this.add.text(W / 2 - 68, menuY, '▶', {
-      fontFamily: FONT, fontSize: '12px', color: TEXT_COLOR
+    const cursor = this.add.text(W / 2 - 240, menuY, '▶', {
+      fontFamily: FONT, fontSize: '44px', color: TEXT_COLOR
     }).setOrigin(0.5);
 
     this.updateCursor(cursor, textObjs, selectedIdx);
@@ -143,28 +143,28 @@ export class TitleScene extends Phaser.Scene {
       this.registry.set('pendingSettings', settings);
     }
 
-    const px = W / 2 - 100;
-    const py = 126;
-    const pw = 200;
-    const ph = 76;
+    const px = W / 2 - 400;
+    const py = 360;
+    const pw = 800;
+    const ph = 280;
 
     const panel = this.add.container(0, 0).setName('settings-panel');
     const bg = this.add.rectangle(px + pw / 2, py + ph / 2, pw, ph, PANEL_BG, 0.95)
-      .setStrokeStyle(1, PANEL_BORDER);
+      .setStrokeStyle(4, PANEL_BORDER);
     panel.add(bg);
 
-    const title = this.add.text(px + pw / 2, py + 8, 'Settings', {
-      fontFamily: FONT, fontSize: '10px', color: TEXT_COLOR
+    const title = this.add.text(px + pw / 2, py + 28, 'Settings', {
+      fontFamily: FONT, fontSize: '36px', color: TEXT_COLOR
     }).setOrigin(0.5, 0);
     panel.add(title);
 
     const makeToggle = (label: string, yOff: number, getVal: () => boolean, setVal: (v: boolean) => void) => {
       const row = this.add.container(0, 0);
-      const lbl = this.add.text(px + 10, py + yOff, label + ':', {
-        fontFamily: FONT, fontSize: '9px', color: TEXT_COLOR
+      const lbl = this.add.text(px + 40, py + yOff, label + ':', {
+        fontFamily: FONT, fontSize: '32px', color: TEXT_COLOR
       });
-      const valTxt = this.add.text(px + pw - 10, py + yOff, getVal() ? 'ON' : 'OFF', {
-        fontFamily: FONT, fontSize: '9px', color: getVal() ? '#a6e3a1' : '#f38ba8'
+      const valTxt = this.add.text(px + pw - 40, py + yOff, getVal() ? 'ON' : 'OFF', {
+        fontFamily: FONT, fontSize: '32px', color: getVal() ? '#a6e3a1' : '#f38ba8'
       }).setOrigin(1, 0);
       valTxt.setInteractive({ useHandCursor: true });
       valTxt.on('pointerdown', () => {
@@ -178,11 +178,11 @@ export class TitleScene extends Phaser.Scene {
       panel.add(row);
     };
 
-    makeToggle('Study Mode', 26, () => settings.studyMode, (v) => { settings.studyMode = v; });
-    makeToggle('Answer Timer', 46, () => settings.answerTimer, (v) => { settings.answerTimer = v; });
+    makeToggle('Study Mode', 100, () => settings.studyMode, (v) => { settings.studyMode = v; });
+    makeToggle('Answer Timer', 170, () => settings.answerTimer, (v) => { settings.answerTimer = v; });
 
-    const closeBtn = this.add.text(px + pw - 6, py + 6, '✕', {
-      fontFamily: FONT, fontSize: '9px', color: DIM_COLOR
+    const closeBtn = this.add.text(px + pw - 24, py + 24, '✕', {
+      fontFamily: FONT, fontSize: '32px', color: DIM_COLOR
     }).setOrigin(1, 0).setInteractive({ useHandCursor: true });
     closeBtn.on('pointerdown', () => panel.destroy());
     panel.add(closeBtn);
