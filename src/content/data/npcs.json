@@ -56,5 +56,34 @@
       { "id": "s_enter", "speaker": "Shrinekeeper Mortar", "text": "Six questions. One slip is forgiven; two and the Shrine spits you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_bonding-forge", "launch": "shrine" },
       { "id": "s_later", "speaker": "Shrinekeeper Mortar", "text": "The Shrine is patient. Study, then return.", "end": true }
     ]
+  },
+  "alchemist-vera": {
+    "id": "alchemist-vera", "name": "Alchemist Vera", "spriteKey": "npc_alchemist_vera", "tile": { "x": 11, "y": 12 }, "facing": "down",
+    "dialogue": [
+      { "id": "v0", "speaker": "Alchemist Vera", "text": "Reaction Hollow. Down here every reaction has a SHAPE — once you see the shape you can name it, and once you can name it you can use it. Want the shapes, or have you classified reactions before?", "choices": [ { "label": "Show me the shapes.", "next": "v1" }, { "label": "I've classified reactions — let me through.", "next": "v_skip" } ] },
+      { "id": "v1", "speaker": "Alchemist Vera", "text": "SYNTHESIS (combination): two things become one. A + B → AB. Iron + sulfur → iron sulfide; a metal + oxygen → a metal oxide. Reactants merge; one product comes out.", "next": "v2" },
+      { "id": "v2", "speaker": "Alchemist Vera", "text": "DECOMPOSITION: one thing becomes two. AB → A + B. Heat a metal carbonate and it gives a metal oxide + CO₂; run a current through water and it splits into H₂ + O₂.", "next": "v3" },
+      { "id": "v3", "speaker": "Alchemist Vera", "text": "PRECIPITATION: mix two solutions and an insoluble solid drops out — we mark it with ↓ or (s). Silver nitrate + sodium chloride gives a white silver-chloride precipitate. A solid appears from two clear liquids.", "next": "v4" },
+      { "id": "v4", "speaker": "Alchemist Vera", "text": "That's three of the five shapes. Pyrologist Ignis, further up, keeps the other two — COMBUSTION and DISPLACEMENT. Learn all five and the Eternal Flame won't fool you. Off you go.", "end": true, "setFlag": "lesson_reaction-types_seen" },
+      { "id": "v_skip", "speaker": "Alchemist Vera", "text": "Confident! Then name the corrupted reactions up ahead as you fight them. Remember — a wrong answer just fizzles the move; it never hurts you. Go.", "end": true, "setFlag": "lesson_reaction-types_seen" }
+    ]
+  },
+  "pyrologist-ignis": {
+    "id": "pyrologist-ignis", "name": "Pyrologist Ignis", "spriteKey": "npc_pyrologist_ignis", "tile": { "x": 7, "y": 8 }, "facing": "down",
+    "dialogue": [
+      { "id": "o0", "speaker": "Pyrologist Ignis", "text": "Vera gave you the quiet shapes. I keep the loud ones. First: COMBUSTION.", "next": "o1" },
+      { "id": "o1", "speaker": "Pyrologist Ignis", "text": "COMBUSTION: a fuel reacts with oxygen, releasing heat and light — it's EXOTHERMIC. Burn a hydrocarbon completely and you get carbon dioxide + water. Starve it of oxygen and you get carbon monoxide and soot instead.", "next": "o2" },
+      { "id": "o2", "speaker": "Pyrologist Ignis", "text": "DISPLACEMENT: a more reactive metal kicks a less reactive one out of its compound. Zinc + copper sulfate → zinc sulfate + copper — the copper plates out as metal.", "next": "o3" },
+      { "id": "o3", "speaker": "Pyrologist Ignis", "text": "How do you know which way it goes? The REACTIVITY SERIES: K, Na, Ca, Mg, Al, Zn, Fe, Cu, Ag, Au — high displaces low. Magnesium displaces copper; copper can't displace magnesium. The same rule tells you which metals rust or fizz in acid.", "next": "o4" },
+      { "id": "o4", "speaker": "Pyrologist Ignis", "text": "Combustion, displacement — plus Vera's synthesis, decomposition, precipitation. Five shapes. The Flame at the top of the Hollow is combustion gone wild; classify it and you can quench it. Go.", "end": true }
+    ]
+  },
+  "shrinekeeper-cinder": {
+    "id": "shrinekeeper-cinder", "name": "Shrinekeeper Cinder", "spriteKey": "npc_shrinekeeper_cinder", "tile": { "x": 4, "y": 12 }, "facing": "right",
+    "dialogue": [
+      { "id": "s0", "speaker": "Shrinekeeper Cinder", "text": "The Cinder Shrine — no monsters, just questions on reaction types. Clear it and you'll carry off an Energy Cell and a fresh Buffer. Step in?", "choices": [ { "label": "Enter the Shrine.", "next": "s_enter" }, { "label": "Not yet.", "next": "s_later" } ] },
+      { "id": "s_enter", "speaker": "Shrinekeeper Cinder", "text": "Six questions. One miss is forgiven; two and the embers spit you out. Begin when ready.", "end": true, "setFlag": "shrine_entered_reaction-hollow", "launch": "shrine" },
+      { "id": "s_later", "speaker": "Shrinekeeper Cinder", "text": "The Shrine keeps its embers warm. Come back when you've studied.", "end": true }
+    ]
   }
 }
