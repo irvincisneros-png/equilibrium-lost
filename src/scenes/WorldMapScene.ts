@@ -2,8 +2,8 @@ import Phaser from 'phaser';
 import type { GameContent, SaveData, RegionDef } from '../content/types';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
 
-const W = 480;
-const H = 320;
+const W = 1920;
+const H = 1080;
 const FONT = 'monospace';
 const TEXT_COLOR = '#cdd6f4';
 const DIM_COLOR = '#415a77';
@@ -39,8 +39,8 @@ export class WorldMapScene extends Phaser.Scene {
     addPlaceholderLabel(this, W / 2, H / 2, 'worldmap', content.assets);
 
     // Title
-    this.add.text(W / 2, 8, 'Æquor — World Map', {
-      fontFamily: FONT, fontSize: '10px', color: TEXT_COLOR
+    this.add.text(W / 2, 16, 'Æquor — World Map', {
+      fontFamily: FONT, fontSize: '36px', color: TEXT_COLOR
     }).setOrigin(0.5, 0);
 
     // Region 1 from content; nodes 2–8 from LOCKED_REGION_LABELS
@@ -57,12 +57,12 @@ export class WorldMapScene extends Phaser.Scene {
     });
 
     // Layout: 8 nodes arranged vertically, two columns (alternating left/right)
-    const nodeW = 140;
-    const nodeH = 26;
-    const colLeft = 60;
-    const colRight = W - 60 - nodeW;
-    const startY = 30;
-    const stepY = (H - startY - 20) / 8;
+    const nodeW = 560;
+    const nodeH = 90;
+    const colLeft = 200;
+    const colRight = W - 200 - nodeW;
+    const startY = 72;
+    const stepY = 110;
 
     nodes.forEach((node, i) => {
       const isLeft = i % 2 === 0;
@@ -79,26 +79,26 @@ export class WorldMapScene extends Phaser.Scene {
       const borderColor = isUnlocked ? NODE_BORDER_UNLOCKED : NODE_BORDER_LOCKED;
 
       const bg = this.add.rectangle(nx + nodeW / 2, ny + nodeH / 2, nodeW, nodeH, bgColor)
-        .setStrokeStyle(1, borderColor);
+        .setStrokeStyle(4, borderColor);
 
       // Node label
       const labelColor = isUnlocked ? TEXT_COLOR : DIM_COLOR;
       const displayLabel = (isUnlocked ? '' : '🔒 ') + node.label;
-      this.add.text(nx + 6, ny + nodeH / 2, displayLabel, {
-        fontFamily: FONT, fontSize: '8px', color: labelColor
+      this.add.text(nx + 24, ny + nodeH / 2, displayLabel, {
+        fontFamily: FONT, fontSize: '28px', color: labelColor
       }).setOrigin(0, 0.5);
 
       // ✓ on boss defeated
       if (isBossDefeated) {
-        this.add.text(nx + nodeW - 6, ny + nodeH / 2, '✓', {
-          fontFamily: FONT, fontSize: '9px', color: '#a6e3a1'
+        this.add.text(nx + nodeW - 24, ny + nodeH / 2, '✓', {
+          fontFamily: FONT, fontSize: '32px', color: '#a6e3a1'
         }).setOrigin(1, 0.5);
       }
 
       // Player marker
       if (isCurrent) {
-        this.add.text(nx + nodeW - 6, ny + nodeH / 2, '▶', {
-          fontFamily: FONT, fontSize: '9px', color: '#f9e2af'
+        this.add.text(nx + nodeW - 24, ny + nodeH / 2, '▶', {
+          fontFamily: FONT, fontSize: '32px', color: '#f9e2af'
         }).setOrigin(1, 0.5);
       }
 
@@ -108,7 +108,7 @@ export class WorldMapScene extends Phaser.Scene {
         const nextNx = nextLeft ? colLeft : colRight;
         const nextNy = startY + (i + 1) * stepY;
         const g = this.add.graphics();
-        g.lineStyle(1, DIM_COLOR_NUM, 0.4);
+        g.lineStyle(4, DIM_COLOR_NUM, 0.4);
         g.beginPath();
         g.moveTo(nx + nodeW / 2, ny + nodeH);
         g.lineTo(nextNx + nodeW / 2, nextNy);
@@ -128,17 +128,17 @@ export class WorldMapScene extends Phaser.Scene {
 
     // Completion banner (Region 1 boss defeated — end of M1 slice)
     if (region1 && (save.regionProgress[region1.id]?.bossDefeated ?? false)) {
-      const bannerY = H - 36;
-      this.add.rectangle(W / 2, bannerY, W - 20, 24, 0x1a2f1a)
-        .setStrokeStyle(1, 0x40a040);
+      const bannerY = H - 60;
+      this.add.rectangle(W / 2, bannerY, W - 80, 72, 0x1a2f1a)
+        .setStrokeStyle(4, 0x40a040);
       this.add.text(W / 2, bannerY, 'Region complete — more of Æquor awaits in a future update', {
-        fontFamily: FONT, fontSize: '8px', color: '#a6e3a1'
+        fontFamily: FONT, fontSize: '28px', color: '#a6e3a1'
       }).setOrigin(0.5);
     }
 
     // Menu button — opens MenuScene as an overlay
-    const menuBtn = this.add.text(W - 8, 8, '[Menu]', {
-      fontFamily: FONT, fontSize: '9px', color: DIM_COLOR
+    const menuBtn = this.add.text(W - 32, 32, '[Menu]', {
+      fontFamily: FONT, fontSize: '32px', color: DIM_COLOR
     }).setOrigin(1, 0).setInteractive({ useHandCursor: true });
     const openMenu = (): void => {
       if (this.scene.isActive('MenuScene') || !this.scene.get('MenuScene')) return;
@@ -156,9 +156,9 @@ export class WorldMapScene extends Phaser.Scene {
   }
 
   private showToast(message: string): void {
-    const toast = this.add.text(W / 2, H / 2 - 20, message, {
-      fontFamily: FONT, fontSize: '9px', color: '#f38ba8',
-      backgroundColor: '#0d1b2a', padding: { x: 8, y: 4 }
+    const toast = this.add.text(W / 2, H / 2 - 80, message, {
+      fontFamily: FONT, fontSize: '32px', color: '#f38ba8',
+      backgroundColor: '#0d1b2a', padding: { x: 32, y: 16 }
     }).setOrigin(0.5);
 
     this.tweens.add({
