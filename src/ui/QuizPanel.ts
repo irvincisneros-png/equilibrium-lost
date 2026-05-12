@@ -40,6 +40,7 @@ export class QuizPanel extends Phaser.GameObjects.Container {
   private readonly panelH: number;
   private readonly promptText: Phaser.GameObjects.Text;
   private readonly hintText: Phaser.GameObjects.Text;
+  private readonly controlsText: Phaser.GameObjects.Text;
   private readonly timerBar: Phaser.GameObjects.Rectangle;
 
   private widgets: Phaser.GameObjects.GameObject[] = [];
@@ -59,8 +60,10 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     this.add(scene.add.rectangle(0, 0, w, h, C_BG, 0.97).setOrigin(0, 0).setStrokeStyle(4, C_BORDER));
     this.promptText = scene.add.text(32, 32, '', { fontFamily: FONT, fontSize: '36px', color: C_TEXT, wordWrap: { width: w - 64 } }).setOrigin(0, 0);
     this.add(this.promptText);
-    this.hintText = scene.add.text(32, h - 32, '', { fontFamily: FONT, fontSize: '28px', color: '#89dceb', wordWrap: { width: w - 64 } }).setOrigin(0, 1);
+    this.hintText = scene.add.text(32, h - 56, '', { fontFamily: FONT, fontSize: '28px', color: '#89dceb', wordWrap: { width: w - 64 } }).setOrigin(0, 1);
     this.add(this.hintText);
+    this.controlsText = scene.add.text(w / 2, h - 14, '', { fontFamily: FONT, fontSize: '22px', color: '#8fa3c0', align: 'center' }).setOrigin(0.5, 1);
+    this.add(this.controlsText);
     this.timerBar = scene.add.rectangle(0, h - 8, w, 8, 0xf9e2af).setOrigin(0, 0).setVisible(false);
     this.add(this.timerBar);
     scene.add.existing(this);
@@ -74,34 +77,42 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     this.promptText.setText(question.prompt);
     this.hintText.setText(opts.studyMode && question.hint ? `Hint: ${question.hint}` : '');
 
-    if (question.format === 'balanceEquation' && question.equation) this.buildBalance(question.equation);
-    else this.buildMcq(question.options ?? ['(error)', '(error)', '(error)', '(error)']);
+    if (question.format === 'balanceEquation' && question.equation) {
+      this.buildBalance(question.equation);
+      this.controlsText.setText('▲▼ buttons (or ←/→ pick a term, ↑/↓ change it) · Enter to submit').setVisible(true);
+    } else {
+      this.buildMcq(question.options ?? ['(error)', '(error)', '(error)', '(error)']);
+      this.controlsText.setText('Click an answer — or press A · B · C · D  (or 1 · 2 · 3 · 4)').setVisible(true);
+    }
 
     if (opts.answerTimer) this.startTimer();
     return new Promise<QuizAnswer>(resolve => { this.resolver = resolve; });
   }
 
-  /** After grading, show the correct answer + explanation for ~2s; resolves when done. */
-  showCorrection(question: QuestionDef): Promise<void> {
+  /** After grading, briefly show the result: "✓ Correct!" or "✗ The answer was …" + the explanation. Resolves when done. */
+  showCorrection(question: QuestionDef, correct = false): Promise<void> {
     this.clearWidgets();
     this.clearKeys();
     this.stopTimer();
     this.setVisible(true);
+    this.controlsText.setVisible(false);
 
     let answerStr = '';
     if (question.format === 'mcq' && question.options && typeof question.answerIndex === 'number') {
       answerStr = `${String.fromCharCode(65 + question.answerIndex)}. ${question.options[question.answerIndex] ?? ''}`;
     } else if (question.format === 'balanceEquation' && question.equation) {
-      const correct = [...question.equation.reactants, ...question.equation.products].map(t => t.coeff);
-      answerStr = this.equationString(question.equation, correct);
+      const coeffs = [...question.equation.reactants, ...question.equation.products].map(t => t.coeff);
+      answerStr = this.equationString(question.equation, coeffs);
     }
-    const box = this.scene.add.text(32, 112, `The answer was ${answerStr}\n— ${question.explanation}`, {
-      fontFamily: FONT, fontSize: '32px', color: C_OK, wordWrap: { width: this.panelW - 64 }, lineSpacing: 8,
+    const heading = correct ? '✓ Correct!' : `✗ The answer was ${answerStr}`;
+    const box = this.scene.add.text(32, 112, `${heading}\n— ${question.explanation}`, {
+      fontFamily: FONT, fontSize: '32px', color: correct ? C_OK : '#f9e2af', wordWrap: { width: this.panelW - 64 }, lineSpacing: 8,
     }).setOrigin(0, 0);
     this.add(box);
     this.widgets.push(box);
+    const holdMs = correct ? 1300 : CORRECTION_MS;
     return new Promise<void>(resolve => {
-      this.scene.time.delayedCall(CORRECTION_MS, () => { box.destroy(); resolve(); });
+      this.scene.time.delayedCall(holdMs, () => { box.destroy(); resolve(); });
     });
   }
 
@@ -256,5 +267,6 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     this.coeffs = [];
     this.promptText.setText('');
     this.hintText.setText('');
+    this.controlsText.setText('').setVisible(false);
   }
 }

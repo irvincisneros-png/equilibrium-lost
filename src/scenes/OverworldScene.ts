@@ -18,15 +18,17 @@ const TILEMAPS: Record<string, TilemapData> = {
   tilemap_elemental_reaches: elementalReaches as unknown as TilemapData,
 };
 
-// Tile-id → colour (placeholder ground): grass / path / water / wall / tall-grass.
-const TILE_COLOR: Record<number, number> = { 0: 0x4a7c59, 1: 0xc2a878, 2: 0x2a5a8c, 3: 0x33394a, 4: 0x2f5a37 };
+// Tile-id → colour (placeholder ground). Walkable tiles are *light*; blocked ones (water/wall)
+// are *dark* so the difference reads at a glance: 0 grass · 1 path · 2 water(blocked) · 3 wall(blocked) · 4 tall-grass.
+const TILE_COLOR: Record<number, number> = { 0: 0x5a8c66, 1: 0xd6b485, 2: 0x14304e, 3: 0x1c1712, 4: 0x33623c };
+const BLOCKED_TILE_IDS = new Set([2, 3]);
 
 // Marker glyphs/colours for object tiles.
 const MARKER_STYLE: Record<string, { color: number; glyph: string }> = {
   shrine_entrance: { color: 0x7b2cbf, glyph: '⛩' },
   minibossTrigger: { color: 0xe23a4f, glyph: '⚔' },
   bossGate: { color: 0x6b4a8c, glyph: '╬' },
-  exit: { color: 0x415a77, glyph: '↩' },
+  exit: { color: 0x2f6f4f, glyph: '↩' },
 };
 
 const FONT = 'monospace';
@@ -47,6 +49,8 @@ export class OverworldScene extends Phaser.Scene {
   private save!: SaveData;
 
   private player!: Player;
+  private playerMarker!: Phaser.GameObjects.Text;   // bobbing "▼" so the player can tell which sprite is them
+  private actionPrompt!: Phaser.GameObjects.Text;   // bottom-of-screen "Press SPACE to …" when something's interactable
   private npcs: Npc[] = [];
   private objects: TileObject[] = [];
   private rng: () => number = Math.random;
@@ -84,8 +88,13 @@ export class OverworldScene extends Phaser.Scene {
     for (let y = 0; y < this.map.height; y++) {
       const row = this.map.ground[y] ?? [];
       for (let x = 0; x < this.map.width; x++) {
-        ground.fillStyle(TILE_COLOR[row[x] ?? 0] ?? 0xff00ff, 1);
+        const id = row[x] ?? 0;
+        ground.fillStyle(TILE_COLOR[id] ?? 0xff00ff, 1);
         ground.fillRect(x * ts, y * ts, ts, ts);
+        if (BLOCKED_TILE_IDS.has(id)) { // outline impassable tiles so they read as "wall", not "road"
+          ground.lineStyle(3, 0x3a342c, 1);
+          ground.strokeRect(x * ts + 1, y * ts + 1, ts - 2, ts - 2);
+        }
       }
     }
 
@@ -123,15 +132,29 @@ export class OverworldScene extends Phaser.Scene {
     this.player.setCanEnter((tx, ty) => this.canEnter(tx, ty));
     this.player.onStep(tile => this.onStep(tile));
 
+    // "▼ YOU" marker so the player can tell which sprite is them (placeholder boxes all look alike).
+    this.playerMarker = this.add.text(this.player.x, this.player.y, '▼ YOU', { fontFamily: FONT, fontSize: '24px', color: '#ffffff', stroke: '#000000', strokeThickness: 6, align: 'center' })
+      .setOrigin(0.5, 1).setDepth(9999);
+
     // --- camera + world bounds ---
     this.cameras.main.setBounds(0, 0, worldW, worldH);
     this.physics.world.setBounds(0, 0, worldW, worldH);
     this.cameras.main.startFollow(this.player, true);
 
-    // --- HUD hint ---
-    this.add.text(16, 16, `${region.name}  ·  Arrows: move   Space: talk   Esc: menu`,
-      { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4', backgroundColor: '#0b0f17cc', padding: { x: 12, y: 8 } })
+    // --- HUD ---
+    this.add.text(16, 16, `${region.name}   ·   ← ↑ → ↓ move   ·   Space: interact   ·   Esc: menu`,
+      { fontFamily: FONT, fontSize: '26px', color: '#cdd6f4', backgroundColor: '#0b0f17cc', padding: { x: 12, y: 8 } })
       .setScrollFactor(0).setDepth(UI_DEPTH);
+    this.actionPrompt = this.add.text(this.scale.width / 2, this.scale.height - 28, '', { fontFamily: FONT, fontSize: '28px', color: '#f9e2af', backgroundColor: '#0b0f17cc', padding: { x: 14, y: 8 }, align: 'center' })
+      .setOrigin(0.5, 1).setScrollFactor(0).setDepth(UI_DEPTH).setVisible(false);
+
+    // First-time-here objective (cleared once you've had the atomic-structure lesson from Bohrlin).
+    if (!this.flag('lesson_atomic_structure_seen')) {
+      const npc0 = region.npcIds[0] ? this.content.npcs[region.npcIds[0]] : undefined;
+      const label0 = npc0 ? (this.content.assets.placeholders.find(p => p.key === npc0.spriteKey)?.label ?? '?') : '?';
+      const who = npc0 ? `${npc0.name} — the "${label0}" character to the north` : 'a mentor';
+      this.showBanner(`Welcome to ${region.name}.\nFirst objective: walk up to ${who} and press Space to talk.\nThen explore — the dark green tall-grass patches hold battles, and ↩ near the bottom leaves the region.`, 7000);
+    }
 
     // --- input ---
     const kb = this.input.keyboard;
@@ -157,19 +180,26 @@ export class OverworldScene extends Phaser.Scene {
       kb?.off('keydown-ESC', this.openMenu, this);
     });
 
-    // If we just got dropped back onto the (still-active) mini-boss chokepoint — e.g. after fleeing —
-    // re-trigger the guardian so it can't be slipped past.
-    const mbHere = this.objAt('minibossTrigger', this.player.tileXY());
-    if (mbHere && !this.flag(String(mbHere.flag))) {
-      this.startBattle({
-        enemyId: String(mbHere.enemyId), level: this.enemyLevel(String(mbHere.enemyId)),
-        isBoss: false, isMiniBoss: true, returnTo: 'OverworldScene', returnData: { regionId: this.region.id },
-      });
-    }
   }
 
   override update(): void {
     if (!this.busy) this.player.update();
+    // "▼ YOU" marker bobs above the player.
+    const bob = Math.sin(this.time.now / 220) * 6;
+    this.playerMarker.setPosition(this.player.x, this.player.y - this.player.displayHeight / 2 - 6 + bob);
+    // Contextual "Press SPACE to …" prompt.
+    if (this.busy) { this.actionPrompt.setVisible(false); return; }
+    const here = this.player.tileXY();
+    const ahead = this.player.facingTile();
+    const npc = this.npcs.find(n => n.tileX === ahead.x && n.tileY === ahead.y) ?? this.npcs.find(n => n.isAdjacentTo(here));
+    const mbHere = this.objAt('minibossTrigger', here);
+    let prompt = '';
+    if (npc) prompt = `Press SPACE to talk to ${this.content.npcs[npc.npcId]?.name ?? npc.npcId}`;
+    else if (this.objAt('shrine_entrance', here) ?? this.objAt('shrine_entrance', ahead)) prompt = 'Press SPACE to enter the Challenge Shrine';
+    else if (mbHere && !this.flag(String(mbHere.flag))) prompt = `Press SPACE to challenge the guardian (${this.enemyName(String(mbHere.enemyId))})`;
+    else { const g = this.objAt('bossGate', here) ?? this.objAt('bossGate', ahead); if (g && !this.regionProgress().bossDefeated && this.flag(String(g.requiresFlag))) prompt = `Press SPACE to challenge ${this.enemyName(String(g.enemyId))}`; }
+    if (!prompt && (this.objAt('exit', here) ?? this.objAt('exit', ahead))) prompt = 'Press SPACE to leave the region';
+    this.actionPrompt.setText(prompt).setVisible(prompt !== '');
   }
 
   // ---------------------------------------------------------------------------
@@ -180,6 +210,9 @@ export class OverworldScene extends Phaser.Scene {
     if (tx < 0 || ty < 0 || tx >= this.map.width || ty >= this.map.height) return false;
     if (tileBlocks(this.tileAt(tx, ty))) return false;
     if (this.npcs.some(n => n.tileX === tx && n.tileY === ty)) return false;
+    // The tile just past an un-beaten mini-boss chokepoint is sealed. (Region 1's passage runs north; if
+    // future regions need other directions, store the blocked offset on the tilemap object.)
+    if (this.objects.some(o => o.type === 'minibossTrigger' && !this.flag(String(o.flag)) && tx === o.x && ty === o.y - 1)) return false;
     return true;
   }
 
@@ -200,15 +233,6 @@ export class OverworldScene extends Phaser.Scene {
     const gate = this.objAt('bossGate', tile);
     if (gate && this.regionProgress().bossDefeated) return this.toWorldMap();
 
-    const mb = this.objAt('minibossTrigger', tile);
-    if (mb && !this.flag(String(mb.flag))) {
-      // Forced encounter — the guardian holds the chokepoint until it's beaten.
-      return this.startBattle({
-        enemyId: String(mb.enemyId), level: this.enemyLevel(String(mb.enemyId)),
-        isBoss: false, isMiniBoss: true, returnTo: 'OverworldScene', returnData: { regionId: this.region.id },
-      });
-    }
-
     if (isTallGrass(this.tileAt(tile.x, tile.y)) && this.rng() < this.region.encounterRatePerStep) {
       const enc = pickWildEncounter(this.region, this.rng, id => this.enemyLevel(id));
       this.startBattle({
@@ -227,13 +251,23 @@ export class OverworldScene extends Phaser.Scene {
     const here = this.player.tileXY();
     const ahead = this.player.facingTile();
 
-    const npc = this.npcs.find(n => n.tileX === ahead.x && n.tileY === ahead.y);
+    // Prefer the NPC you're facing; otherwise any orthogonally-adjacent NPC (forgiving — you don't have to face them).
+    const npc = this.npcs.find(n => n.tileX === ahead.x && n.tileY === ahead.y) ?? this.npcs.find(n => n.isAdjacentTo(here));
     if (npc) {
       npc.faceTowards(here);
       this.persist();
       this.busy = true;
       this.scene.launch('DialogueScene', { npcId: npc.npcId, returnTo: 'OverworldScene', returnData: { regionId: this.region.id } });
       this.scene.pause();
+      return;
+    }
+
+    const mb = this.objAt('minibossTrigger', here) ?? this.objAt('minibossTrigger', ahead);
+    if (mb && !this.flag(String(mb.flag))) {
+      this.confirm(`A guardian — ${this.enemyName(String(mb.enemyId))} — bars the way north.\nTake it on?  (You can't pass until you win — but losing just sends you back to the start.)`, () => this.startBattle({
+        enemyId: String(mb.enemyId), level: this.enemyLevel(String(mb.enemyId)),
+        isBoss: false, isMiniBoss: true, returnTo: 'OverworldScene', returnData: { regionId: this.region.id },
+      }));
       return;
     }
 
@@ -370,8 +404,16 @@ export class OverworldScene extends Phaser.Scene {
   private toast(message: string): void {
     const { width, height } = this.scale;
     const t = this.add.text(width / 2, height / 2 - 96, message, {
-      fontFamily: FONT, fontSize: '32px', color: '#f38ba8', backgroundColor: '#0b0f17', padding: { x: 32, y: 16 }, align: 'center',
+      fontFamily: FONT, fontSize: '32px', color: '#f38ba8', backgroundColor: '#0b0f17', padding: { x: 32, y: 16 }, align: 'center', wordWrap: { width: width - 200 },
     }).setOrigin(0.5).setScrollFactor(0).setDepth(UI_DEPTH);
-    this.tweens.add({ targets: t, alpha: 0, delay: 1400, duration: 500, onComplete: () => t.destroy() });
+    this.tweens.add({ targets: t, alpha: 0, delay: 1800, duration: 500, onComplete: () => t.destroy() });
+  }
+
+  /** A longer-lived, top-of-screen notice (used for the first-time objective). */
+  private showBanner(message: string, ms = 5000): void {
+    const t = this.add.text(this.scale.width / 2, 96, message, {
+      fontFamily: FONT, fontSize: '26px', color: '#cdd6f4', backgroundColor: '#0b0f17ee', padding: { x: 24, y: 16 }, align: 'center', lineSpacing: 8, wordWrap: { width: this.scale.width - 240 },
+    }).setOrigin(0.5, 0).setScrollFactor(0).setDepth(UI_DEPTH);
+    this.tweens.add({ targets: t, alpha: 0, delay: ms, duration: 700, onComplete: () => t.destroy() });
   }
 }

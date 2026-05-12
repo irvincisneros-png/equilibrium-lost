@@ -102,6 +102,13 @@ export class WorldMapScene extends Phaser.Scene {
         }).setOrigin(1, 0.5);
       }
 
+      // "Start here" hint on the first region until it's been cleared
+      if (i === 0 && node.isContent && !isBossDefeated) {
+        this.add.text(nx + nodeW + 20, ny + nodeH / 2, '◀ START HERE', {
+          fontFamily: FONT, fontSize: '24px', color: '#a6e3a1', fontStyle: 'bold'
+        }).setOrigin(0, 0.5);
+      }
+
       // Connector line to next node
       if (i < nodes.length - 1) {
         const nextLeft = (i + 1) % 2 === 0;

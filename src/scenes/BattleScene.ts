@@ -158,7 +158,7 @@ export class BattleScene extends Phaser.Scene {
 
     // --- action menu (bottom-right) ---
     this.menuButtons = MENU_LABELS.map((label, i) => {
-      const t = this.add.text(W - 420, 830 + i * 52, label, { fontFamily: FONT, fontSize: '36px', color: '#cdd6f4' }).setOrigin(0, 0);
+      const t = this.add.text(W - 440, 826 + i * 54, label, { fontFamily: FONT, fontSize: '36px', color: '#cdd6f4', padding: { x: 14, y: 4 } }).setOrigin(0, 0);
       t.setInteractive({ useHandCursor: true });
       t.on('pointerover', () => { if (this.fsm === 'menu') { this.menuIdx = i; this.refreshMenu(); } });
       t.on('pointerdown', () => { if (this.fsm === 'menu') { this.menuIdx = i; this.confirmMenu(); } });
@@ -222,8 +222,9 @@ export class BattleScene extends Phaser.Scene {
     this.menuButtons.forEach((b, i) => {
       const disabled = i === 3 && runDisabled;
       const sel = i === this.menuIdx;
-      b.setText((sel ? '▷ ' : '  ') + MENU_LABELS[i]);
-      b.setColor(disabled ? '#566074' : sel ? '#f9e2af' : '#cdd6f4');
+      b.setText((sel ? '▶ ' : '   ') + MENU_LABELS[i]);
+      b.setColor(disabled ? '#566074' : sel ? '#ffd76a' : '#cdd6f4');
+      b.setBackgroundColor(sel ? '#3a2f12' : '');
     });
   }
 
@@ -254,9 +255,10 @@ export class BattleScene extends Phaser.Scene {
     const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     this.skillRowCount = skills.length + 1; // + a "Back" row
     this.skillIdx = 0;
-    const x = 700, y = 280, rowH = 48, w = W - x - 32, h = (this.skillRowCount + 1) * rowH + 24;
-    const bg = this.add.rectangle(x, y - 16, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(4, 0x415a77).setDepth(50);
-    this.skillMenuObjs = [bg];
+    const x = 700, y = 290, rowH = 48, w = W - x - 32, h = (this.skillRowCount + 2) * rowH + 24;
+    const bg = this.add.rectangle(x, y - 60, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(4, 0x415a77).setDepth(50);
+    const legend = this.add.text(x + 24, y - 50, 'Pick a skill — Pwr = damage · EN = energy cost · "no quiz" skips the question', { fontFamily: FONT, fontSize: '20px', color: '#8fa3c0' }).setOrigin(0, 0).setDepth(51);
+    this.skillMenuObjs = [bg, legend];
     this.skillRowButtons = skills.map((s, i) => {
       const affordable = s.energyCost <= this.state.player.energy;
       const txt = this.add.text(x + 24, y + i * rowH, '', { fontFamily: FONT, fontSize: '28px', color: affordable ? '#cdd6f4' : '#566074' }).setOrigin(0, 0).setDepth(51);
@@ -282,12 +284,12 @@ export class BattleScene extends Phaser.Scene {
     skills.forEach((s, i) => {
       const affordable = s.energyCost <= this.state.player.energy;
       const sel = i === this.skillIdx;
-      const tag = s.topic === null ? ' ·basic' : '';
-      this.skillRowButtons[i]?.setText(`${sel ? '▷' : ' '} ${s.name}  [${s.affinity}] P${s.power} E${s.energyCost}${tag}`)
-        .setColor(!affordable ? '#566074' : sel ? '#f9e2af' : '#cdd6f4');
+      const tag = s.topic === null ? '  (no quiz)' : '';
+      this.skillRowButtons[i]?.setText(`${sel ? '▶' : '  '} ${s.name}  —  ${s.affinity} · Pwr ${s.power} · EN ${s.energyCost}${tag}`)
+        .setColor(!affordable ? '#566074' : sel ? '#ffd76a' : '#cdd6f4');
     });
     const backIdx = skills.length;
-    this.skillRowButtons[backIdx]?.setText(`${this.skillIdx === backIdx ? '▷' : ' '} ← Back`).setColor(this.skillIdx === backIdx ? '#f9e2af' : '#cdd6f4');
+    this.skillRowButtons[backIdx]?.setText(`${this.skillIdx === backIdx ? '▶' : '  '} ← Back`).setColor(this.skillIdx === backIdx ? '#ffd76a' : '#cdd6f4');
   }
 
   private closeSkillMenu(returnToActionMenu: boolean): void {
@@ -321,10 +323,9 @@ export class BattleScene extends Phaser.Scene {
       if (correct) {
         const bonus = 2 * skill.questionDifficulty;
         this.bonusXp += bonus;
-        this.floatText(this.playerSprite.x, this.playerSprite.y - this.playerSprite.displayHeight - 24, `Reaction mastered!  +${bonus} XP`, '#a6e3a1', '28px');
-      } else {
-        await this.quizPanel.showCorrection(q);
+        this.floatText(this.playerSprite.x, this.playerSprite.y - this.playerSprite.displayHeight - 24, `+${bonus} XP`, '#a6e3a1', '28px');
       }
+      await this.quizPanel.showCorrection(q, correct); // brief "✓ Correct! …" / longer "✗ The answer was …"
       this.quizPanel.hide();
       this.maybeQueueRefresher(skill.topic);
       action = { kind: 'skill', skillId: skill.id, quizCorrect: correct, fastAnswer: ans.fastAnswer };
@@ -487,6 +488,7 @@ export class BattleScene extends Phaser.Scene {
 
   private async resolveAndAnimate(action: BattleAction): Promise<void> {
     const before = this.state;
+    this.log(`» You ${this.describeAction(action)}…`); // make it unambiguous which side the next event belongs to
     const { state: next, events } = resolveTurn(before, action, this.ctx);
     this.dispPlayerHp = before.player.hp;
     this.dispEnemyHp = before.enemy.hp;
@@ -515,13 +517,15 @@ export class BattleScene extends Phaser.Scene {
         // bar is snapped at the end of the turn; just acknowledge
         break;
       case 'attack': {
-        const who = ev.side === 'player' ? this.state.player.name : this.state.enemy.name;
-        const skillName = ev.skillId ? this.content.skills[ev.skillId]?.name : undefined;
-        this.log(skillName ? `${who} uses ${skillName}!` : `${who} attacks!`);
+        // The player's action was already announced in resolveAndAnimate(); only narrate the enemy's.
+        if (ev.side === 'enemy') {
+          const skillName = ev.skillId ? this.content.skills[ev.skillId]?.name : undefined;
+          this.log(skillName ? `${this.state.enemy.name} uses ${skillName}!` : `${this.state.enemy.name} attacks!`);
+        }
         break;
       }
       case 'quizFizzle':
-        this.log('The reaction fizzles to a fraction of its power.');
+        this.log('Wrong answer — the reaction fizzles to ~30% power.');
         break;
       case 'damage': {
         const onPlayer = ev.target === 'player';
@@ -533,8 +537,9 @@ export class BattleScene extends Phaser.Scene {
         const color = ev.effectiveness >= 2 ? '#ff6b6b' : ev.effectiveness <= 0.5 ? '#9aa0a8' : '#ffffff';
         this.floatText(sprite.x, sprite.y - sprite.displayHeight / 2, `-${ev.amount}`, color);
         if (ev.crit) this.floatText(sprite.x, sprite.y - sprite.displayHeight, '★ Critical Reaction!', '#f9e2af', '24px');
-        if (ev.effectiveness >= 2) this.log("It's a runaway reaction!");
-        else if (ev.effectiveness <= 0.5 && ev.effectiveness > 0) this.log('It barely reacts…');
+        const effFlavor = ev.effectiveness >= 2 ? '  — super effective!' : (ev.effectiveness > 0 && ev.effectiveness <= 0.5) ? '  — not very effective…' : '';
+        const critFlavor = ev.crit ? '  ★ critical!' : '';
+        this.log((onPlayer ? `You take ${ev.amount} damage` : `You hit for ${ev.amount}`) + effFlavor + critFlavor);
         break;
       }
       case 'heal': {
@@ -544,6 +549,7 @@ export class BattleScene extends Phaser.Scene {
         if (onPlayer) { this.dispPlayerHp = Math.min(this.state.player.maxHp, this.dispPlayerHp + ev.amount); this.playerHpBar.setValue(this.dispPlayerHp, this.state.player.maxHp); }
         else { this.dispEnemyHp = Math.min(this.dispEnemyMaxHp, this.dispEnemyHp + ev.amount); this.enemyHpBar.setValue(this.dispEnemyHp, this.dispEnemyMaxHp); }
         this.floatText(sprite.x, sprite.y - sprite.displayHeight / 2, `+${ev.amount}`, '#a6e3a1');
+        this.log(onPlayer ? `You recover ${ev.amount} HP` : `${this.state.enemy.name} recovers ${ev.amount} HP`);
         break;
       }
       case 'statusApplied':
@@ -712,6 +718,16 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private log(line: string): void { this.logLine.setText(line); }
+
+  private describeAction(action: BattleAction): string {
+    switch (action.kind) {
+      case 'attack': return 'strike';
+      case 'skill': return `use ${this.content.skills[action.skillId]?.name ?? action.skillId}`;
+      case 'item': return `use ${this.content.items[action.itemId]?.name ?? action.itemId}`;
+      case 'catalystBurst': return 'unleash a Catalyst Burst';
+      case 'run': return 'try to flee';
+    }
+  }
 
   private nameOf(side: 'player' | 'enemy'): string { return side === 'player' ? this.state.player.name : this.state.enemy.name; }
 
