@@ -3,8 +3,8 @@ import type { GameContent, ClassDef, SaveData, SaveSettings } from '../content/t
 import { SaveManager } from '../systems/SaveManager';
 import { persist as savePersist } from '../persist';
 
-const W = 480;
-const H = 320;
+const W = 1920;
+const H = 1080;
 const FONT = 'monospace';
 const TEXT_COLOR = '#cdd6f4';
 const DIM_COLOR = '#415a77';
@@ -31,67 +31,67 @@ export class ClassSelectScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#0b0f17');
 
-    this.add.text(W / 2, 12, 'Choose Your Class', {
-      fontFamily: FONT, fontSize: '13px', color: TEXT_COLOR
+    this.add.text(W / 2, 24, 'Choose Your Class', {
+      fontFamily: FONT, fontSize: '48px', color: TEXT_COLOR
     }).setOrigin(0.5);
 
-    this.add.text(W / 2, 28, '← → to browse   Enter / click to confirm', {
-      fontFamily: FONT, fontSize: '8px', color: DIM_COLOR
+    this.add.text(W / 2, 88, '← → to browse   Enter / click to confirm', {
+      fontFamily: FONT, fontSize: '28px', color: DIM_COLOR
     }).setOrigin(0.5);
 
-    const panelW = 136;
-    const panelH = 230;
-    const panelY = 55;
-    const startX = (W - (3 * panelW + 2 * 10)) / 2;
+    const panelW = 560;
+    const panelH = 880;
+    const panelY = 130;
+    const startX = (W - (3 * panelW + 2 * 40)) / 2;
 
     this.classes.forEach((cls, i) => {
-      const px = startX + i * (panelW + 10);
+      const px = startX + i * (panelW + 40);
       const py = panelY;
 
       const bg = this.add.rectangle(px + panelW / 2, py + panelH / 2, panelW, panelH, PANEL_BG)
-        .setStrokeStyle(1, i === this.selectedIdx ? SELECT_BORDER : PANEL_BORDER);
+        .setStrokeStyle(4, i === this.selectedIdx ? SELECT_BORDER : PANEL_BORDER);
       this.panels.push(bg);
 
       // Class name
-      this.add.text(px + panelW / 2, py + 10, cls.name, {
-        fontFamily: FONT, fontSize: '11px', color: TEXT_COLOR
+      this.add.text(px + panelW / 2, py + 40, cls.name, {
+        fontFamily: FONT, fontSize: '44px', color: TEXT_COLOR
       }).setOrigin(0.5, 0);
 
       // Theme
-      this.add.text(px + panelW / 2, py + 26, cls.theme, {
-        fontFamily: FONT, fontSize: '7px', color: '#8fa3c0',
-        wordWrap: { width: panelW - 10 }, align: 'center'
+      this.add.text(px + panelW / 2, py + 104, cls.theme, {
+        fontFamily: FONT, fontSize: '28px', color: '#8fa3c0',
+        wordWrap: { width: panelW - 40 }, align: 'center'
       }).setOrigin(0.5, 0);
 
       // Stats
       const stats = cls.baseStats;
-      this.add.text(px + 8, py + 56, [
+      this.add.text(px + 32, py + 220, [
         'HP:  ' + stats.hp,
         'ATK: ' + stats.atk,
         'DEF: ' + stats.def,
         'SPD: ' + stats.spd,
       ].join('\n'), {
-        fontFamily: FONT, fontSize: '8px', color: TEXT_COLOR, lineSpacing: 3
+        fontFamily: FONT, fontSize: '32px', color: TEXT_COLOR, lineSpacing: 12
       });
 
       // Signature affinity
-      this.add.text(px + 8, py + 110, 'Affinity: ' + cls.signatureAffinity, {
-        fontFamily: FONT, fontSize: '8px', color: '#f9e2af'
+      this.add.text(px + 32, py + 440, 'Affinity: ' + cls.signatureAffinity, {
+        fontFamily: FONT, fontSize: '32px', color: '#f9e2af'
       });
 
       // Starting skills
       const skillNames = cls.startingSkillIds
         .map(id => content.skills[id]?.name ?? id)
         .join('\n• ');
-      this.add.text(px + 8, py + 126, 'Skills:\n• ' + skillNames, {
-        fontFamily: FONT, fontSize: '7px', color: '#a6e3a1', lineSpacing: 3
+      this.add.text(px + 32, py + 500, 'Skills:\n• ' + skillNames, {
+        fontFamily: FONT, fontSize: '28px', color: '#a6e3a1', lineSpacing: 12
       });
 
       // Playstyle blurb
       const blurb = PLAYSTYLE[cls.id] ?? '';
-      this.add.text(px + panelW / 2, py + panelH - 24, blurb, {
-        fontFamily: FONT, fontSize: '7px', color: '#89dceb',
-        wordWrap: { width: panelW - 8 }, align: 'center'
+      this.add.text(px + panelW / 2, py + panelH - 100, blurb, {
+        fontFamily: FONT, fontSize: '28px', color: '#89dceb',
+        wordWrap: { width: panelW - 32 }, align: 'center'
       }).setOrigin(0.5, 0);
 
       // Click to select + confirm
@@ -107,8 +107,8 @@ export class ClassSelectScene extends Phaser.Scene {
     });
 
     // Instruction at bottom
-    this.add.text(W / 2, H - 10, 'Click selected class again or press Enter to confirm', {
-      fontFamily: FONT, fontSize: '8px', color: DIM_COLOR
+    this.add.text(W / 2, H - 40, 'Click selected class again or press Enter to confirm', {
+      fontFamily: FONT, fontSize: '28px', color: DIM_COLOR
     }).setOrigin(0.5, 1);
 
     // Keyboard nav
@@ -128,7 +128,7 @@ export class ClassSelectScene extends Phaser.Scene {
 
   private refreshPanelBorders(): void {
     this.panels.forEach((p, i) => {
-      p.setStrokeStyle(1, i === this.selectedIdx ? SELECT_BORDER : PANEL_BORDER);
+      p.setStrokeStyle(4, i === this.selectedIdx ? SELECT_BORDER : PANEL_BORDER);
     });
   }
 
