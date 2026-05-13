@@ -1,4 +1,5 @@
 import type { EnemyDef, Affinity, SkillDef, ItemDef, TypeChart } from '../../content/types';
+import { effectiveSkill } from '../skillTiers';
 import { type BattleState, type Combatant, type BattleEvent, type BattleAction, applyStage, clone, clampStage } from './types';
 import { effectiveness } from './typeChart';
 import { computeDamage } from './damage';
@@ -13,6 +14,7 @@ export interface PlayerBattleInput {
   maxHp: number; hp: number; atk: number; def: number; spd: number;
   maxEnergy: number; energy: number; equippedSkillIds: string[]; attackPower: number; isBoss: boolean;
   catalystBurstSkillId?: string;
+  skillTiers?: Record<string, number>;
 }
 export interface EnemyBattleInput { def: EnemyDef; level: number; }
 
@@ -46,6 +48,7 @@ export function createBattle(player: PlayerBattleInput, enemy: EnemyBattleInput,
     skillIds: [...player.equippedSkillIds], attackPower: player.attackPower
   };
   playerCombatant.catalystBurstSkillId = player.catalystBurstSkillId;
+  playerCombatant.skillTiers = player.skillTiers;
   const enemyCombatant = buildEnemyCombatant(enemy.def, enemy.level, player.level);
   return {
     player: playerCombatant, enemy: enemyCombatant, enemyQueue: [], turn: 1, chain: 0, catalystBurstReady: false,
@@ -115,7 +118,8 @@ function applyAction(state: BattleState, side: 'player' | 'enemy', action: Battl
       break;
 
     case 'skill': {
-      const skill = ctx.getSkill(action.skillId);
+      const rawSkill = ctx.getSkill(action.skillId);
+      const skill = effectiveSkill(rawSkill, attacker.skillTiers?.[rawSkill.id] ?? 0);
       if (!attacker.skillIds.includes(skill.id)) break; // not equipped — no-op (scene shouldn't allow it)
       if (attacker.energy < skill.energyCost) break;     // not enough energy — no-op (scene gates this)
       attacker.energy -= skill.energyCost;

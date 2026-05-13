@@ -1,8 +1,14 @@
 {
-  "Base":        { "Acid": 2, "Base": 0.5 },
-  "Acid":        { "Metal": 2, "Ionic": 2, "Base": 0.5 },
-  "Endothermic": { "Exothermic": 2, "Combustion": 2 },
-  "Combustion":  { "Endothermic": 0.5 },
-  "Catalyst":    { "Atomic": 0.5, "Acid": 0.5, "Base": 0.5, "Metal": 0.5, "Ionic": 0.5, "Covalent": 0.5, "Combustion": 0.5, "Exothermic": 0.5, "Endothermic": 0.5, "Decomposition": 0.5, "Synthesis": 0.5, "Precipitation": 0.5, "Neutral": 0.5 },
-  "Decomposition": { "Decomposition": 0.5 }
+  "Acid":          { "Metal": 2, "Ionic": 2, "Base": 0.5 },
+  "Base":          { "Acid": 2, "Metal": 0.5, "Covalent": 0.5 },
+  "Combustion":    { "Covalent": 2, "Decomposition": 2, "Endothermic": 0.5, "Metal": 0.5 },
+  "Endothermic":   { "Exothermic": 2, "Combustion": 2, "Endothermic": 0.5 },
+  "Exothermic":    { "Endothermic": 2, "Metal": 2, "Exothermic": 0.5 },
+  "Precipitation": { "Ionic": 2, "Acid": 0.5 },
+  "Synthesis":     { "Decomposition": 2, "Atomic": 2, "Synthesis": 0.5 },
+  "Decomposition": { "Synthesis": 2, "Ionic": 2, "Metal": 2, "Decomposition": 0.5 },
+  "Metal":         { "Covalent": 2, "Acid": 0.5 },
+  "Covalent":      { "Atomic": 2, "Combustion": 0.5 },
+  "Atomic":        { "Ionic": 2 },
+  "Catalyst":      { "Neutral": 0.5, "Atomic": 0.5, "Acid": 0.5, "Base": 0.5, "Metal": 0.5, "Ionic": 0.5, "Covalent": 0.5, "Synthesis": 0.5, "Decomposition": 0.5, "Combustion": 0.5, "Exothermic": 0.5, "Endothermic": 0.5, "Catalyst": 0.5, "Precipitation": 0.5 }
 }

@@ -1,13 +1,15 @@
 import Phaser from 'phaser';
 import type { GameContent, SaveData, SkillDef } from '../content/types';
 import { setLoadout } from './loadout';
+import { previewRefine, applyRefine } from './skillRefine';
+import { MAX_TIER } from '../systems/skillTiers';
 import { persist as savePersist } from '../persist';
 import { totalXpForLevel, xpToNextLevel } from '../systems/Progression';
 
 interface MenuSceneData { returnTo?: string; returnData?: Record<string, unknown> }
 
 const W = 1920, H = 1080, FONT = 'monospace';
-const TABS = ['Skills', 'Items', 'Status', 'Save', 'Settings', 'Quit'] as const;
+const TABS = ['Skills', 'Refine', 'Items', 'Status', 'Save', 'Settings', 'Quit'] as const;
 type Tab = typeof TABS[number];
 
 /**
@@ -99,6 +101,7 @@ export class MenuScene extends Phaser.Scene {
     this.tabHeaders.forEach((h, i) => h.setColor(i === this.tabIndex ? '#f9e2af' : '#8fa3c0'));
     switch (this.tab()) {
       case 'Skills': this.buildSkillsTab(); break;
+      case 'Refine': this.buildRefineTab(); break;
       case 'Items': this.buildItemsTab(); break;
       case 'Status': this.buildStatusTab(); break;
       case 'Save': this.buildButtonTab('Save now'); break;
@@ -128,6 +131,26 @@ export class MenuScene extends Phaser.Scene {
       const row = this.addRow(224 + i * 48, () => this.toggleSkill(s.id));
       row.setData('label', `${equipped ? '◆' : '◇'} ${s.name}  [${s.affinity}] P${s.power} E${s.energyCost}${s.topic === null ? ' ·basic' : ''}`);
     });
+  }
+
+  private buildRefineTab(): void {
+    this.addObj(this.add.text(160, 168, `Reagent Points: ${this.save.reagentPoints}  ·  Enter to refine`, { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
+    const skills = this.save.unlockedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
+    skills.forEach((s, i) => {
+      const p = previewRefine(this.save, s.id, this.content);
+      const row = this.addRow(224 + i * 48, () => this.refine(s.id));
+      const tierTag = `T${p.tier}/${MAX_TIER}`;
+      const label = p.atMax
+        ? `${s.name}  [${s.affinity}]  ${tierTag}  — MAX`
+        : `${s.name}  [${s.affinity}]  ${tierTag}  →  +${p.delta.power} Pwr / +${p.delta.statusChance}% / −${p.delta.energyCost} EN   (${p.cost} RP)${p.canAfford ? '' : '  ✗'}`;
+      row.setData('label', label);
+    });
+  }
+
+  private refine(skillId: string): void {
+    const r = applyRefine(this.save, skillId, this.content);
+    if (r.ok) { this.persist(); this.toast(`Refined ${this.content.skills[skillId]?.name ?? skillId} → T${r.tier}.  ${r.reagentPoints} RP left.`); this.buildTab(); }
+    else this.toast(r.reason);
   }
 
   private toggleSkill(id: string): void {
@@ -220,6 +243,7 @@ export class MenuScene extends Phaser.Scene {
   private activateRow(i: number): void {
     switch (this.tab()) {
       case 'Skills': { const ids = this.save.unlockedSkillIds.filter(id => this.content.skills[id]); const id = ids[i]; if (id) this.toggleSkill(id); break; }
+      case 'Refine': { const ids = this.save.unlockedSkillIds.filter(id => this.content.skills[id]); const id = ids[i]; if (id) this.refine(id); break; }
       case 'Items': { const entry = this.save.items[i]; if (entry) this.useItem(entry.itemId); break; }
       case 'Settings': this.toggleSetting(i === 0 ? 'studyMode' : 'answerTimer'); break;
       case 'Save': this.persist(); this.toast('Saved.'); break;

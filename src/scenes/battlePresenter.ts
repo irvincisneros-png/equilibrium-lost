@@ -34,6 +34,7 @@ export function playerBattleInputFromSave(save: SaveData, content: GameContent):
     attackPower,
     isBoss: false,
     catalystBurstSkillId,
+    skillTiers: { ...save.skillTiers },
   };
 }
 

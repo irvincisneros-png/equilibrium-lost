@@ -265,6 +265,54 @@ describe('boss soft-scaling', () => {
   });
 });
 
+// ── Task 5: Skill tiers wired into the battle engine ─────────────────────────
+
+describe('resolveTurn — skill tiers', () => {
+  // spark-flare: energyCost 25, power 42, equipped by the playerInput, topic = 'atomic-structure' (quizzed)
+  it('PlayerBattleInput accepts skillTiers without type error', () => {
+    const p = { ...playerInput, skillTiers: { 'spark-flare': 3 } };
+    const s = createBattle(p, { def: enemy, level: enemy.level }, { rng: () => 0 });
+    expect(s.player.skillTiers).toEqual({ 'spark-flare': 3 });
+  });
+
+  it('a tier-3 skill deducts the tiered energy cost (base 25 − 6 = 19) instead of the base cost', () => {
+    // player starts at 100 energy, regen +25 on turn 1, so before deduction = 100+25 = 125 → capped at 100
+    // Then energy deducted: tier 0 → 25, tier 3 → 19
+    const enemy999 = { ...enemy, baseStats: { hp: 9999, atk: 1, def: 12, spd: 1 } };
+
+    const p0 = { ...playerInput, energy: 75, equippedSkillIds: ['spark-flare'] };
+    const p3 = { ...playerInput, energy: 75, equippedSkillIds: ['spark-flare'], skillTiers: { 'spark-flare': 3 } };
+
+    const s0 = createBattle(p0, { def: enemy999, level: 3 }, { rng: () => 0.9 });
+    const s3 = createBattle(p3, { def: enemy999, level: 3 }, { rng: () => 0.9 });
+
+    const r0 = resolveTurn(s0, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx);
+    const r3 = resolveTurn(s3, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx);
+
+    // +25 regen first, so energy before deduction = 100 for both
+    // tier 0 deducts 25 → 75; tier 3 deducts 19 → 81
+    expect(r0.state.player.energy).toBe(75);
+    expect(r3.state.player.energy).toBe(81);
+  });
+
+  it('a tier-3 skill deals at least as much damage as tier-0 for the same rng', () => {
+    const enemy999 = { ...enemy, baseStats: { hp: 9999, atk: 1, def: 99, spd: 1 } };
+
+    const p0 = { ...playerInput, equippedSkillIds: ['spark-flare'] };
+    const p3 = { ...playerInput, equippedSkillIds: ['spark-flare'], skillTiers: { 'spark-flare': 3 } };
+
+    const s0 = createBattle(p0, { def: enemy999, level: 3 }, { rng: () => 0.9 });
+    const s3 = createBattle(p3, { def: enemy999, level: 3 }, { rng: () => 0.9 });
+
+    const r0 = resolveTurn(s0, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx);
+    const r3 = resolveTurn(s3, { kind: 'skill', skillId: 'spark-flare', quizCorrect: true }, skillCtx);
+
+    const dmg0 = 9999 - r0.state.enemy.hp;
+    const dmg3 = 9999 - r3.state.enemy.hp;
+    expect(dmg3).toBeGreaterThanOrEqual(dmg0);
+  });
+});
+
 describe('integration — a whole battle resolves deterministically', () => {
   it('a level-9 player beats Protium without fainting (seeded rng)', () => {
     let seed = 12345; const rng = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };

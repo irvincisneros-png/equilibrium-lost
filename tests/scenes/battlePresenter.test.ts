@@ -16,6 +16,12 @@ describe('battlePresenter', () => {
     expect(inp.catalystBurstSkillId).toBe('combustion-cascade');
   });
 
+  it('playerBattleInputFromSave forwards the save\'s skillTiers', () => {
+    const save = SaveManager.newGame(content.classes[0]!.id, content);
+    save.skillTiers = { [save.equippedSkillIds[0]!]: 2 };
+    expect(playerBattleInputFromSave(save, content).skillTiers).toEqual(save.skillTiers);
+  });
+
   it('battleContextFromContent wires getSkill/getItem/getEnemyDef + settings', () => {
     const ctx = battleContextFromContent(content, { answerTimer: true });
     expect(ctx.getSkill('proton-jab').name).toBe('Proton Jab');
