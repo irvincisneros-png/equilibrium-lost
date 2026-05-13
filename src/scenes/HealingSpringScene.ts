@@ -58,6 +58,9 @@ export class HealingSpringScene extends Phaser.Scene {
   private async runGauntlet(region: RegionDef): Promise<void> {
     const count = 3;
     const topic = region.shrine.questionTopic;
+    let totalHpHealed = 0;
+    let totalEnergyHealed = 0;
+
     for (let i = 0; i < count; i++) {
       this.updateProgress(i, count);
       const q = this.quiz.pickQuestion(topic, 1, this.save.quizStats[topic]);
@@ -65,20 +68,30 @@ export class HealingSpringScene extends Phaser.Scene {
       const correct = this.quiz.checkAnswer(q, ans);
       this.answers.push(correct);
       this.save = SaveManager.recordQuizResult(this.save, topic, correct);
-      this.registry.set('save', this.save);
-      if (!correct) await this.quizPanel.showCorrection(q);
+
+      if (correct) {
+        const maxHp = effectiveStats(this.save, this.content.equipment ?? {}).hp;
+        const hpGain = Math.floor(maxHp / 3);
+        const energyGain = Math.floor(100 / 3);
+        this.save.currentHp = Math.min(this.save.currentHp + hpGain, maxHp);
+        this.save.currentEnergy = Math.min((this.save.currentEnergy ?? 0) + energyGain, 100);
+        totalHpHealed += hpGain;
+        totalEnergyHealed += energyGain;
+        this.registry.set('save', this.save);
+        await this.healBanner(`+${hpGain} HP  +${energyGain} Energy`, '#06d6a0');
+      } else {
+        this.registry.set('save', this.save);
+        await this.quizPanel.showCorrection(q);
+      }
     }
     this.quizPanel.hide();
     this.updateProgress(count, count);
     await this.wait(400);
 
-    const passed = this.answers.every(a => a);
-    if (passed) {
-      this.save.currentHp = effectiveStats(this.save, this.content.equipment ?? {}).hp;
-      this.save.currentEnergy = 100;
-      await this.banner('Refreshed — HP and Energy restored!', '#06d6a0');
+    if (totalHpHealed > 0) {
+      await this.banner(`Spring fades — restored ${totalHpHealed} HP and ${totalEnergyHealed} Energy.`, '#06d6a0');
     } else {
-      await this.banner('The spring runs murky — come back when you\'ve studied.', '#f9e2af');
+      await this.banner('The spring runs murky — no answers correct, no healing.', '#f9e2af');
     }
 
     this.registry.set('save', this.save);
@@ -97,5 +110,11 @@ export class HealingSpringScene extends Phaser.Scene {
   private banner(text: string, color: string): Promise<void> {
     const t = this.add.text(W / 2, 440, text, { fontFamily: FONT, fontSize: '36px', color, backgroundColor: '#0b0f17cc', padding: { x: 32, y: 16 }, align: 'center', wordWrap: { width: W - 160 } }).setOrigin(0.5).setDepth(200);
     return this.wait(1800).then(() => { t.destroy(); });
+  }
+
+  private healBanner(text: string, color: string): Promise<void> {
+    const t = this.add.text(W / 2, 380, text, { fontFamily: FONT, fontSize: '32px', color, backgroundColor: '#0b2d1acc', padding: { x: 24, y: 12 } }).setOrigin(0.5).setDepth(210).setAlpha(0);
+    this.tweens.add({ targets: t, alpha: 1, y: 330, duration: 300, ease: 'Power2' });
+    return this.wait(900).then(() => { t.destroy(); });
   }
 }
