@@ -114,6 +114,15 @@ export interface BalanceEquationSpec {
   reactants: { formula: string; coeff: number }[];
   products: { formula: string; coeff: number }[];
 }
+
+/** Optional procedural diagram attached to an MCQ question. */
+export type QuestionVisual =
+  | { type: 'bohrAtom'; symbol: string; protons: number; neutrons?: number; shells: number[] }
+  | { type: 'lewisDot'; symbol: string; valenceElectrons: number }
+  | { type: 'pHScale'; value: number; label?: string }
+  | { type: 'reactionEnergyProfile'; deltaH: number; activationEnergy: number; label?: string }
+  | { type: 'balanceScale'; left: Array<{ symbol: string; count: number }>; right: Array<{ symbol: string; count: number }> };
+
 export interface QuestionDef {
   id: string;
   topic: string;
@@ -126,6 +135,7 @@ export interface QuestionDef {
   steps?: string[];            // orderSteps: 3..6 items, stored in the correct order
   explanation: string;         // one-line, shown after a wrong answer
   hint?: string;               // shown in Study Mode
+  visual?: QuestionVisual;     // optional procedural diagram (mcq only in v1)
 }
 
 // ---------- NPC dialogue ----------
