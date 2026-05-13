@@ -486,3 +486,151 @@ describe('expanded question banks', () => {
     });
   }
 });
+
+describe('equipment content', () => {
+  it('loads 47 equipment items with unique IDs', () => {
+    const { content } = loadGameContent();
+    const ids = Object.keys(content.equipment);
+    expect(ids.length).toBe(47);
+    expect(new Set(ids).size).toBe(47);
+  });
+
+  it('every equipment item has a valid kind (weapon|armour|accessory)', () => {
+    const { content } = loadGameContent();
+    for (const e of Object.values(content.equipment)) {
+      expect(['weapon', 'armour', 'accessory']).toContain(e.kind);
+    }
+  });
+
+  it('every equipment item has a valid tier (1|2|3)', () => {
+    const { content } = loadGameContent();
+    for (const e of Object.values(content.equipment)) {
+      expect([1, 2, 3]).toContain(e.tier);
+    }
+  });
+
+  it('universal-family items have empty wieldableBy', () => {
+    const { content } = loadGameContent();
+    for (const e of Object.values(content.equipment)) {
+      if (e.family === 'universal') expect(e.wieldableBy).toHaveLength(0);
+    }
+  });
+
+  it('all 8 universal accessories have shopPrice null', () => {
+    const { content } = loadGameContent();
+    const universals = Object.values(content.equipment).filter(e => e.family === 'universal');
+    expect(universals.length).toBe(8);
+    for (const e of universals) expect(e.shopPrice).toBeNull();
+  });
+
+  it('all dropEquipmentId values on enemies reference real equipment IDs', () => {
+    const { content } = loadGameContent();
+    for (const enemy of Object.values(content.enemies)) {
+      if (enemy.dropEquipmentId) {
+        expect(content.equipment[enemy.dropEquipmentId], `enemy ${enemy.id} dropEquipmentId "${enemy.dropEquipmentId}" not found`).toBeDefined();
+      }
+    }
+  });
+
+  it('exactly 16 enemies have a dropEquipmentId (8 miniBosses + 8 regionBoss/finalBoss)', () => {
+    const { content } = loadGameContent();
+    const withDrop = Object.values(content.enemies).filter(e => e.dropEquipmentId);
+    expect(withDrop.length).toBe(16);
+  });
+});
+
+describe('shop content', () => {
+  it('loads 8 shop definitions', () => {
+    const { content } = loadGameContent();
+    expect(Object.keys(content.shops).length).toBe(8);
+  });
+
+  it('every shop regionId references a real region', () => {
+    const { content } = loadGameContent();
+    const regionIds = new Set(content.regions.map(r => r.id));
+    for (const shop of Object.values(content.shops)) {
+      expect(regionIds.has(shop.regionId), `shop ${shop.id} regionId "${shop.regionId}" not a real region`).toBe(true);
+    }
+  });
+
+  it('every shop equipmentId references a real equipment item', () => {
+    const { content } = loadGameContent();
+    for (const shop of Object.values(content.shops)) {
+      for (const id of shop.equipmentIds) {
+        expect(content.equipment[id], `shop ${shop.id} references unknown equipment "${id}"`).toBeDefined();
+      }
+    }
+  });
+
+  it('no shop stocks boss-drop-only items (shopPrice null)', () => {
+    const { content } = loadGameContent();
+    for (const shop of Object.values(content.shops)) {
+      for (const id of shop.equipmentIds) {
+        const eq = content.equipment[id];
+        if (eq) expect(eq.shopPrice, `shop ${shop.id} stocks boss-drop-only item "${id}"`).not.toBeNull();
+      }
+    }
+  });
+
+  it('each region has exactly one shop', () => {
+    const { content } = loadGameContent();
+    const byRegion = new Map<string, number>();
+    for (const shop of Object.values(content.shops)) {
+      byRegion.set(shop.regionId, (byRegion.get(shop.regionId) ?? 0) + 1);
+    }
+    for (const region of content.regions) {
+      expect(byRegion.get(region.id), `region ${region.id} has no shop`).toBe(1);
+    }
+  });
+});
+
+describe('shopkeeper NPC reachability', () => {
+  const maps: Record<string, AuditTilemap> = {
+    'elemental-reaches': elementalReaches as AuditTilemap,
+    'bonding-forge': bondingForge as AuditTilemap,
+    'reaction-hollow': reactionHollow as AuditTilemap,
+    'balance-halls': balanceHalls as AuditTilemap,
+    'catalyst-crags': catalystCrags as AuditTilemap,
+    'acid-wastes': acidWastes as AuditTilemap,
+    'the-crucible': theCrucible as AuditTilemap,
+    'equilibriums-heart': equilibriumsHeart as AuditTilemap,
+  };
+
+  const shopkeeperIdByRegion: Record<string, string> = {
+    'elemental-reaches': 'vendor-mara',
+    'bonding-forge': 'merchant-rho',
+    'reaction-hollow': 'trader-kira',
+    'balance-halls': 'vendor-theron',
+    'catalyst-crags': 'merchant-vex',
+    'acid-wastes': 'trader-osh',
+    'the-crucible': 'vendor-brix',
+    'equilibriums-heart': 'merchant-mira',
+  };
+
+  it('every shopkeeper NPC is in its region tilemap and BFS-reachable before the miniboss', () => {
+    const { content } = loadGameContent();
+    for (const region of content.regions) {
+      const map = maps[region.id];
+      expect(map, `${region.id} has no audit tilemap`).toBeDefined();
+      if (!map) continue;
+      const shopkeeperId = shopkeeperIdByRegion[region.id];
+      expect(shopkeeperId, `${region.id} has no expected shopkeeper id`).toBeDefined();
+      const npcObj = map.objects.find(o => o.type === 'npc' && o.id === shopkeeperId);
+      expect(npcObj, `${region.id} tilemap missing shopkeeper NPC "${shopkeeperId}"`).toBeDefined();
+      if (!npcObj) continue;
+      const reachable = reachableTilesBeforeGuardian(map);
+      expect(isAdjacentReachable(reachable, npcObj), `shopkeeper "${shopkeeperId}" is not BFS-reachable before the miniboss`).toBe(true);
+    }
+  });
+
+  it('every shopkeeper NPC has a "shop" launch in its dialogue', () => {
+    const { content } = loadGameContent();
+    for (const npcId of Object.values(shopkeeperIdByRegion)) {
+      const npc = content.npcs[npcId];
+      expect(npc, `NPC "${npcId}" not found in content`).toBeDefined();
+      if (!npc) continue;
+      const hasShopLaunch = npc.dialogue.some(node => node.launch === 'shop');
+      expect(hasShopLaunch, `NPC "${npcId}" has no dialogue node with launch:'shop'`).toBe(true);
+    }
+  });
+});
