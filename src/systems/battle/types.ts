@@ -17,6 +17,7 @@ export interface Combatant {
   enemyId?: string;              // set for enemies (used by Decomposition split)
   splitIntoId?: string;
   catalystBurstSkillId?: string; // populated Task 19, consumed Tasks 19/45
+  skillTiers?: Record<string, number>; // player only; enemies are always tier 0
 }
 
 export type BattleAction =
