@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { loadGameContent } from '../../src/content/loadGameContent';
+import { validateQuestionVisual } from '../../src/content/schema';
 import elementalReaches from '../../src/content/data/tilemaps/elemental-reaches.json';
 import bondingForge from '../../src/content/data/tilemaps/bonding-forge.json';
 import reactionHollow from '../../src/content/data/tilemaps/reaction-hollow.json';
@@ -631,6 +632,49 @@ describe('shopkeeper NPC reachability', () => {
       if (!npc) continue;
       const hasShopLaunch = npc.dialogue.some(node => node.launch === 'shop');
       expect(hasShopLaunch, `NPC "${npcId}" has no dialogue node with launch:'shop'`).toBe(true);
+    }
+  });
+});
+
+describe('question visuals', () => {
+  it('every question with a visual field passes validateQuestionVisual without throwing', () => {
+    const { content } = loadGameContent();
+    let total = 0;
+    for (const [topic, bank] of Object.entries(content.questions)) {
+      for (const q of bank) {
+        if (q.visual !== undefined) {
+          expect(
+            () => validateQuestionVisual(q.visual, `question[${q.id}].visual`),
+            `question ${q.id} (topic: ${topic}) visual is invalid`,
+          ).not.toThrow();
+          total++;
+        }
+      }
+    }
+    // Sanity: at least 43 questions should have visuals
+    expect(total, 'expected at least 43 questions with visuals').toBeGreaterThanOrEqual(43);
+  });
+
+  it('no question has a visual on a non-mcq format', () => {
+    const { content } = loadGameContent();
+    for (const [topic, bank] of Object.entries(content.questions)) {
+      for (const q of bank) {
+        if (q.visual !== undefined) {
+          expect(q.format, `${q.id} (${topic}): visual on non-mcq question`).toBe('mcq');
+        }
+      }
+    }
+  });
+
+  it('at least one question in each of the 7 relevant banks has a visual', () => {
+    const { content } = loadGameContent();
+    const relevantBanks = [
+      'atomic-structure', 'bonding', 'reaction-types', 'balancing-equations',
+      'reaction-rates', 'acids-bases', 'energy-changes',
+    ];
+    for (const bank of relevantBanks) {
+      const withVisual = (content.questions[bank] ?? []).filter(q => q.visual !== undefined);
+      expect(withVisual.length, `${bank} should have at least 1 visual`).toBeGreaterThanOrEqual(1);
     }
   });
 });
