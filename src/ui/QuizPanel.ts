@@ -4,6 +4,7 @@ import type { QuestionDef, BalanceEquationSpec } from '../content/types';
 export interface QuizAnswer {
   index?: number;          // mcq selection 0..3
   widgetCoeffs?: number[]; // balanceEquation: one per term, [...reactants, ...products]
+  widgetOrder?: number[];  // orderSteps: player order, as indices into the question's steps array
   fastAnswer: boolean;     // answered quickly under the (optional) countdown
 }
 

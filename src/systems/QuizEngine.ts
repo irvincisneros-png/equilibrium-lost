@@ -27,12 +27,16 @@ export class QuizEngine {
     return q;
   }
 
-  checkAnswer(q: QuestionDef, answer: { index?: number; widgetCoeffs?: number[] }): boolean {
+  checkAnswer(q: QuestionDef, answer: { index?: number; widgetCoeffs?: number[]; widgetOrder?: number[] }): boolean {
     if (q.format === 'mcq') return typeof answer.index === 'number' && answer.index === q.answerIndex;
     if (q.format === 'balanceEquation' && q.equation) {
       const expected = [...q.equation.reactants, ...q.equation.products].map(t => t.coeff);
       const got = answer.widgetCoeffs;
       return Array.isArray(got) && got.length === expected.length && expected.every((c, i) => got[i] === c);
+    }
+    if (q.format === 'orderSteps' && q.steps) {
+      const got = answer.widgetOrder;
+      return Array.isArray(got) && got.length === q.steps.length && got.every((v, i) => v === i);
     }
     return false;
   }

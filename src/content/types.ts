@@ -117,11 +117,12 @@ export interface QuestionDef {
   id: string;
   topic: string;
   difficulty: 1 | 2 | 3;
-  format: 'mcq' | 'balanceEquation';
+  format: 'mcq' | 'balanceEquation' | 'orderSteps';
   prompt: string;
   options?: string[];          // mcq: length 4
   answerIndex?: number;        // mcq: 0..3
   equation?: BalanceEquationSpec; // balanceEquation: coeff fields are the correct answer
+  steps?: string[];            // orderSteps: 3..6 items, stored in the correct order
   explanation: string;         // one-line, shown after a wrong answer
   hint?: string;               // shown in Study Mode
 }
