@@ -30,6 +30,7 @@
     { "type": "npc", "id": "shrinekeeper-tally", "x": 4, "y": 12 },
     { "type": "shrine_entrance", "x": 3, "y": 12, "regionId": "catalyst-crags" },
     { "type": "healing_spring", "x": 14, "y": 13 },
+    { "type": "npc", "id": "merchant-vex", "x": 16, "y": 14 },
     { "type": "minibossTrigger", "x": 11, "y": 4, "enemyId": "the-rate-spike", "flag": "miniboss_catalyst-crags_done" },
     { "type": "bossGate", "x": 11, "y": 2, "enemyId": "the-runaway-reaction", "requiresFlag": "miniboss_catalyst-crags_done" }
   ]

@@ -30,6 +30,7 @@
     { "type": "npc", "id": "shrinekeeper-cyra", "x": 4, "y": 12 },
     { "type": "shrine_entrance", "x": 3, "y": 12, "regionId": "equilibriums-heart" },
     { "type": "healing_spring", "x": 9, "y": 14 },
+    { "type": "npc", "id": "merchant-mira", "x": 16, "y": 14 },
     { "type": "minibossTrigger", "x": 11, "y": 4, "enemyId": "the-forward-drift", "flag": "miniboss_equilibriums-heart_done" },
     { "type": "bossGate", "x": 11, "y": 2, "enemyId": "the-great-imbalance", "requiresFlag": "miniboss_equilibriums-heart_done" }
   ]

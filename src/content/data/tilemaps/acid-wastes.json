@@ -30,6 +30,7 @@
     { "type": "npc", "id": "shrinekeeper-litmus", "x": 4, "y": 12 },
     { "type": "shrine_entrance", "x": 3, "y": 12, "regionId": "acid-wastes" },
     { "type": "healing_spring", "x": 8, "y": 13 },
+    { "type": "npc", "id": "trader-osh", "x": 14, "y": 14 },
     { "type": "minibossTrigger", "x": 11, "y": 4, "enemyId": "the-neutraliser", "flag": "miniboss_acid-wastes_done" },
     { "type": "bossGate", "x": 11, "y": 2, "enemyId": "the-ph-tyrant", "requiresFlag": "miniboss_acid-wastes_done" }
   ]

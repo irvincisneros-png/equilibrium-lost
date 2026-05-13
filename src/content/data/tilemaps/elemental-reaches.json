@@ -30,6 +30,7 @@
     { "type": "npc", "id": "shrinekeeper-quanta", "x": 3, "y": 13 },
     { "type": "shrine_entrance", "x": 2, "y": 13, "regionId": "elemental-reaches" },
     { "type": "healing_spring", "x": 7, "y": 14 },
+    { "type": "npc", "id": "vendor-mara", "x": 9, "y": 14 },
     { "type": "minibossTrigger", "x": 18, "y": 6, "enemyId": "unstable-deuteride", "flag": "miniboss_elemental-reaches_done" },
     { "type": "bossGate", "x": 12, "y": 2, "enemyId": "the-unstable-isotope", "requiresFlag": "miniboss_elemental-reaches_done" }
   ]
