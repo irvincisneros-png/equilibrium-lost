@@ -179,6 +179,8 @@ export interface SaveData {
   currentEnergy: number;
   unlockedSkillIds: string[];
   equippedSkillIds: string[];  // length 1..5
+  skillTiers: Record<string, number>;  // skillId -> tier 0..MAX_TIER (absent => 0)
+  reagentPoints: number;               // currency spent in the Refine Skills screen
   items: { itemId: string; qty: number }[];
   currentRegionId: string;
   regionProgress: Record<string, RegionProgress>;

@@ -111,6 +111,36 @@ describe('SaveManager — migration', () => {
   });
 });
 
+const firstClassId = content.classes[0]!.id;
+
+describe('SaveManager — save v2 (skillTiers + reagentPoints)', () => {
+  it('newGame seeds skillTiers:{} and reagentPoints:0 at version 2', () => {
+    const s = SaveManager.newGame(firstClassId, content);
+    expect(s.version).toBe(2);
+    expect(s.skillTiers).toEqual({});
+    expect(s.reagentPoints).toBe(0);
+  });
+
+  it('migrates a v1 save by backfilling skillTiers / reagentPoints', () => {
+    const v1: any = { ...SaveManager.newGame(firstClassId, content), version: 1 };
+    delete v1.skillTiers; delete v1.reagentPoints;
+    const storage = memStorage();
+    storage.setItem(SAVE_KEY, JSON.stringify(v1));
+    const r = SaveManager.load(content, storage);
+    expect(r.ok).toBe(true);
+    if (r.ok) { expect(r.data.version).toBe(2); expect(r.data.skillTiers).toEqual({}); expect(r.data.reagentPoints).toBe(0); }
+  });
+
+  it('keeps an explicit reagentPoints value through migration', () => {
+    const v1: any = { ...SaveManager.newGame(firstClassId, content), version: 1, reagentPoints: 99, skillTiers: { 'acid-splash': 2 } };
+    const storage = memStorage();
+    storage.setItem(SAVE_KEY, JSON.stringify(v1));
+    const r = SaveManager.load(content, storage);
+    expect(r.ok && r.data.reagentPoints).toBe(99);
+    expect(r.ok && (r.data as any).skillTiers['acid-splash']).toBe(2);
+  });
+});
+
 describe('SaveManager.recordQuizResult', () => {
   it('creates a topic entry on first record', () => {
     const s = SaveManager.recordQuizResult(SaveManager.newGame('pyron', content), 'atomic-structure', true);

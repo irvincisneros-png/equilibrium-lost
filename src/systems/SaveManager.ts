@@ -2,7 +2,7 @@ import type { GameContent, SaveData } from '../content/types';
 import { statsForLevel } from './Progression';
 
 export const SAVE_KEY = 'equilibrium-lost:save:v1';
-export const CURRENT_SAVE_VERSION = 1;
+export const CURRENT_SAVE_VERSION = 2;
 
 export interface StorageLike {
   getItem(k: string): string | null;
@@ -28,6 +28,8 @@ export const SaveManager = {
       currentEnergy: 100,
       unlockedSkillIds: [...cls.startingSkillIds],
       equippedSkillIds: cls.startingSkillIds.slice(0, 5),
+      skillTiers: {},
+      reagentPoints: 0,
       items: cls.startingItemIds.map(i => ({ ...i })),
       currentRegionId: region1.id,
       regionProgress: {
@@ -78,8 +80,12 @@ export const SaveManager = {
         const fallbackRegionId = (o.currentRegionId as string | undefined) ?? content.regions[0]?.id ?? '';
         o.playerTile ??= { regionId: fallbackRegionId, x: 4, y: 14 };
         o.version = 1;
+      },
+      (o) => { // 1 -> 2 : Skill Progression — skill tiers + Reagent Points
+        o.skillTiers ??= {};
+        o.reagentPoints ??= 0;
+        o.version = 2;
       }
-      // Milestone 2 appends: (o) => { ...; o.version = 2; }
     ];
     let v = typeof o.version === 'number' ? o.version : 0;
     while (v < CURRENT_SAVE_VERSION) {
@@ -99,6 +105,8 @@ export const SaveManager = {
     for (const k of ['regionProgress', 'storyFlags', 'quizStats', 'settings'] as const) {
       if (!isObj(o[k])) throw new Error(`corrupt: bad ${k}`);
     }
+    if (!isObj(o.skillTiers)) throw new Error('corrupt: bad skillTiers');
+    if (typeof o.reagentPoints !== 'number') throw new Error('corrupt: bad reagentPoints');
     return o as unknown as SaveData;
   },
 
