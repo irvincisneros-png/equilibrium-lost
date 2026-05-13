@@ -1,1 +1,90 @@
-{}
+{
+  "shop-elemental-reaches": {
+    "id": "shop-elemental-reaches",
+    "name": "Curie's Cache",
+    "regionId": "elemental-reaches",
+    "equipmentIds": [
+      "ember-rod", "ignition-lance", "reagent-vial", "acid-flask", "volt-rod", "charge-lance",
+      "cinder-vest", "forge-carapace", "flask-wrap", "membrane-coat", "static-wrap", "insulating-plate",
+      "ignition-core", "buffer-flask", "charge-capacitor"
+    ]
+  },
+  "shop-bonding-forge": {
+    "id": "shop-bonding-forge",
+    "name": "The Bonded Vault",
+    "regionId": "bonding-forge",
+    "equipmentIds": [
+      "ember-rod", "ignition-lance", "reagent-vial", "acid-flask", "volt-rod", "charge-lance",
+      "cinder-vest", "forge-carapace", "flask-wrap", "membrane-coat", "static-wrap", "insulating-plate",
+      "ignition-core", "buffer-flask", "charge-capacitor"
+    ]
+  },
+  "shop-reaction-hollow": {
+    "id": "shop-reaction-hollow",
+    "name": "Hollow Reagents",
+    "regionId": "reaction-hollow",
+    "equipmentIds": [
+      "ember-rod", "ignition-lance", "reagent-vial", "acid-flask", "volt-rod", "charge-lance",
+      "cinder-vest", "forge-carapace", "flask-wrap", "membrane-coat", "static-wrap", "insulating-plate",
+      "ignition-core", "buffer-flask", "charge-capacitor",
+      "catalyst-blade", "buffer-lance", "electrode-saber",
+      "magma-plate", "buffer-plate", "conductive-shield",
+      "combustion-ring", "forge-talisman", "flow-catalyst", "aqualis-talisman", "discharge-ring", "ionix-talisman"
+    ]
+  },
+  "shop-balance-halls": {
+    "id": "shop-balance-halls",
+    "name": "The Balanced Scales",
+    "regionId": "balance-halls",
+    "equipmentIds": [
+      "ember-rod", "ignition-lance", "reagent-vial", "acid-flask", "volt-rod", "charge-lance",
+      "cinder-vest", "forge-carapace", "flask-wrap", "membrane-coat", "static-wrap", "insulating-plate",
+      "ignition-core", "buffer-flask", "charge-capacitor",
+      "catalyst-blade", "buffer-lance", "electrode-saber",
+      "magma-plate", "buffer-plate", "conductive-shield",
+      "combustion-ring", "forge-talisman", "flow-catalyst", "aqualis-talisman", "discharge-ring", "ionix-talisman"
+    ]
+  },
+  "shop-catalyst-crags": {
+    "id": "shop-catalyst-crags",
+    "name": "Crag Merchants",
+    "regionId": "catalyst-crags",
+    "equipmentIds": [
+      "catalyst-blade", "pyroclast-arm", "buffer-lance", "dissolution-staff", "electrode-saber", "ion-cannon",
+      "magma-plate", "crucible-mantle", "buffer-plate", "solvent-shield", "conductive-shield", "ionic-bulwark",
+      "combustion-ring", "forge-talisman", "flow-catalyst", "aqualis-talisman", "discharge-ring", "ionix-talisman"
+    ]
+  },
+  "shop-acid-wastes": {
+    "id": "shop-acid-wastes",
+    "name": "The Neutralised Stock",
+    "regionId": "acid-wastes",
+    "equipmentIds": [
+      "catalyst-blade", "pyroclast-arm", "buffer-lance", "dissolution-staff", "electrode-saber", "ion-cannon",
+      "magma-plate", "crucible-mantle", "buffer-plate", "solvent-shield", "conductive-shield", "ionic-bulwark",
+      "combustion-ring", "forge-talisman", "flow-catalyst", "aqualis-talisman", "discharge-ring", "ionix-talisman"
+    ]
+  },
+  "shop-the-crucible": {
+    "id": "shop-the-crucible",
+    "name": "The Crucible Forge",
+    "regionId": "the-crucible",
+    "equipmentIds": [
+      "pyroclast-arm", "dissolution-staff", "ion-cannon",
+      "crucible-mantle", "solvent-shield", "ionic-bulwark",
+      "inferno-aegis", "aqualis-mantle", "volt-shell",
+      "combustion-ring", "forge-talisman", "flow-catalyst", "aqualis-talisman", "discharge-ring", "ionix-talisman"
+    ]
+  },
+  "shop-equilibriums-heart": {
+    "id": "shop-equilibriums-heart",
+    "name": "Heart Market",
+    "regionId": "equilibriums-heart",
+    "equipmentIds": [
+      "pyroclast-arm", "dissolution-staff", "ion-cannon",
+      "crucible-mantle", "solvent-shield", "ionic-bulwark",
+      "inferno-aegis", "aqualis-mantle", "volt-shell",
+      "combustion-ring", "forge-talisman", "flow-catalyst", "aqualis-talisman", "discharge-ring", "ionix-talisman"
+    ]
+  }
+}
