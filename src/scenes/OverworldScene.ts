@@ -80,6 +80,7 @@ const BIOMES: Record<string, BiomePalette> = {
 // Marker glyphs/colours for object tiles.
 const MARKER_STYLE: Record<string, { color: number; glyph: string }> = {
   shrine_entrance: { color: 0x7b2cbf, glyph: '⛩' },
+  healing_spring: { color: 0x06d6a0, glyph: '✚' },
   minibossTrigger: { color: 0xe23a4f, glyph: '⚔' },
   bossGate: { color: 0x6b4a8c, glyph: '╬' },
   exit: { color: 0x2f6f4f, glyph: '↩' },
@@ -287,6 +288,7 @@ export class OverworldScene extends Phaser.Scene {
     let prompt = '';
     if (npc) prompt = `Press SPACE to talk to ${this.content.npcs[npc.npcId]?.name ?? npc.npcId}`;
     else if (this.objAt('shrine_entrance', here) ?? this.objAt('shrine_entrance', ahead)) prompt = 'Press SPACE to enter the Challenge Shrine';
+    else if (this.objAt('healing_spring', here) ?? this.objAt('healing_spring', ahead)) prompt = 'Press SPACE to drink from the healing spring';
     else if (mbHere && !this.flag(String(mbHere.flag))) prompt = `Press SPACE to challenge the guardian (${this.enemyName(String(mbHere.enemyId))})`;
     else { const g = this.objAt('bossGate', here) ?? this.objAt('bossGate', ahead); if (g && !this.regionProgress().bossDefeated && this.flag(String(g.requiresFlag))) prompt = `Press SPACE to challenge ${this.enemyName(String(g.enemyId))}`; }
     if (!prompt && (this.objAt('exit', here) ?? this.objAt('exit', ahead))) prompt = 'Press SPACE to leave the region';
@@ -382,6 +384,17 @@ export class OverworldScene extends Phaser.Scene {
     const shrine = this.objAt('shrine_entrance', ahead) ?? this.objAt('shrine_entrance', here);
     if (shrine) {
       this.confirm('Enter the Challenge Shrine?', () => this.startShrine());
+      return;
+    }
+
+    const spring = this.objAt('healing_spring', ahead) ?? this.objAt('healing_spring', here);
+    if (spring) {
+      this.confirm('Drink from the healing spring?', () => {
+        if (!this.scene.get('HealingSpringScene')) { console.warn('[overworld] HealingSpringScene not registered yet'); this.busy = false; return; }
+        this.busy = true;
+        this.persist();
+        this.scene.start('HealingSpringScene', { regionId: this.region.id });
+      });
       return;
     }
 
