@@ -7,6 +7,7 @@ import balanceHalls from '../../src/content/data/tilemaps/balance-halls.json';
 import catalystCrags from '../../src/content/data/tilemaps/catalyst-crags.json';
 import acidWastes from '../../src/content/data/tilemaps/acid-wastes.json';
 import theCrucible from '../../src/content/data/tilemaps/the-crucible.json';
+import equilibriumsHeart from '../../src/content/data/tilemaps/equilibriums-heart.json';
 import type { DialogueNode } from '../../src/content/types';
 
 type AuditTileObject = { type: string; id?: string; x: number; y: number };
@@ -145,6 +146,7 @@ describe('shipped content', () => {
       'catalyst-crags': catalystCrags as AuditTilemap,
       'acid-wastes': acidWastes as AuditTilemap,
       'the-crucible': theCrucible as AuditTilemap,
+      'equilibriums-heart': equilibriumsHeart as AuditTilemap,
     };
     for (const region of content.regions) {
       const map = maps[region.id];
@@ -323,6 +325,26 @@ describe('shipped content', () => {
   });
   it('the the-crucible tilemap parses to a 24×18 grid with the expected interactive objects', () => {
     const tm = theCrucible as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
+    expect(tm.width).toBe(24);
+    expect(tm.height).toBe(18);
+    expect(tm.ground.length).toBe(18);
+    expect(tm.ground.every(row => row.length === 24)).toBe(true);
+    const types = tm.objects.map(o => o.type);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    expect(types.filter(t => t === 'npc').length).toBe(3);
+  });
+  it('Region 8 (equilibriums-heart) exists, index 8, topic "equilibrium", with a valid mini-boss and region boss; Region 7 unlocks it', () => {
+    const { content } = loadGameContent();
+    const r8 = content.regions.find(r => r.index === 8)!;
+    expect(r8.id).toBe('equilibriums-heart');
+    expect(r8.topic).toBe('equilibrium');
+    expect(content.enemies[r8.miniBossId]?.role).toBe('miniBoss');
+    expect(content.enemies[r8.regionBossId]?.role).toBe('finalBoss');
+    const r7 = content.regions.find(r => r.index === 7)!;
+    expect(r7.unlocksRegionId).toBe('equilibriums-heart');
+  });
+  it('the equilibriums-heart tilemap parses to a 24×18 grid with the expected interactive objects', () => {
+    const tm = equilibriumsHeart as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
     expect(tm.width).toBe(24);
     expect(tm.height).toBe(18);
     expect(tm.ground.length).toBe(18);

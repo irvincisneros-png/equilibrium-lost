@@ -96,6 +96,17 @@
     "npc_thermologist_calor": "assets/images/npc_thermologist_calor.png",
     "npc_forgemaster_pyra": "assets/images/npc_forgemaster_pyra.png",
     "npc_shrinekeeper_ember": "assets/images/npc_shrinekeeper_ember.png",
+    "tiles_equilibriums_heart": "assets/images/tiles_equilibriums_heart.png",
+    "bg_battle_equilibriums_heart": "assets/images/bg_battle_equilibriums_heart.png",
+    "enemy_flux_wisp": "assets/images/enemy_flux_wisp.png",
+    "enemy_tilted_scale": "assets/images/enemy_tilted_scale.png",
+    "enemy_reverse_eddy": "assets/images/enemy_reverse_eddy.png",
+    "enemy_closed_vessel": "assets/images/enemy_closed_vessel.png",
+    "enemy_forward_drift": "assets/images/enemy_forward_drift.png",
+    "enemy_great_imbalance": "assets/images/enemy_great_imbalance.png",
+    "npc_equilibrist_lethe": "assets/images/npc_equilibrist_lethe.png",
+    "npc_warden_haldane": "assets/images/npc_warden_haldane.png",
+    "npc_shrinekeeper_cyra": "assets/images/npc_shrinekeeper_cyra.png",
     "ui_textbox": "assets/images/ui_textbox.png",
     "ui_chainmeter": "assets/images/ui_chainmeter.png",
     "icon_status_oxidised": "assets/images/icon_status_oxidised.png",
@@ -106,7 +117,7 @@
     "icon_status_combusting": "assets/images/icon_status_combusting.png",
     "title_art": "assets/images/title_art.png"
   },
-  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json", "tilemap_acid_wastes": "src/content/data/tilemaps/acid-wastes.json", "tilemap_the_crucible": "src/content/data/tilemaps/the-crucible.json" },
+  "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json", "tilemap_acid_wastes": "src/content/data/tilemaps/acid-wastes.json", "tilemap_the_crucible": "src/content/data/tilemaps/the-crucible.json", "tilemap_equilibriums_heart": "src/content/data/tilemaps/equilibriums-heart.json" },
   "audio": {},
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
@@ -213,6 +224,17 @@
     { "key": "enemy_heat_sink", "w": 256, "h": 256, "color": "#3a6aaa", "label": "HEAT SINK" },
     { "key": "npc_thermologist_calor", "w": 64, "h": 96, "color": "#aa7a4a", "label": "Ca" },
     { "key": "npc_forgemaster_pyra", "w": 64, "h": 96, "color": "#c2562a", "label": "Py" },
-    { "key": "npc_shrinekeeper_ember", "w": 64, "h": 96, "color": "#aa5a2a", "label": "Em" }
+    { "key": "npc_shrinekeeper_ember", "w": 64, "h": 96, "color": "#aa5a2a", "label": "Em" },
+    { "key": "tiles_equilibriums_heart", "w": 64, "h": 64, "color": "#2a3a4a", "label": "" },
+    { "key": "bg_battle_equilibriums_heart", "w": 1920, "h": 896, "color": "#141e2a", "label": "" },
+    { "key": "enemy_flux_wisp", "w": 96, "h": 96, "color": "#7ab4d4", "label": "FluxWisp" },
+    { "key": "enemy_tilted_scale", "w": 128, "h": 128, "color": "#9ab09a", "label": "Tilted Scale" },
+    { "key": "enemy_reverse_eddy", "w": 128, "h": 128, "color": "#d46a3a", "label": "Rev.Eddy" },
+    { "key": "enemy_closed_vessel", "w": 160, "h": 160, "color": "#7a8aaa", "label": "Cl.Vessel" },
+    { "key": "enemy_forward_drift", "w": 192, "h": 192, "color": "#8ab06a", "label": "Fwd.Drift" },
+    { "key": "enemy_great_imbalance", "w": 256, "h": 256, "color": "#c03a8a", "label": "GREAT IMBALANCE" },
+    { "key": "npc_equilibrist_lethe", "w": 64, "h": 96, "color": "#5a8aaa", "label": "Le" },
+    { "key": "npc_warden_haldane", "w": 64, "h": 96, "color": "#7a6a9a", "label": "Ha" },
+    { "key": "npc_shrinekeeper_cyra", "w": 64, "h": 96, "color": "#6a9a8a", "label": "Cy" }
   ]
 }
