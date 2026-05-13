@@ -133,7 +133,7 @@ describe('shipped content', () => {
     expect(tm.ground.length).toBe(18);
     expect(tm.ground.every(row => row.length === 24)).toBe(true);
     const types = tm.objects.map(o => o.type);
-    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'healing_spring', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
   it('first-lesson NPCs are reachable before the mini-boss gate in every shipped region', () => {
@@ -156,6 +156,10 @@ describe('shipped content', () => {
       const firstNpc = map.objects.find(o => o.type === 'npc' && o.id === firstNpcId);
       expect(firstNpc, `${region.id} missing first NPC ${firstNpcId}`).toBeDefined();
       expect(isAdjacentReachable(reachableTilesBeforeGuardian(map), firstNpc!), `${firstNpcId} is sealed behind the guardian`).toBe(true);
+      // healing_spring: present and reachable before the guardian
+      const spring = map.objects.find(o => o.type === 'healing_spring');
+      expect(spring, `${region.id} has no healing_spring`).toBeDefined();
+      expect(isAdjacentReachable(reachableTilesBeforeGuardian(map), spring!), `${region.id} healing_spring is sealed behind the guardian`).toBe(true);
     }
   });
   it('first-lesson NPCs set the topic-based lesson flag the overworld objective reads', () => {
@@ -210,7 +214,7 @@ describe('shipped content', () => {
     expect(tm.ground.length).toBe(18);
     expect(tm.ground.every(row => row.length === 24)).toBe(true);
     const types = tm.objects.map(o => o.type);
-    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'healing_spring', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
   it('Region 4 (balance-halls) exists, index 4, topic "balancing-equations", with a valid mini-boss and region boss; Region 3 unlocks it', () => {
@@ -238,7 +242,7 @@ describe('shipped content', () => {
     expect(tm.ground.length).toBe(18);
     expect(tm.ground.every(row => row.length === 24)).toBe(true);
     const types = tm.objects.map(o => o.type);
-    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'healing_spring', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
   it('Region 5 (catalyst-crags) exists, index 5, topic "reaction-rates", with a valid mini-boss and region boss; Region 4 unlocks it', () => {
@@ -266,7 +270,7 @@ describe('shipped content', () => {
     expect(tm.ground.length).toBe(18);
     expect(tm.ground.every(row => row.length === 24)).toBe(true);
     const types = tm.objects.map(o => o.type);
-    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'healing_spring', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
   it('Region 6 (acid-wastes) exists, index 6, topic "acids-bases", with a valid mini-boss and region boss; Region 5 unlocks it', () => {
@@ -294,7 +298,7 @@ describe('shipped content', () => {
     expect(tm.ground.length).toBe(18);
     expect(tm.ground.every(row => row.length === 24)).toBe(true);
     const types = tm.objects.map(o => o.type);
-    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'healing_spring', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
   it('Region 7 (the-crucible) exists, index 7, topic "energy-changes", with a valid mini-boss and region boss; Region 6 unlocks it', () => {
@@ -330,7 +334,7 @@ describe('shipped content', () => {
     expect(tm.ground.length).toBe(18);
     expect(tm.ground.every(row => row.length === 24)).toBe(true);
     const types = tm.objects.map(o => o.type);
-    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'healing_spring', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
   it('Region 8 (equilibriums-heart) exists, index 8, topic "equilibrium", with a valid mini-boss and region boss; Region 7 unlocks it', () => {
@@ -350,7 +354,7 @@ describe('shipped content', () => {
     expect(tm.ground.length).toBe(18);
     expect(tm.ground.every(row => row.length === 24)).toBe(true);
     const types = tm.objects.map(o => o.type);
-    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
+    for (const t of ['player_spawn', 'exit', 'shrine_entrance', 'healing_spring', 'minibossTrigger', 'bossGate']) expect(types).toContain(t);
     expect(types.filter(t => t === 'npc').length).toBe(3);
   });
 });

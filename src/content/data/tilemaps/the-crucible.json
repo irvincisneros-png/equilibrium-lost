@@ -29,6 +29,7 @@
     { "type": "npc", "id": "forgemaster-pyra", "x": 7, "y": 8 },
     { "type": "npc", "id": "shrinekeeper-ember", "x": 4, "y": 12 },
     { "type": "shrine_entrance", "x": 3, "y": 12, "regionId": "the-crucible" },
+    { "type": "healing_spring", "x": 15, "y": 14 },
     { "type": "minibossTrigger", "x": 11, "y": 4, "enemyId": "the-flashpoint", "flag": "miniboss_the-crucible_done" },
     { "type": "bossGate", "x": 11, "y": 2, "enemyId": "the-heat-sink", "requiresFlag": "miniboss_the-crucible_done" }
   ]
