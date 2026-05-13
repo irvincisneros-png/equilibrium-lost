@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
-import type { GameContent, SaveData, SkillDef, StatusEffectInstance } from '../content/types';
+import type { GameContent, SaveData, SkillDef, StatusEffectInstance, TypeChart } from '../content/types';
 import type { BattleState, BattleEvent, BattleAction, BattleContext } from '../systems/BattleEngine';
+import { effectiveSkill, scaleSkillPower, MAX_TIER } from '../systems/skillTiers';
+import { effectiveness } from '../systems/battle/typeChart';
+import typeChartData from '../content/data/typeChart.json';
 import { createBattle, resolveTurn } from '../systems/BattleEngine';
 import { playerBattleInputFromSave, battleContextFromContent, REFRESHER_TOAST_KEY } from './battlePresenter';
 import { applyVictory } from './battleVictory';
@@ -247,6 +250,21 @@ export class BattleScene extends Phaser.Scene {
   // Skills submenu + quiz flow
   // ---------------------------------------------------------------------------
 
+  private effectiveSkillFor(s: SkillDef): SkillDef {
+    return effectiveSkill(s, this.save.skillTiers[s.id] ?? 0);
+  }
+
+  private skillRowLabel(s: SkillDef, selected: boolean): string {
+    const eff = this.effectiveSkillFor(s);
+    const tier = this.save.skillTiers[s.id] ?? 0;
+    const pwr = scaleSkillPower(eff.power, this.state.player.level);
+    const mult = effectiveness(typeChartData as TypeChart, s.affinity, this.state.enemy.affinity);
+    const effTag = mult >= 2 ? '  ⚡super-effective!' : mult <= 0.5 && mult > 0 ? '  ½ resisted' : mult === 0 ? '  ✗ no effect' : '';
+    const tierTag = tier > 0 ? ` ·T${tier}/${MAX_TIER}` : '';
+    const noQuiz = s.topic === null ? '  (no quiz)' : '';
+    return `${selected ? '▶' : '  '} ${s.name}  —  ${s.affinity}${effTag} · Pwr ${pwr} · EN ${eff.energyCost}${tierTag}${noQuiz}`;
+  }
+
   private openSkillMenu(): void {
     if (this.fsm !== 'menu') return;
     this.fsm = 'skillMenu';
@@ -257,11 +275,11 @@ export class BattleScene extends Phaser.Scene {
     this.skillIdx = 0;
     const x = 700, y = 290, rowH = 48, w = W - x - 32, h = (this.skillRowCount + 2) * rowH + 24;
     const bg = this.add.rectangle(x, y - 60, w, h, 0x0d1b2a, 0.97).setOrigin(0, 0).setStrokeStyle(4, 0x415a77).setDepth(50);
-    const legend = this.add.text(x + 24, y - 50, 'Pick a skill — Pwr = damage · EN = energy cost · "no quiz" skips the question', { fontFamily: FONT, fontSize: '20px', color: '#8fa3c0' }).setOrigin(0, 0).setDepth(51);
+    const legend = this.add.text(x + 24, y - 50, 'Pick a skill — Pwr/EN are after refines · ⚡ = ×2 vs this foe · ½ = resisted', { fontFamily: FONT, fontSize: '20px', color: '#8fa3c0' }).setOrigin(0, 0).setDepth(51);
     this.skillMenuObjs = [bg, legend];
     this.skillRowButtons = skills.map((s, i) => {
-      const affordable = s.energyCost <= this.state.player.energy;
-      const txt = this.add.text(x + 24, y + i * rowH, '', { fontFamily: FONT, fontSize: '28px', color: affordable ? '#cdd6f4' : '#566074' }).setOrigin(0, 0).setDepth(51);
+      const affordable = this.effectiveSkillFor(s).energyCost <= this.state.player.energy;
+      const txt = this.add.text(x + 24, y + i * rowH, this.skillRowLabel(s, false), { fontFamily: FONT, fontSize: '28px', color: affordable ? '#cdd6f4' : '#566074' }).setOrigin(0, 0).setDepth(51);
       if (affordable) {
         txt.setInteractive({ useHandCursor: true });
         txt.on('pointerover', () => { this.skillIdx = i; this.refreshSkillMenu(); });
@@ -282,11 +300,9 @@ export class BattleScene extends Phaser.Scene {
   private refreshSkillMenu(): void {
     const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     skills.forEach((s, i) => {
-      const affordable = s.energyCost <= this.state.player.energy;
+      const affordable = this.effectiveSkillFor(s).energyCost <= this.state.player.energy;
       const sel = i === this.skillIdx;
-      const tag = s.topic === null ? '  (no quiz)' : '';
-      this.skillRowButtons[i]?.setText(`${sel ? '▶' : '  '} ${s.name}  —  ${s.affinity} · Pwr ${s.power} · EN ${s.energyCost}${tag}`)
-        .setColor(!affordable ? '#566074' : sel ? '#ffd76a' : '#cdd6f4');
+      this.skillRowButtons[i]?.setText(this.skillRowLabel(s, sel)).setColor(!affordable ? '#566074' : sel ? '#ffd76a' : '#cdd6f4');
     });
     const backIdx = skills.length;
     this.skillRowButtons[backIdx]?.setText(`${this.skillIdx === backIdx ? '▶' : '  '} ← Back`).setColor(this.skillIdx === backIdx ? '#ffd76a' : '#cdd6f4');
@@ -304,7 +320,7 @@ export class BattleScene extends Phaser.Scene {
     const skills = this.save.equippedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     if (this.skillIdx >= skills.length) { this.closeSkillMenu(true); return; }
     const skill = skills[this.skillIdx]!;
-    if (skill.energyCost > this.state.player.energy) { this.log('Not enough energy for that.'); return; }
+    if (this.effectiveSkillFor(skill).energyCost > this.state.player.energy) { this.log('Not enough energy for that.'); return; }
     this.closeSkillMenu(false);
     void this.doSkill(skill);
   }
