@@ -233,5 +233,69 @@
       { "id": "s_enter", "speaker": "Shrinekeeper Cyra", "text": "Six questions. One miss is forgiven; two and the balance tips against you. Begin when you're ready.", "end": true, "setFlag": "shrine_entered_equilibriums-heart", "launch": "shrine" },
       { "id": "s_later", "speaker": "Shrinekeeper Cyra", "text": "The Shrine holds steady. Come back when you've studied the equilibrium concepts.", "end": true }
     ]
+  },
+  "vendor-mara": {
+    "id": "vendor-mara", "name": "Vendor Mara", "spriteKey": "npc_vendor_mara", "tile": { "x": 9, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "vm0", "speaker": "Vendor Mara", "text": "Atoms are everywhere — and so is quality gear. I stock reagent equipment for chemists heading into the Reaches. Browse what I have?", "choices": [ { "label": "Open the shop.", "next": "vm1" }, { "label": "Maybe later.", "next": "vm_skip" } ] },
+      { "id": "vm1", "speaker": "Vendor Mara", "text": "Curie's Cache — only the finest forge-tested equipment. Choose carefully.", "end": true, "launch": "shop" },
+      { "id": "vm_skip", "speaker": "Vendor Mara", "text": "I'll be here. The Reaches wait for no one, but I do.", "end": true }
+    ]
+  },
+  "merchant-rho": {
+    "id": "merchant-rho", "name": "Merchant Rho", "spriteKey": "npc_merchant_rho", "tile": { "x": 13, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "mr0", "speaker": "Merchant Rho", "text": "The Forge hammers day and night, and so do I. Good equipment makes the difference between a clean bond and a broken one. Care to browse?", "choices": [ { "label": "Show me the vault.", "next": "mr1" }, { "label": "Not now.", "next": "mr_skip" } ] },
+      { "id": "mr1", "speaker": "Merchant Rho", "text": "The Bonded Vault — gear bound to last. Step inside.", "end": true, "launch": "shop" },
+      { "id": "mr_skip", "speaker": "Merchant Rho", "text": "The vault is always unlocked. Come back when you're ready.", "end": true }
+    ]
+  },
+  "trader-kira": {
+    "id": "trader-kira", "name": "Trader Kira", "spriteKey": "npc_trader_kira", "tile": { "x": 15, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "tk0", "speaker": "Trader Kira", "text": "Every reaction leaves a residue — and the best ones leave behind fine equipment. I collect and sell them here in Reaction Hollow. Interested?", "choices": [ { "label": "Browse the stock.", "next": "tk1" }, { "label": "No thanks.", "next": "tk_skip" } ] },
+      { "id": "tk1", "speaker": "Trader Kira", "text": "Hollow Reagents — good gear for hungry chemists. Have a look.", "end": true, "launch": "shop" },
+      { "id": "tk_skip", "speaker": "Trader Kira", "text": "Suit yourself. I'll still be here after you fight.", "end": true }
+    ]
+  },
+  "vendor-theron": {
+    "id": "vendor-theron", "name": "Vendor Theron", "spriteKey": "npc_vendor_theron", "tile": { "x": 15, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "vt0", "speaker": "Vendor Theron", "text": "Every equation has two sides, and every chemist needs two things: knowledge and equipment. I supply the second. Want to take a look?", "choices": [ { "label": "Open the scales.", "next": "vt1" }, { "label": "Not yet.", "next": "vt_skip" } ] },
+      { "id": "vt1", "speaker": "Vendor Theron", "text": "The Balanced Scales — precisely curated gear. Choose your side.", "end": true, "launch": "shop" },
+      { "id": "vt_skip", "speaker": "Vendor Theron", "text": "The scales tip for no one. Come back when you've decided.", "end": true }
+    ]
+  },
+  "merchant-vex": {
+    "id": "merchant-vex", "name": "Merchant Vex", "spriteKey": "npc_merchant_vex", "tile": { "x": 16, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "mv0", "speaker": "Merchant Vex", "text": "Catalyst Crags run fast — so does my business. Everything I carry accelerates your edge. Want to see?", "choices": [ { "label": "Show me the stock.", "next": "mv1" }, { "label": "Maybe later.", "next": "mv_skip" } ] },
+      { "id": "mv1", "speaker": "Merchant Vex", "text": "Crag Merchants — mid-tier gear for mid-tier threats. Don't wait.", "end": true, "launch": "shop" },
+      { "id": "mv_skip", "speaker": "Merchant Vex", "text": "Speed is everything here. Don't wait too long.", "end": true }
+    ]
+  },
+  "trader-osh": {
+    "id": "trader-osh", "name": "Trader Osh", "spriteKey": "npc_trader_osh", "tile": { "x": 14, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "to0", "speaker": "Trader Osh", "text": "Acid eats through most things, but good equipment resists. I've seen what happens when chemists come through without proper gear. Don't let that be you. Want to browse?", "choices": [ { "label": "Browse the stock.", "next": "to1" }, { "label": "I'll be fine.", "next": "to_skip" } ] },
+      { "id": "to1", "speaker": "Trader Osh", "text": "The Neutralised Stock — gear that balances the pH of danger. Choose well.", "end": true, "launch": "shop" },
+      { "id": "to_skip", "speaker": "Trader Osh", "text": "Your confidence is admirable. Misplaced, perhaps. Come back if you change your mind.", "end": true }
+    ]
+  },
+  "vendor-brix": {
+    "id": "vendor-brix", "name": "Vendor Brix", "spriteKey": "npc_vendor_brix", "tile": { "x": 13, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "vb0", "speaker": "Vendor Brix", "text": "The Crucible tests everything — metal, bond, and chemist alike. My gear is forged right here in the heat. It holds. Want to see what we have?", "choices": [ { "label": "Open the forge.", "next": "vb1" }, { "label": "Not right now.", "next": "vb_skip" } ] },
+      { "id": "vb1", "speaker": "Vendor Brix", "text": "The Crucible Forge — T2 and T3 equipment, tested in real heat. Make your choice.", "end": true, "launch": "shop" },
+      { "id": "vb_skip", "speaker": "Vendor Brix", "text": "The forge stays hot. Come back when you need it.", "end": true }
+    ]
+  },
+  "merchant-mira": {
+    "id": "merchant-mira", "name": "Merchant Mira", "spriteKey": "npc_merchant_mira", "tile": { "x": 16, "y": 14 }, "facing": "left",
+    "dialogue": [
+      { "id": "mm0", "speaker": "Merchant Mira", "text": "Equilibrium's Heart holds the final balance of Æquor. You'll want every advantage you can get. Let me show you what the Heart Market has to offer.", "choices": [ { "label": "Browse the market.", "next": "mm1" }, { "label": "I'm ready as is.", "next": "mm_skip" } ] },
+      { "id": "mm1", "speaker": "Merchant Mira", "text": "Heart Market — finest equipment in Æquor. Take what you need.", "end": true, "launch": "shop" },
+      { "id": "mm_skip", "speaker": "Merchant Mira", "text": "Courage. I respect that. I'll be here when you need me.", "end": true }
+    ]
   }
 }

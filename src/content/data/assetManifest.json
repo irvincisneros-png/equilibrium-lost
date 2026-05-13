@@ -107,6 +107,14 @@
     "npc_equilibrist_lethe": "assets/images/npc_equilibrist_lethe.png",
     "npc_warden_haldane": "assets/images/npc_warden_haldane.png",
     "npc_shrinekeeper_cyra": "assets/images/npc_shrinekeeper_cyra.png",
+    "npc_vendor_mara": "assets/images/npc_vendor_mara.png",
+    "npc_merchant_rho": "assets/images/npc_merchant_rho.png",
+    "npc_trader_kira": "assets/images/npc_trader_kira.png",
+    "npc_vendor_theron": "assets/images/npc_vendor_theron.png",
+    "npc_merchant_vex": "assets/images/npc_merchant_vex.png",
+    "npc_trader_osh": "assets/images/npc_trader_osh.png",
+    "npc_vendor_brix": "assets/images/npc_vendor_brix.png",
+    "npc_merchant_mira": "assets/images/npc_merchant_mira.png",
     "ui_textbox": "assets/images/ui_textbox.png",
     "ui_chainmeter": "assets/images/ui_chainmeter.png",
     "icon_status_oxidised": "assets/images/icon_status_oxidised.png",
@@ -248,6 +256,14 @@
     { "key": "enemy_great_imbalance", "w": 256, "h": 256, "color": "#c03a8a", "label": "GREAT IMBALANCE" },
     { "key": "npc_equilibrist_lethe", "w": 64, "h": 96, "color": "#5a8aaa", "label": "Le" },
     { "key": "npc_warden_haldane", "w": 64, "h": 96, "color": "#7a6a9a", "label": "Ha" },
-    { "key": "npc_shrinekeeper_cyra", "w": 64, "h": 96, "color": "#6a9a8a", "label": "Cy" }
+    { "key": "npc_shrinekeeper_cyra", "w": 64, "h": 96, "color": "#6a9a8a", "label": "Cy" },
+    { "key": "npc_vendor_mara", "w": 48, "h": 64, "color": "#cba6f7", "label": "Vendor" },
+    { "key": "npc_merchant_rho", "w": 48, "h": 64, "color": "#89b4fa", "label": "Vendor" },
+    { "key": "npc_trader_kira", "w": 48, "h": 64, "color": "#a6e3a1", "label": "Vendor" },
+    { "key": "npc_vendor_theron", "w": 48, "h": 64, "color": "#fab387", "label": "Vendor" },
+    { "key": "npc_merchant_vex", "w": 48, "h": 64, "color": "#f38ba8", "label": "Vendor" },
+    { "key": "npc_trader_osh", "w": 48, "h": 64, "color": "#94e2d5", "label": "Vendor" },
+    { "key": "npc_vendor_brix", "w": 48, "h": 64, "color": "#f9e2af", "label": "Vendor" },
+    { "key": "npc_merchant_mira", "w": 48, "h": 64, "color": "#eba0ac", "label": "Vendor" }
   ]
 }
