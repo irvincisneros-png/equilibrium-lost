@@ -1,6 +1,7 @@
 import type { Affinity, StatKey } from '../../content/types';
 import { applyStage } from './types';
 import { chainMultiplier } from './chain';
+import { scaleSkillPower } from '../skillTiers';
 
 export interface DamageParams {
   attacker: { level: number; atk: number; def: number; spd: number; signatureAffinity: Affinity; buffs: Partial<Record<StatKey, number>> };
@@ -25,7 +26,10 @@ export function computeDamage(p: DamageParams): number {
   const levelFactor = Math.floor(2 * p.attacker.level / 5) + 2;
   const effAtk = applyStage(p.attacker.atk, p.attacker.buffs.atk ?? 0);
   const effDef = Math.max(1, applyStage(p.defenderDef, p.defenderBuffs.def ?? 0));
-  const base = Math.floor(Math.floor(Math.floor(levelFactor * p.power * effAtk / effDef) / 50) + 2);
+  // Pillar A: a skill's effective power scales with the *attacker's* level. Basic attacks
+  // (isSkill=false) and Catalyst Bursts (already huge + chainMult 3.0) are not scaled.
+  const scaledPower = (p.isSkill && !p.isCatalystBurst) ? scaleSkillPower(p.power, p.attacker.level) : p.power;
+  const base = Math.floor(Math.floor(Math.floor(levelFactor * scaledPower * effAtk / effDef) / 50) + 2);
 
   const fizzled = p.isSkill && p.quizCorrect === false;
   const quizMult = fizzled ? 0.3 : 1.0;
