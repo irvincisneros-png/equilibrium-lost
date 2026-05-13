@@ -142,7 +142,7 @@
   },
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
-    { "key": "title_art", "w": 1920, "h": 800, "color": "#10243a", "label": "EQUILIBRIUM LOST" },
+    { "key": "title_art", "w": 1920, "h": 1080, "color": "#10243a", "label": "EQUILIBRIUM LOST" },
     { "key": "hero_pyron_0_overworld", "w": 64, "h": 96, "color": "#e25822", "label": "P" },
     { "key": "hero_pyron_0_battle", "w": 192, "h": 192, "color": "#e25822", "label": "Pyron" },
     { "key": "hero_pyron_1_overworld", "w": 64, "h": 96, "color": "#ff7a3d", "label": "P+" },

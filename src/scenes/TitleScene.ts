@@ -27,26 +27,30 @@ export class TitleScene extends Phaser.Scene {
 
     this.cameras.main.setBackgroundColor('#0b0f17');
 
-    // --- Title art placeholder ---
-    const art = this.add.image(W / 2, 340, 'title_art').setDisplaySize(W, 680);
-    addPlaceholderLabel(this, W / 2, 340, 'title_art', content.assets);
+    // --- Title art ---
+    const art = this.add.image(W / 2, H / 2, 'title_art').setDisplaySize(W, H);
+    addPlaceholderLabel(this, W / 2, H / 2, 'title_art', content.assets);
     void art; // used for layout
 
     // Subtitle
-    this.add.text(W / 2, 700, 'A Year 10 Chemistry RPG', {
-      fontFamily: FONT, fontSize: '36px', color: '#8fa3c0'
+    this.add.text(W / 2, 764, 'A Year 10 Chemistry RPG', {
+      fontFamily: FONT, fontSize: '34px', color: '#d8e6ff',
+      stroke: '#06101d', strokeThickness: 6
     }).setOrigin(0.5);
 
     // Corrupt-save warning
     if (!saveLoadResult.ok && saveLoadResult.reason === 'corrupt') {
-      this.add.text(W / 2, 760, 'Your saved game was corrupted and couldn\'t be loaded. Starting New Game will overwrite it.', {
+      this.add.text(W / 2, 812, 'Your saved game was corrupted and couldn\'t be loaded. Starting New Game will overwrite it.', {
         fontFamily: FONT, fontSize: '28px', color: '#f38ba8',
+        backgroundColor: '#0b0f17cc', padding: { x: 20, y: 8 },
         wordWrap: { width: W - 256 }, align: 'center'
       }).setOrigin(0.5);
     }
 
     // --- Menu ---
-    const menuY = 860;
+    const menuY = 854;
+    this.add.rectangle(W / 2, menuY + 82, 960, 184, 0x07111f, 0.88)
+      .setStrokeStyle(3, 0xd6a24a, 0.85);
     const menuItems = [
       { label: 'New Game', key: 'new', enabled: true },
       { label: 'Continue', key: 'continue', enabled: save !== null },

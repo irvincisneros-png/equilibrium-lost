@@ -48,7 +48,7 @@ If no explicit mapping exists, the generator uses a generic chemistry motif in t
 
 All sizes come from `assetManifest.placeholders`. Current conventions:
 
-- `title_art`: 1920 x 800.
+- `title_art`: 1920 x 1080.
 - `worldmap`: 1920 x 1280.
 - `bg_battle_<region>`: 1920 x 896.
 - `tiles_<region>`: 64 x 64 representative textured tile.
