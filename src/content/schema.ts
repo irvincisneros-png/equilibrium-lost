@@ -148,3 +148,34 @@ export function validateGameContent(c: GameContent): ValidationResult {
   }
   return r;
 }
+
+export function validateEquipment(raw: unknown): ValidationResult {
+  const r = ok();
+  if (!isObj(raw)) { r.errors.push('equipment: not an object'); return r; }
+  const who = `equipment ${isStr(raw['id']) ? raw['id'] : '(no id)'}`;
+  requireFields(raw, {
+    id: isStr, name: isStr,
+    kind: (v) => v === 'weapon' || v === 'armour' || v === 'accessory',
+    family: isStr,
+    wieldableBy: (v) => Array.isArray(v) && (v as unknown[]).every(isStr),
+    tier: (v) => v === 1 || v === 2 || v === 3,
+    atkBonus: isNum, defBonus: isNum, spdBonus: isNum, hpBonus: isNum,
+    description: isStr,
+    dropFrom: (v) => Array.isArray(v),
+  }, who, r.errors);
+  if ('shopPrice' in raw && raw['shopPrice'] !== null && !isNum(raw['shopPrice'])) {
+    r.errors.push(`${who}: shopPrice must be number or null`);
+  }
+  return r;
+}
+
+export function validateShop(raw: unknown): ValidationResult {
+  const r = ok();
+  if (!isObj(raw)) { r.errors.push('shop: not an object'); return r; }
+  const who = `shop ${isStr(raw['id']) ? raw['id'] : '(no id)'}`;
+  requireFields(raw, {
+    id: isStr, name: isStr, regionId: isStr,
+    equipmentIds: (v) => Array.isArray(v) && (v as unknown[]).every(isStr),
+  }, who, r.errors);
+  return r;
+}
