@@ -282,6 +282,11 @@ export class DialogueScene extends Phaser.Scene {
       this.scene.start('ChallengeShrineScene', { regionId });
       return;
     }
+    if (launch === 'shop' && regionId) {
+      this.scene.stop(this.returnTo);
+      this.scene.start('ShopScene', { regionId, returnTo: this.returnTo, returnData: this.returnData });
+      return;
+    }
     if (typeof launch === 'string' && launch.startsWith('battle:') && regionId && this.scene.get('BattleScene')) {
       const enemyId = launch.slice('battle:'.length);
       this.scene.stop(this.returnTo);
