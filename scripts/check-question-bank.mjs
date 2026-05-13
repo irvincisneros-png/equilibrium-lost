@@ -81,6 +81,10 @@ export function checkBank(topic) {
       const sideOk = (s) => Array.isArray(s) && s.length && s.every(t => t && typeof t.formula === 'string' && t.formula.length && Number.isInteger(t.coeff) && t.coeff >= 1 && t.coeff <= 9);
       if (!eq || !sideOk(eq.reactants) || !sideOk(eq.products)) fail.push(`${id}: equation needs reactants/products with formula + integer coeff 1..9`);
       else { try { if (!equationBalances(eq)) fail.push(`${id}: equation does not balance`); } catch (e) { fail.push(`${id}: ${e.message}`); } }
+    } else if (q.format === 'orderSteps') {
+      if (!Array.isArray(q.steps) || q.steps.length < 3 || q.steps.length > 6 || !q.steps.every(s => typeof s === 'string' && s.length)) {
+        fail.push(`${id}: orderSteps needs 3-6 non-empty string steps`);
+      }
     } else fail.push(`${id}: unknown format "${q.format}"`);
   }
   for (const i of [0, 1, 2, 3]) if (mcqN && ans[i] / mcqN < 0.18) fail.push(`answerIndex ${i} is only ${(100 * ans[i] / mcqN).toFixed(1)}% of mcq items (need ≥18%, aim 20–30%)`);
