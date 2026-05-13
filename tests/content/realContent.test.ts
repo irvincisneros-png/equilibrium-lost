@@ -380,6 +380,23 @@ describe('expanded question banks', () => {
   const { content } = loadGameContent();
   const norm = (s: string): string => s.toLowerCase().replace(/\s+/g, ' ').replace(/[^a-z0-9 ]/g, '').trim();
 
+  it('every orderSteps question has 3-6 non-empty string steps', () => {
+    for (const bank of Object.values(content.questions)) {
+      for (const q of bank.filter(q => q.format === 'orderSteps')) {
+        expect(Array.isArray(q.steps), `${q.id} steps`).toBe(true);
+        expect(q.steps!.length, `${q.id} step count`).toBeGreaterThanOrEqual(3);
+        expect(q.steps!.length, `${q.id} step count`).toBeLessThanOrEqual(6);
+        expect(q.steps!.every(s => typeof s === 'string' && s.trim().length > 0), `${q.id} non-empty steps`).toBe(true);
+      }
+    }
+  });
+
+  it('every bank has at least one orderSteps question', () => {
+    for (const { topic } of BANKS) {
+      expect(content.questions[topic]!.some(q => q.format === 'orderSteps'), `${topic} orderSteps`).toBe(true);
+    }
+  });
+
   for (const { topic, needsBalance } of BANKS) {
     describe(topic, () => {
       const qs = content.questions[topic]!;

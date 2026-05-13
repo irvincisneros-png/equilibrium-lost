@@ -31,6 +31,11 @@ export function validateQuestion(raw: unknown): ValidationResult {
     const eq = raw['equation'];
     const sideOk = (s: unknown) => isArr(s) && s.length > 0 && s.every((t: unknown) => isObj(t) && isStr(t['formula']) && isNum(t['coeff']) && (t['coeff'] as number) >= 1);
     if (!isObj(eq) || !sideOk(eq['reactants']) || !sideOk(eq['products'])) r.warnings.push(`question ${id}: balanceEquation needs reactants/products with formula+coeff>=1 — skipped`);
+  } else if (raw['format'] === 'orderSteps') {
+    const steps = raw['steps'];
+    if (!isArr(steps) || steps.length < 3 || steps.length > 6 || !steps.every(isStr)) {
+      r.warnings.push(`question ${id}: orderSteps needs a 'steps' array of 3-6 non-empty strings — skipped`);
+    }
   } else {
     r.warnings.push(`question ${id}: unknown format "${String(raw['format'])}" — skipped`);
   }

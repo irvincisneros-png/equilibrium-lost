@@ -39,9 +39,10 @@ describe('QuizEngine.pickQuestion', () => {
 const eqQ: QuestionDef = { id: 'e1', topic: 't', difficulty: 3, format: 'balanceEquation', prompt: 'Balance H2 + O2 -> H2O',
   equation: { reactants: [{ formula: 'H2', coeff: 2 }, { formula: 'O2', coeff: 1 }], products: [{ formula: 'H2O', coeff: 2 }] }, explanation: '2H2 + O2 -> 2H2O' };
 const mcqQ: QuestionDef = { id: 'm1', topic: 't', difficulty: 1, format: 'mcq', prompt: 'p', options: ['a', 'b', 'c', 'd'], answerIndex: 2, explanation: 'e' };
+const orderQ: QuestionDef = { id: 'o1', topic: 't', difficulty: 2, format: 'orderSteps', prompt: 'Order these', steps: ['a', 'b', 'c'], explanation: 'e' };
 
 describe('QuizEngine.checkAnswer', () => {
-  const qe = new QuizEngine({ t: [mcqQ, eqQ] }, { rng: () => 0 });
+  const qe = new QuizEngine({ t: [mcqQ, eqQ, orderQ] }, { rng: () => 0 });
   it('mcq: only the matching index is correct', () => {
     expect(qe.checkAnswer(mcqQ, { index: 2 })).toBe(true);
     expect(qe.checkAnswer(mcqQ, { index: 0 })).toBe(false);
@@ -52,5 +53,11 @@ describe('QuizEngine.checkAnswer', () => {
     expect(qe.checkAnswer(eqQ, { widgetCoeffs: [1, 1, 2] })).toBe(false);
     expect(qe.checkAnswer(eqQ, { widgetCoeffs: [2, 1] })).toBe(false);   // wrong length
     expect(qe.checkAnswer(eqQ, { index: 0 })).toBe(false);              // wrong answer kind
+  });
+  it('orderSteps: the submitted order must match the stored step order', () => {
+    expect(qe.checkAnswer(orderQ, { widgetOrder: [0, 1, 2] })).toBe(true);
+    expect(qe.checkAnswer(orderQ, { widgetOrder: [1, 0, 2] })).toBe(false);
+    expect(qe.checkAnswer(orderQ, { widgetOrder: [0, 1] })).toBe(false);
+    expect(qe.checkAnswer(orderQ, { index: 0 })).toBe(false);
   });
 });

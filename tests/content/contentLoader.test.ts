@@ -23,6 +23,20 @@ describe('validateQuestion', () => {
       prompt: 'Balance: H2 + O2 -> H2O', equation: { reactants: [{ formula: 'H2', coeff: 2 }, { formula: 'O2', coeff: 1 }], products: [{ formula: 'H2O', coeff: 2 }] }, explanation: '2H2 + O2 -> 2H2O' });
     expect(r.errors).toEqual([]);
   });
+  it('accepts a well-formed orderSteps question', () => {
+    const r = validateQuestion({ id: 'q5', topic: 'energy-changes', difficulty: 2, format: 'orderSteps',
+      prompt: 'Put these in order:', steps: ['Break old bonds', 'Make new bonds', 'Release energy'], explanation: 'Bond changes drive the energy transfer.' });
+    expect(r.errors).toEqual([]);
+    expect(r.warnings).toEqual([]);
+  });
+  it('flags malformed orderSteps questions as warnings', () => {
+    const tooFew = validateQuestion({ id: 'q6', topic: 'energy-changes', difficulty: 2, format: 'orderSteps',
+      prompt: 'Put these in order:', steps: ['Break old bonds', 'Make new bonds'], explanation: 'e' });
+    const nonString = validateQuestion({ id: 'q7', topic: 'energy-changes', difficulty: 2, format: 'orderSteps',
+      prompt: 'Put these in order:', steps: ['Break old bonds', 4, 'Release energy'], explanation: 'e' });
+    expect(tooFew.warnings[0]).toMatch(/orderSteps/);
+    expect(nonString.warnings[0]).toMatch(/orderSteps/);
+  });
 });
 
 describe('validateSkill', () => {
