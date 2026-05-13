@@ -118,7 +118,20 @@
     "title_art": "assets/images/title_art.png"
   },
   "tilemaps": { "tilemap_elemental_reaches": "src/content/data/tilemaps/elemental-reaches.json", "tilemap_bonding_forge": "src/content/data/tilemaps/bonding-forge.json", "tilemap_reaction_hollow": "src/content/data/tilemaps/reaction-hollow.json", "tilemap_balance_halls": "src/content/data/tilemaps/balance-halls.json", "tilemap_catalyst_crags": "src/content/data/tilemaps/catalyst-crags.json", "tilemap_acid_wastes": "src/content/data/tilemaps/acid-wastes.json", "tilemap_the_crucible": "src/content/data/tilemaps/the-crucible.json", "tilemap_equilibriums_heart": "src/content/data/tilemaps/equilibriums-heart.json" },
-  "audio": {},
+  "audio": {
+    "music_title":             "assets/audio/01-title.mp3",
+    "music_worldmap":          "assets/audio/02-worldmap.mp3",
+    "music_overworld_r1":      "assets/audio/03-overworld-r1.ogg",
+    "music_overworld_r2_r4":   "assets/audio/04-overworld-r2-r4.ogg",
+    "music_overworld_r5_r7":   "assets/audio/05-overworld-r5-r7.ogg",
+    "music_overworld_r8":      "assets/audio/06-overworld-r8.ogg",
+    "music_battle_normal":     "assets/audio/07-battle-normal.ogg",
+    "music_battle_miniboss":   "assets/audio/08-battle-miniboss.ogg",
+    "music_battle_regionboss": "assets/audio/09-battle-regionboss.ogg",
+    "music_battle_finalboss":  "assets/audio/10-battle-finalboss.mp3",
+    "music_shrine":            "assets/audio/11-shrine.ogg",
+    "music_ending":            "assets/audio/12-ending.ogg"
+  },
   "placeholders": [
     { "key": "worldmap", "w": 1920, "h": 1280, "color": "#1a2438", "label": "ÆQUOR WORLD MAP" },
     { "key": "title_art", "w": 1920, "h": 800, "color": "#10243a", "label": "EQUILIBRIUM LOST" },
