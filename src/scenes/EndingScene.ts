@@ -64,7 +64,23 @@ export class EndingScene extends Phaser.Scene {
       fontFamily: FONT, fontSize: '48px', color: '#f9e2af',
     }).setOrigin(0.5, 0);
 
-    y += 120;
+    y += 80;
+
+    // Music credits (CC-BY tracks require attribution)
+    const creditLines = [
+      'Music: "RPG Title Theme" (Tauredian, CC-BY 3.0 · opengameart.org),',
+      '"Overworld Select – 8-bit Gameboy Track" (Wolfgang_ / Ted Kerr, CC-BY 4.0 · opengameart.org),',
+      '"Their Spears Fell Like Rain" (request, CC-BY 4.0 · opengameart.org).  Other tracks CC0 via OpenGameArt.',
+    ];
+    for (const line of creditLines) {
+      this.add.text(W / 2, y, line, {
+        fontFamily: FONT, fontSize: '18px', color: '#566074',
+        align: 'center', wordWrap: { width: W - 320 },
+      }).setOrigin(0.5, 0);
+      y += 28;
+    }
+
+    y += 24;
 
     // Prompt
     this.add.text(W / 2, y, 'Press Enter to return to the title', {
