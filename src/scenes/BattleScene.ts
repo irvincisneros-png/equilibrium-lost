@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
-import type { GameContent, SaveData, SkillDef, StatusEffectInstance, TypeChart } from '../content/types';
+import type { Affinity, GameContent, SaveData, SkillDef, StatusEffectInstance, TypeChart } from '../content/types';
+import { playSkillFx } from './battleFx';
 import type { BattleState, BattleEvent, BattleAction, BattleContext } from '../systems/BattleEngine';
 import { effectiveSkill, scaleSkillPower, MAX_TIER } from '../systems/skillTiers';
 import { effectiveness } from '../systems/battle/typeChart';
@@ -518,14 +519,24 @@ export class BattleScene extends Phaser.Scene {
   }
 
   private async animate(events: BattleEvent[]): Promise<void> {
+    let currentAffinity: Affinity = 'Neutral';
+    let currentSide: 'player' | 'enemy' = 'player';
+    let currentIsBurst = false;
+    let currentSkillId: string | undefined;
     for (const ev of events) {
       if (ev.t === 'outcome') return; // the end sequence takes over
-      this.applyEvent(ev);
+      if (ev.t === 'attack') {
+        currentAffinity = ev.affinity;
+        currentSide = ev.side;
+        currentSkillId = ev.skillId;
+        currentIsBurst = !!currentSkillId && (this.content.skills[currentSkillId]?.isCatalystBurst ?? false);
+      }
+      this.applyEvent(ev, currentAffinity, currentSide, currentIsBurst);
       await this.wait(this.delayFor(ev));
     }
   }
 
-  private applyEvent(ev: BattleEvent): void {
+  private applyEvent(ev: BattleEvent, currentAffinity: Affinity = 'Neutral', _currentSide: 'player' | 'enemy' = 'player', currentIsBurst = false): void {
     switch (ev.t) {
       case 'turnStart':
         break;
@@ -548,6 +559,13 @@ export class BattleScene extends Phaser.Scene {
         const sprite = onPlayer ? this.playerSprite : this.enemySprite;
         this.flashSprite(sprite);
         this.cameras.main.shake(110, onPlayer ? 0.006 : 0.004);
+        const fxTarget = onPlayer ? this.playerSprite : this.enemySprite;
+        playSkillFx(this, fxTarget, currentAffinity, {
+          superEffective: ev.effectiveness >= 2,
+          crit: ev.crit,
+          isBurst: currentIsBurst,
+        });
+        if (ev.effectiveness >= 2) this.cameras.main.shake(180, 0.012);
         if (onPlayer) { this.dispPlayerHp = Math.max(0, this.dispPlayerHp - ev.amount); this.playerHpBar.setValue(this.dispPlayerHp, this.state.player.maxHp); }
         else { this.dispEnemyHp = Math.max(0, this.dispEnemyHp - ev.amount); this.enemyHpBar.setValue(this.dispEnemyHp, this.dispEnemyMaxHp); }
         const color = ev.effectiveness >= 2 ? '#ff6b6b' : ev.effectiveness <= 0.5 ? '#9aa0a8' : '#ffffff';
