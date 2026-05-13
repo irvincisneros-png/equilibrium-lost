@@ -97,4 +97,15 @@ describe('applyVictory', () => {
     applyVictory(save, content.enemies['protium']!, region1, 0, content);
     expect(save.xp).toBe(xpBefore);
   });
+
+  it('a final-boss win clears the region, sets game_complete, and grants the boss reward + RP', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const protium = content.enemies['protium']!;
+    const finalDef = { ...protium, role: 'finalBoss' as const, xpYield: 50 };
+    const { save: after, banners } = applyVictory(save, finalDef, region1, 0, content);
+    expect(after.regionProgress[region1.id]!.bossDefeated).toBe(true);
+    expect(after.storyFlags['game_complete']).toBe(true);
+    expect(after.reagentPoints).toBe(RP_AWARDS.finalBoss);
+    expect(banners.some(b => /Æquor is saved|Equilibrium is whole/i.test(b))).toBe(true);
+  });
 });
