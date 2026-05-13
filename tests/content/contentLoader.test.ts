@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { validateQuestion, validateSkill, validateRegion, validateGameContent } from '../../src/content/schema';
+import { validateQuestion, validateSkill, validateRegion, validateGameContent, validateQuestionVisual } from '../../src/content/schema';
 
 describe('validateQuestion', () => {
   it('accepts a well-formed mcq', () => {
@@ -103,5 +103,82 @@ describe('ContentLoader.fromRaw', () => {
   it('throws ContentError listing the offending fields when a skill is malformed', () => {
     const raw = minimalRaw(); (raw.skills as any)['ember-test'] = { id: 'ember-test' };
     expect(() => ContentLoader.fromRaw(raw)).toThrowError(/ember-test/);
+  });
+});
+
+describe('validateQuestionVisual', () => {
+  it('accepts a valid bohrAtom', () => {
+    expect(() => validateQuestionVisual({ type: 'bohrAtom', symbol: 'Na', protons: 11, neutrons: 12, shells: [2, 8, 1] })).not.toThrow();
+  });
+  it('accepts bohrAtom without neutrons', () => {
+    expect(() => validateQuestionVisual({ type: 'bohrAtom', symbol: 'H', protons: 1, shells: [1] })).not.toThrow();
+  });
+  it('rejects bohrAtom with too many shells', () => {
+    expect(() => validateQuestionVisual({ type: 'bohrAtom', symbol: 'X', protons: 1, shells: [2, 8, 18, 32, 1] })).toThrow();
+  });
+  it('rejects bohrAtom with shell over capacity', () => {
+    expect(() => validateQuestionVisual({ type: 'bohrAtom', symbol: 'X', protons: 1, shells: [3] })).toThrow(/out of range/);
+  });
+  it('rejects bohrAtom with total electrons > 36', () => {
+    expect(() => validateQuestionVisual({ type: 'bohrAtom', symbol: 'X', protons: 1, shells: [2, 8, 18, 9] })).toThrow(/sanity limit/);
+  });
+  it('accepts a valid lewisDot', () => {
+    expect(() => validateQuestionVisual({ type: 'lewisDot', symbol: 'O', valenceElectrons: 6 })).not.toThrow();
+  });
+  it('rejects lewisDot with valenceElectrons > 8', () => {
+    expect(() => validateQuestionVisual({ type: 'lewisDot', symbol: 'X', valenceElectrons: 9 })).toThrow();
+  });
+  it('rejects lewisDot with negative valenceElectrons', () => {
+    expect(() => validateQuestionVisual({ type: 'lewisDot', symbol: 'X', valenceElectrons: -1 })).toThrow();
+  });
+  it('accepts a valid pHScale', () => {
+    expect(() => validateQuestionVisual({ type: 'pHScale', value: 7, label: 'water' })).not.toThrow();
+  });
+  it('rejects pHScale with value out of 0-14', () => {
+    expect(() => validateQuestionVisual({ type: 'pHScale', value: 15 })).toThrow();
+    expect(() => validateQuestionVisual({ type: 'pHScale', value: -1 })).toThrow();
+  });
+  it('accepts a valid reactionEnergyProfile (exothermic)', () => {
+    expect(() => validateQuestionVisual({ type: 'reactionEnergyProfile', deltaH: -100, activationEnergy: 50 })).not.toThrow();
+  });
+  it('accepts a valid reactionEnergyProfile (endothermic)', () => {
+    expect(() => validateQuestionVisual({ type: 'reactionEnergyProfile', deltaH: 80, activationEnergy: 120, label: 'photosynthesis' })).not.toThrow();
+  });
+  it('rejects reactionEnergyProfile with negative activationEnergy', () => {
+    expect(() => validateQuestionVisual({ type: 'reactionEnergyProfile', deltaH: -50, activationEnergy: -10 })).toThrow();
+  });
+  it('accepts a valid balanceScale', () => {
+    expect(() => validateQuestionVisual({ type: 'balanceScale', left: [{ symbol: 'H', count: 2 }], right: [{ symbol: 'H', count: 2 }] })).not.toThrow();
+  });
+  it('rejects balanceScale with count out of 1-9', () => {
+    expect(() => validateQuestionVisual({ type: 'balanceScale', left: [{ symbol: 'X', count: 0 }], right: [{ symbol: 'X', count: 1 }] })).toThrow();
+    expect(() => validateQuestionVisual({ type: 'balanceScale', left: [{ symbol: 'X', count: 10 }], right: [{ symbol: 'X', count: 1 }] })).toThrow();
+  });
+  it('rejects balanceScale with empty side', () => {
+    expect(() => validateQuestionVisual({ type: 'balanceScale', left: [], right: [{ symbol: 'X', count: 1 }] })).toThrow();
+  });
+  it('rejects unknown visual type', () => {
+    expect(() => validateQuestionVisual({ type: 'orbitalDiagram', symbol: 'X' })).toThrow(/unknown visual type/);
+  });
+  it('rejects non-object', () => {
+    expect(() => validateQuestionVisual('bohrAtom')).toThrow();
+  });
+  it('validateQuestion warns (not errors) when visual is invalid on an mcq', () => {
+    const r = validateQuestion({
+      id: 'qv1', topic: 'atomic-structure', difficulty: 1, format: 'mcq',
+      prompt: 'Test?', options: ['a', 'b', 'c', 'd'], answerIndex: 0, explanation: 'ok.',
+      visual: { type: 'lewisDot', symbol: 'X', valenceElectrons: 99 }
+    });
+    expect(r.errors).toEqual([]);
+    expect(r.warnings.some(w => w.includes('invalid visual'))).toBe(true);
+  });
+  it('validateQuestion passes cleanly when visual is valid on an mcq', () => {
+    const r = validateQuestion({
+      id: 'qv2', topic: 'atomic-structure', difficulty: 1, format: 'mcq',
+      prompt: 'Test?', options: ['a', 'b', 'c', 'd'], answerIndex: 0, explanation: 'ok.',
+      visual: { type: 'pHScale', value: 3 }
+    });
+    expect(r.errors).toEqual([]);
+    expect(r.warnings).toEqual([]);
   });
 });

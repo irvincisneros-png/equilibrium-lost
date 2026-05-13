@@ -1,5 +1,5 @@
 import type {
-  QuestionDef, SkillDef, ClassDef, EnemyDef, ItemDef, RegionDef, NpcDef, AssetManifest, GameContent, TypeChart
+  QuestionDef, SkillDef, ClassDef, EnemyDef, ItemDef, RegionDef, NpcDef, AssetManifest, GameContent, TypeChart, QuestionVisual
 } from './types';
 
 export interface ValidationResult { errors: string[]; warnings: string[]; }
@@ -16,6 +16,60 @@ function requireFields(o: Record<string, unknown>, spec: Record<string, (v: unkn
   }
 }
 
+const SHELL_CAPS = [2, 8, 18, 32];
+
+/**
+ * Validates a QuestionVisual payload. Throws with a descriptive message on failure.
+ * Call from validateQuestion when `visual` is present.
+ */
+export function validateQuestionVisual(v: unknown, path = 'visual'): asserts v is QuestionVisual {
+  if (!isObj(v)) throw new Error(`${path}: must be an object`);
+  const type = v['type'];
+  if (type === 'bohrAtom') {
+    if (!isStr(v['symbol'])) throw new Error(`${path}.symbol: must be a non-empty string`);
+    if (!isNum(v['protons']) || (v['protons'] as number) < 1) throw new Error(`${path}.protons: must be a positive number`);
+    if ('neutrons' in v && v['neutrons'] !== undefined && (!isNum(v['neutrons']) || (v['neutrons'] as number) < 0)) throw new Error(`${path}.neutrons: must be a non-negative number`);
+    const shells = v['shells'];
+    if (!isArr(shells) || shells.length === 0 || shells.length > 4) throw new Error(`${path}.shells: must be an array of 1–4 entries`);
+    let total = 0;
+    for (let i = 0; i < shells.length; i++) {
+      const n = shells[i];
+      if (!isNum(n) || (n as number) < 0 || !Number.isInteger(n)) throw new Error(`${path}.shells[${i}]: must be a non-negative integer`);
+      if ((n as number) > SHELL_CAPS[i]!) throw new Error(`${path}.shells[${i}] out of range: max for shell ${i + 1} is ${SHELL_CAPS[i]}`);
+      total += n as number;
+    }
+    if (total > 36) throw new Error(`${path}.shells: total electron count ${total} exceeds sanity limit of 36`);
+  } else if (type === 'lewisDot') {
+    if (!isStr(v['symbol'])) throw new Error(`${path}.symbol: must be a non-empty string`);
+    const ve = v['valenceElectrons'];
+    if (!isNum(ve) || !Number.isInteger(ve) || (ve as number) < 0 || (ve as number) > 8) throw new Error(`${path}.valenceElectrons: must be an integer 0–8`);
+  } else if (type === 'pHScale') {
+    const val = v['value'];
+    if (!isNum(val) || (val as number) < 0 || (val as number) > 14) throw new Error(`${path}.value: must be a number 0–14`);
+    if ('label' in v && v['label'] !== undefined && !isStr(v['label'])) throw new Error(`${path}.label: must be a string if provided`);
+  } else if (type === 'reactionEnergyProfile') {
+    if (!isNum(v['deltaH'])) throw new Error(`${path}.deltaH: must be a number`);
+    const ea = v['activationEnergy'];
+    if (!isNum(ea) || (ea as number) < 0) throw new Error(`${path}.activationEnergy: must be a non-negative number`);
+    if ('label' in v && v['label'] !== undefined && !isStr(v['label'])) throw new Error(`${path}.label: must be a string if provided`);
+  } else if (type === 'balanceScale') {
+    const checkSide = (side: unknown, sideName: string): void => {
+      if (!isArr(side) || side.length < 1 || side.length > 6) throw new Error(`${path}.${sideName}: must be an array of 1–6 entries`);
+      for (let i = 0; i < side.length; i++) {
+        const entry = side[i];
+        if (!isObj(entry)) throw new Error(`${path}.${sideName}[${i}]: must be an object`);
+        if (!isStr(entry['symbol'])) throw new Error(`${path}.${sideName}[${i}].symbol: must be a non-empty string`);
+        const cnt = entry['count'];
+        if (!isNum(cnt) || !Number.isInteger(cnt) || (cnt as number) < 1 || (cnt as number) > 9) throw new Error(`${path}.${sideName}[${i}].count: must be an integer 1–9`);
+      }
+    };
+    checkSide(v['left'], 'left');
+    checkSide(v['right'], 'right');
+  } else {
+    throw new Error(`${path}.type: unknown visual type "${String(type)}"`);
+  }
+}
+
 // --- question: malformed => WARNING (skip), never an error (game continues) ---
 export function validateQuestion(raw: unknown): ValidationResult {
   const r = ok();
@@ -27,6 +81,14 @@ export function validateQuestion(raw: unknown): ValidationResult {
     const opts = raw['options'];
     if (!isArr(opts) || opts.length !== 4 || !opts.every(isStr)) r.warnings.push(`question ${id}: mcq needs exactly 4 string options — skipped`);
     else if (!isNum(raw['answerIndex']) || (raw['answerIndex'] as number) < 0 || (raw['answerIndex'] as number) > 3) r.warnings.push(`question ${id}: mcq answerIndex must be 0..3 — skipped`);
+    // validate optional visual
+    if ('visual' in raw && raw['visual'] !== undefined) {
+      try {
+        validateQuestionVisual(raw['visual'], `question[${id}].visual`);
+      } catch (e) {
+        r.warnings.push(`question ${id}: invalid visual — ${(e as Error).message} — skipped`);
+      }
+    }
   } else if (raw['format'] === 'balanceEquation') {
     const eq = raw['equation'];
     const sideOk = (s: unknown) => isArr(s) && s.length > 0 && s.every((t: unknown) => isObj(t) && isStr(t['formula']) && isNum(t['coeff']) && (t['coeff'] as number) >= 1);
