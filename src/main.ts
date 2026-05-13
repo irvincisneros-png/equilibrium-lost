@@ -9,6 +9,7 @@ import { OverworldScene } from './scenes/OverworldScene';
 import { DialogueScene } from './scenes/DialogueScene';
 import { BattleScene } from './scenes/BattleScene';
 import { ChallengeShrineScene } from './scenes/ChallengeShrineScene';
+import { HealingSpringScene } from './scenes/HealingSpringScene';
 import { MenuScene } from './scenes/MenuScene';
 import { EndingScene } from './scenes/EndingScene';
 
@@ -16,7 +17,7 @@ import { EndingScene } from './scenes/EndingScene';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SCENES: any[] = [
   BootScene, ErrorScene, TitleScene, ClassSelectScene, WorldMapScene,
-  OverworldScene, DialogueScene, BattleScene, ChallengeShrineScene, MenuScene, EndingScene,
+  OverworldScene, DialogueScene, BattleScene, ChallengeShrineScene, HealingSpringScene, MenuScene, EndingScene,
 ];
 
 new Phaser.Game(makeGameConfig(SCENES));
