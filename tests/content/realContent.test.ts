@@ -313,6 +313,14 @@ describe('shipped content', () => {
     for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
     expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
   });
+  it('equilibrium question bank has 64–100 questions spanning all three difficulties (with at least one balanceEquation)', () => {
+    const { content } = loadGameContent();
+    const qs = content.questions['equilibrium']!;
+    expect(qs.length).toBeGreaterThanOrEqual(64);
+    expect(qs.length).toBeLessThanOrEqual(100);
+    for (const d of [1, 2, 3]) expect(qs.filter(q => q.difficulty === d).length).toBeGreaterThanOrEqual(5);
+    expect(qs.some(q => q.format === 'balanceEquation')).toBe(true);
+  });
   it('the the-crucible tilemap parses to a 24×18 grid with the expected interactive objects', () => {
     const tm = theCrucible as { width: number; height: number; ground: number[][]; objects: { type: string }[] };
     expect(tm.width).toBe(24);
