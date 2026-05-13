@@ -80,7 +80,19 @@
     "regionBossId": "the-heat-sink",
     "npcIds": ["thermologist-calor", "forgemaster-pyra", "shrinekeeper-ember"],
     "shrine": { "questionTopic": "energy-changes", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 1300, "rewardItemIds": ["energy-cell", "buffer"] },
-    "unlocksRegionId": null,
+    "unlocksRegionId": "equilibriums-heart",
     "bossReward": { "xp": 1450, "itemIds": ["reagent", "isotope-core"], "skillId": "endothermic-drain" }
+  },
+  {
+    "id": "equilibriums-heart", "index": 8, "name": "Equilibrium's Heart", "topic": "equilibrium",
+    "tilemapKey": "tilemap_equilibriums_heart", "tilesetKey": "tiles_equilibriums_heart", "battleBackgroundKey": "bg_battle_equilibriums_heart",
+    "wildEnemyIds": ["flux-wisp", "tilted-scale", "reverse-eddy", "closed-vessel"],
+    "encounterRatePerStep": 0.1,
+    "miniBossId": "the-forward-drift",
+    "regionBossId": "the-great-imbalance",
+    "npcIds": ["equilibrist-lethe", "warden-haldane", "shrinekeeper-cyra"],
+    "shrine": { "questionTopic": "equilibrium", "questionCount": 6, "passRatio": 0.8333, "rewardXp": 1600, "rewardItemIds": ["reagent", "isotope-core"] },
+    "unlocksRegionId": null,
+    "bossReward": { "xp": 1800, "itemIds": ["reagent", "reagent", "isotope-core"] }
   }
 ]

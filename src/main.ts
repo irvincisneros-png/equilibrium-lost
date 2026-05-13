@@ -10,12 +10,13 @@ import { DialogueScene } from './scenes/DialogueScene';
 import { BattleScene } from './scenes/BattleScene';
 import { ChallengeShrineScene } from './scenes/ChallengeShrineScene';
 import { MenuScene } from './scenes/MenuScene';
+import { EndingScene } from './scenes/EndingScene';
 
 // First scene is auto-started; the rest are registered for `this.scene.start/launch`.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const SCENES: any[] = [
   BootScene, ErrorScene, TitleScene, ClassSelectScene, WorldMapScene,
-  OverworldScene, DialogueScene, BattleScene, ChallengeShrineScene, MenuScene,
+  OverworldScene, DialogueScene, BattleScene, ChallengeShrineScene, MenuScene, EndingScene,
 ];
 
 new Phaser.Game(makeGameConfig(SCENES));

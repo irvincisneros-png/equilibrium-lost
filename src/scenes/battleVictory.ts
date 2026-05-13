@@ -59,7 +59,7 @@ export function applyVictory(save: SaveData, enemyDef: EnemyDef, region: RegionD
     rp.miniBossDefeated = true;
     s.storyFlags[`miniboss_${region.id}_done`] = true;
     banners.push('The guardian falls — the path ahead is clear.');
-  } else if (enemyDef.role === 'regionBoss') {
+  } else if (enemyDef.role === 'regionBoss' || enemyDef.role === 'finalBoss') {
     rp.bossDefeated = true;
     s.storyFlags[`equilibrium_restored_${region.id}`] = true;
     award(region.bossReward.xp, 'Region cleared!');
@@ -69,6 +69,10 @@ export function applyVictory(save: SaveData, enemyDef: EnemyDef, region: RegionD
     }
     if (region.bossReward.skillId) learn(region.bossReward.skillId, `Learned ${content.skills[region.bossReward.skillId]?.name ?? region.bossReward.skillId}!`);
     banners.push(`Equilibrium restored to ${region.name}!`);
+  }
+  if (enemyDef.role === 'finalBoss') {
+    s.storyFlags['game_complete'] = true;
+    banners.push('Equilibrium is whole again. Æquor is saved.');
   }
 
   // Reagent Points (skill-refine currency)

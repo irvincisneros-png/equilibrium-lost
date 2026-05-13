@@ -201,5 +201,37 @@
       { "id": "s_enter", "speaker": "Shrinekeeper Ember", "text": "Six questions. One miss is forgiven; two and the coals go cold on you. Begin when you're ready.", "end": true, "setFlag": "shrine_entered_the-crucible", "launch": "shrine" },
       { "id": "s_later", "speaker": "Shrinekeeper Ember", "text": "The embers will keep. Come back when you've studied.", "end": true }
     ]
+  },
+  "equilibrist-lethe": {
+    "id": "equilibrist-lethe", "name": "Equilibrist Lethe", "spriteKey": "npc_equilibrist_lethe", "tile": { "x": 11, "y": 12 }, "facing": "down",
+    "dialogue": [
+      { "id": "l0", "speaker": "Equilibrist Lethe", "text": "Equilibrium's Heart — where every reaction runs both ways at once. The Great Imbalance tipped the scales in one direction and locked them there. Shall I walk you through what equilibrium actually means, or do you already know it?", "choices": [ { "label": "Walk me through it.", "next": "l1" }, { "label": "I know equilibrium — let me through.", "next": "l_skip" } ] },
+      { "id": "l1", "speaker": "Equilibrist Lethe", "text": "Start with the ⇌ symbol — two arrows, each pointing a different way. A REVERSIBLE reaction doesn't go fully to products and stop. Instead it reaches EQUILIBRIUM: the forward and reverse reactions are still both happening, but at equal rates, so the amounts of everything stop changing.", "next": "l2" },
+      { "id": "l2", "speaker": "Equilibrist Lethe", "text": "DYNAMIC equilibrium: the reaction is NOT stopped — both directions are ongoing. Macroscopic properties (colour, pressure, concentration) appear constant because the rates balance. It only holds in a CLOSED system where nothing can escape.", "next": "l3" },
+      { "id": "l3", "speaker": "Equilibrist Lethe", "text": "Le Châtelier's Principle: if you disturb an equilibrium, it shifts to partially OPPOSE that change. Add more reactant → equilibrium shifts RIGHT (makes more product). Remove product → shifts right again. Change concentration the other way and it reverses.", "next": "l4" },
+      { "id": "l4", "speaker": "Equilibrist Lethe", "text": "Temperature: raise it → equilibrium shifts in the ENDOTHERMIC direction (to absorb the extra heat). Lower it → shifts EXOTHERMIC. This also changes the position permanently — unlike pressure or concentration, temperature changes the equilibrium constant itself.", "next": "l5" },
+      { "id": "l5", "speaker": "Equilibrist Lethe", "text": "Pressure (gases only): raise pressure → equilibrium shifts to the side with FEWER gas moles, reducing the pressure. Lower pressure → shifts to the side with MORE moles. If both sides have the same number of gas moles, pressure has no effect.", "next": "l6" },
+      { "id": "l6", "speaker": "Equilibrist Lethe", "text": "CATALYST: it speeds up both the forward AND reverse reactions equally, so equilibrium is reached faster but the POSITION does NOT change. The yield is unaffected. A catalyst NEVER shifts the equilibrium.", "next": "l7" },
+      { "id": "l7", "speaker": "Equilibrist Lethe", "text": "Examples: the HABER process — N₂ + 3H₂ ⇌ 2NH₃ — exothermic, high pressure (fewer gas moles on the right) and a moderate temperature (200°C with catalyst) balances yield vs rate. The CONTACT process for sulfuric acid works the same way. Fizzy drinks: CO₂ dissolved under pressure; open the can, pressure drops, equilibrium shifts left — CO₂ bubbles out.", "next": "l8" },
+      { "id": "l8", "speaker": "Equilibrist Lethe", "text": "That's equilibrium. The Great Imbalance beyond the gate is Catalyst affinity — no matchup will save you; bring your refined skills and keep the chain alive. Go restore it.", "end": true, "setFlag": "lesson_equilibrium_seen" },
+      { "id": "l_skip", "speaker": "Equilibrist Lethe", "text": "Confident — and this is the right place for it. Remember: a wrong answer in battle just fizzles the move, never hurts you. The Great Imbalance is Catalyst affinity, so no type advantage exists. Go.", "end": true, "setFlag": "lesson_equilibrium_seen" }
+    ]
+  },
+  "warden-haldane": {
+    "id": "warden-haldane", "name": "Warden Haldane", "spriteKey": "npc_warden_haldane", "tile": { "x": 7, "y": 8 }, "facing": "down",
+    "dialogue": [
+      { "id": "h0", "speaker": "Warden Haldane", "text": "You made it this far. Good. I've been watching the Heart since the Great Imbalance sealed the gate — it's unlike anything in the other regions.", "next": "h1" },
+      { "id": "h1", "speaker": "Warden Haldane", "text": "It's Catalyst affinity. That means the type chart gives you nothing — no matchup bonus, no super-effective strike. The Great Imbalance answers to no element. Don't waste your turn fishing for a weakness that isn't there.", "next": "h2" },
+      { "id": "h2", "speaker": "Warden Haldane", "text": "What WILL carry you through: refined skills at high tiers, the chain meter built and kept alive, and your Reagents saved for when its HP drops into the final quarter. It hits hard and has a buff-strip move — watch for Equilibrate clearing your boosts.", "next": "h3" },
+      { "id": "h3", "speaker": "Warden Haldane", "text": "The miniboss ahead — The Forward Drift — is Synthesis affinity. Your Decomposition skills will shred it. Use that fight to top up your chain meter before you face the gate. Then go finish what the rest of Æquor couldn't.", "end": true }
+    ]
+  },
+  "shrinekeeper-cyra": {
+    "id": "shrinekeeper-cyra", "name": "Shrinekeeper Cyra", "spriteKey": "npc_shrinekeeper_cyra", "tile": { "x": 4, "y": 12 }, "facing": "right",
+    "dialogue": [
+      { "id": "s0", "speaker": "Shrinekeeper Cyra", "text": "The Heart Shrine — no enemies, only six questions on equilibrium: reversible reactions, dynamic equilibrium, Le Châtelier. Clear it and you'll carry off a Reagent and an Isotope Core. Step in?", "choices": [ { "label": "Enter the Shrine.", "next": "s_enter" }, { "label": "Not yet.", "next": "s_later" } ] },
+      { "id": "s_enter", "speaker": "Shrinekeeper Cyra", "text": "Six questions. One miss is forgiven; two and the balance tips against you. Begin when you're ready.", "end": true, "setFlag": "shrine_entered_equilibriums-heart", "launch": "shrine" },
+      { "id": "s_later", "speaker": "Shrinekeeper Cyra", "text": "The Shrine holds steady. Come back when you've studied the equilibrium concepts.", "end": true }
+    ]
   }
 }
