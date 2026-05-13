@@ -114,21 +114,21 @@ describe('SaveManager — migration', () => {
 const firstClassId = content.classes[0]!.id;
 
 describe('SaveManager — save v2 (skillTiers + reagentPoints)', () => {
-  it('newGame seeds skillTiers:{} and reagentPoints:0 at version 3', () => {
+  it('newGame seeds skillTiers:{} and reagentPoints:0 at version 4', () => {
     const s = SaveManager.newGame(firstClassId, content);
-    expect(s.version).toBe(3);
+    expect(s.version).toBe(4);
     expect(s.skillTiers).toEqual({});
     expect(s.reagentPoints).toBe(0);
   });
 
-  it('migrates a v1 save by backfilling skillTiers / reagentPoints (and continues to v3)', () => {
+  it('migrates a v1 save by backfilling skillTiers / reagentPoints (and continues to v4)', () => {
     const v1: any = { ...SaveManager.newGame(firstClassId, content), version: 1 };
     delete v1.skillTiers; delete v1.reagentPoints;
     const storage = memStorage();
     storage.setItem(SAVE_KEY, JSON.stringify(v1));
     const r = SaveManager.load(content, storage);
     expect(r.ok).toBe(true);
-    if (r.ok) { expect(r.data.version).toBe(3); expect(r.data.skillTiers).toEqual({}); expect(r.data.reagentPoints).toBe(0); }
+    if (r.ok) { expect(r.data.version).toBe(4); expect(r.data.skillTiers).toEqual({}); expect(r.data.reagentPoints).toBe(0); }
   });
 
   it('keeps an explicit reagentPoints value through migration', () => {
@@ -142,20 +142,20 @@ describe('SaveManager — save v2 (skillTiers + reagentPoints)', () => {
 });
 
 describe('SaveManager — save v3 (musicVolume)', () => {
-  it('newGame seeds settings.musicVolume=0.6 at version 3', () => {
+  it('newGame seeds settings.musicVolume=0.6 at version 4', () => {
     const s = SaveManager.newGame(content.classes[0]!.id, content);
-    expect(s.version).toBe(3);
+    expect(s.version).toBe(4);
     expect(s.settings.musicVolume).toBe(0.6);
   });
 
-  it('migrates a v2 save by backfilling settings.musicVolume', () => {
+  it('migrates a v2 save by backfilling settings.musicVolume (and continues to v4)', () => {
     const storage = memStorage();
     const v2: any = { ...SaveManager.newGame(content.classes[0]!.id, content), version: 2 };
     delete v2.settings.musicVolume;
     storage.setItem(SAVE_KEY, JSON.stringify(v2));
     const r = SaveManager.load(content, storage);
     expect(r.ok).toBe(true);
-    if (r.ok) { expect(r.data.version).toBe(3); expect(r.data.settings.musicVolume).toBe(0.6); }
+    if (r.ok) { expect(r.data.version).toBe(4); expect(r.data.settings.musicVolume).toBe(0.6); }
   });
 });
 
@@ -177,5 +177,35 @@ describe('SaveManager.recordQuizResult', () => {
     const s1 = SaveManager.recordQuizResult(s0, 'atomic-structure', true);
     expect(s0.quizStats).toEqual({});
     expect(s1).not.toBe(s0);
+  });
+});
+
+describe('SaveManager.newGame v4', () => {
+  it('seeds drachms=0, ownedEquipmentIds=[], equipped with null slots', () => {
+    const s = SaveManager.newGame('pyron', content);
+    expect(s.version).toBe(4);
+    expect(s.drachms).toBe(0);
+    expect(s.ownedEquipmentIds).toEqual([]);
+    expect(s.equipped).toEqual({ weapon: null, armour: null, accessory: null });
+  });
+});
+
+describe('SaveManager migration v3→v4', () => {
+  it('migrates a v3 save to v4, adding drachms, ownedEquipmentIds, and equipped', () => {
+    const v3 = SaveManager.newGame('ionix', content);
+    (v3 as unknown as Record<string, unknown>).version = 3;
+    delete (v3 as unknown as Record<string, unknown>).drachms;
+    delete (v3 as unknown as Record<string, unknown>).ownedEquipmentIds;
+    delete (v3 as unknown as Record<string, unknown>).equipped;
+    const st = memStorage();
+    st.setItem(SAVE_KEY, JSON.stringify(v3));
+    const r = SaveManager.load(content, st);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.data.version).toBe(4);
+      expect(r.data.drachms).toBe(0);
+      expect(r.data.ownedEquipmentIds).toEqual([]);
+      expect(r.data.equipped).toEqual({ weapon: null, armour: null, accessory: null });
+    }
   });
 });

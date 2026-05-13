@@ -2,7 +2,7 @@ import type { GameContent, SaveData } from '../content/types';
 import { statsForLevel } from './Progression';
 
 export const SAVE_KEY = 'equilibrium-lost:save:v1';
-export const CURRENT_SAVE_VERSION = 3;
+export const CURRENT_SAVE_VERSION = 4;
 
 export interface StorageLike {
   getItem(k: string): string | null;
@@ -93,7 +93,13 @@ export const SaveManager = {
         const settings = (o.settings ??= { studyMode: false, answerTimer: false }) as Record<string, unknown>;
         if (typeof settings.musicVolume !== 'number') settings.musicVolume = 0.6;
         o.version = 3;
-      }
+      },
+      (o) => { // 3 -> 4 : Economy + Equipment
+        o.drachms = 0;
+        o.ownedEquipmentIds = [];
+        o.equipped = { weapon: null, armour: null, accessory: null };
+        o.version = 4;
+      },
     ];
     let v = typeof o.version === 'number' ? o.version : 0;
     while (v < CURRENT_SAVE_VERSION) {
@@ -116,6 +122,9 @@ export const SaveManager = {
     if (!isObj(o.skillTiers)) throw new Error('corrupt: bad skillTiers');
     if (typeof o.reagentPoints !== 'number') throw new Error('corrupt: bad reagentPoints');
     if (typeof (o.settings as Record<string, unknown>).musicVolume !== 'number') throw new Error('corrupt: bad settings.musicVolume');
+    if (typeof o.drachms !== 'number') throw new Error('corrupt: bad drachms');
+    if (!isArr(o.ownedEquipmentIds)) throw new Error('corrupt: bad ownedEquipmentIds');
+    if (!isObj(o.equipped)) throw new Error('corrupt: bad equipped');
     return o as unknown as SaveData;
   },
 
