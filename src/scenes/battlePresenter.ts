@@ -1,6 +1,7 @@
 import type { GameContent, SaveData } from '../content/types';
 import type { PlayerBattleInput, BattleContext } from '../systems/BattleEngine';
 import { statsForLevel } from '../systems/Progression';
+import { effectiveStats } from '../systems/equipment';
 
 /**
  * Pure glue between the save/content and the battle engine — kept Phaser-free and unit-tested
@@ -14,7 +15,7 @@ export const REFRESHER_TOAST_KEY = 'overworld:refresherToast';
 export function playerBattleInputFromSave(save: SaveData, content: GameContent): PlayerBattleInput {
   const cls = content.classes.find(c => c.id === save.classId);
   if (!cls) throw new Error(`battlePresenter: unknown class "${save.classId}"`);
-  const stats = statsForLevel(cls, save.level, save.evolutionStage);
+  const stats = effectiveStats(save, content.equipment ?? {});
   const reachable = [...cls.startingSkillIds, ...cls.skillUnlocks.map(u => u.skillId)];
   const catalystBurstSkillId = reachable.find(id => content.skills[id]?.isCatalystBurst);
   const attackPower = Math.max(14, Math.floor(stats.atk * 1.1)); // basic attack — a bit above ATK; the real damage is in skills
@@ -24,7 +25,7 @@ export function playerBattleInputFromSave(save: SaveData, content: GameContent):
     signatureAffinity: cls.signatureAffinity,
     level: save.level,
     maxHp: stats.hp,
-    hp: save.currentHp,
+    hp: Math.min(save.currentHp, stats.hp),
     atk: stats.atk,
     def: stats.def,
     spd: stats.spd,
