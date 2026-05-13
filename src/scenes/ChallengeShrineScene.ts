@@ -6,6 +6,7 @@ import { SaveManager } from '../systems/SaveManager';
 import { persist as savePersist } from '../persist';
 import { addXp } from '../systems/Progression';
 import { scoreGauntlet } from './shrineScoring';
+import { RP_AWARDS } from './battleVictory';
 
 interface ShrineSceneData { regionId: string }
 
@@ -87,7 +88,8 @@ export class ChallengeShrineScene extends Phaser.Scene {
         const e = this.save.items.find(it => it.itemId === itemId);
         if (e) e.qty += 1; else this.save.items.push({ itemId, qty: 1 });
       }
-      await this.banner(`Shrine cleared!  ${result.correct}/${result.total}.  +${shrine.rewardXp} XP and rare materials recovered.`, '#a6e3a1');
+      this.save.reagentPoints += RP_AWARDS.shrine;
+      await this.banner(`Shrine cleared!  ${result.correct}/${result.total}.  +${shrine.rewardXp} XP and rare materials recovered.  +${RP_AWARDS.shrine} Reagent Points`, '#a6e3a1');
     } else {
       await this.banner(`Not quite — ${result.correct}/${result.total}.  Study and return; the Shrine will keep.`, '#f9e2af');
     }

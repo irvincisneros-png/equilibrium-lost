@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { applyVictory } from '../../src/scenes/battleVictory';
+import { applyVictory, RP_AWARDS } from '../../src/scenes/battleVictory';
 import { loadGameContent } from '../../src/content/loadGameContent';
 import { SaveManager } from '../../src/systems/SaveManager';
 
@@ -53,6 +53,35 @@ describe('applyVictory', () => {
     expect(r.save.unlockedSkillIds).toContain('thermal-vent');
     const r2 = applyVictory(r.save, drift, region1, 0, content);
     expect(r2.banners.some(b => /thermal/i.test(b))).toBe(false);
+  });
+
+  it('a wild win grants RP_AWARDS.wild Reagent Points', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const before = save.reagentPoints; // newGame => 0
+    const protium = content.enemies['protium']!;
+    const { save: after } = applyVictory(save, protium, region1, 0, content);
+    expect(after.reagentPoints).toBe(before + RP_AWARDS.wild);
+  });
+
+  it('a mini-boss win grants RP_AWARDS.miniBoss', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const protium = content.enemies['protium']!;
+    const { save: after } = applyVictory(save, { ...protium, role: 'miniBoss' }, region1, 0, content);
+    expect(after.reagentPoints).toBe(RP_AWARDS.miniBoss);
+  });
+
+  it('a region-boss win grants RP_AWARDS.regionBoss', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const protium = content.enemies['protium']!;
+    const { save: after } = applyVictory(save, { ...protium, role: 'regionBoss' }, region1, 0, content);
+    expect(after.reagentPoints).toBe(RP_AWARDS.regionBoss);
+  });
+
+  it('a victory banner mentions the Reagent Points gained', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const protium = content.enemies['protium']!;
+    const { banners } = applyVictory(save, protium, region1, 0, content);
+    expect(banners.some(b => /Reagent Point/i.test(b))).toBe(true);
   });
 
   it('does not mutate the input save', () => {

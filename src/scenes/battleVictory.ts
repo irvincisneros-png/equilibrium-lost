@@ -1,6 +1,9 @@
 import type { GameContent, SaveData, EnemyDef, RegionDef, EvolutionDef, RegionProgress } from '../content/types';
 import { addXp, statsForLevel, checkEvolution } from '../systems/Progression';
 
+/** Reagent Points awarded per win type — spent in MenuScene's Refine Skills tab. Tune in playtest. */
+export const RP_AWARDS = { wild: 2, miniBoss: 8, regionBoss: 15, finalBoss: 15, shrine: 5 } as const;
+
 export interface VictoryResult {
   save: SaveData;
   banners: string[];
@@ -67,6 +70,14 @@ export function applyVictory(save: SaveData, enemyDef: EnemyDef, region: RegionD
     if (region.bossReward.skillId) learn(region.bossReward.skillId, `Learned ${content.skills[region.bossReward.skillId]?.name ?? region.bossReward.skillId}!`);
     banners.push(`Equilibrium restored to ${region.name}!`);
   }
+
+  // Reagent Points (skill-refine currency)
+  const rpGain = enemyDef.role === 'miniBoss' ? RP_AWARDS.miniBoss
+    : enemyDef.role === 'regionBoss' ? RP_AWARDS.regionBoss
+    : enemyDef.role === 'finalBoss' ? RP_AWARDS.finalBoss
+    : RP_AWARDS.wild;
+  s.reagentPoints += rpGain;
+  banners.push(`+${rpGain} Reagent Points`);
 
   // Evolution — checked last, now that bossDefeated may have just been set
   let evolved: EvolutionDef | null = null;
