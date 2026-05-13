@@ -61,7 +61,9 @@ export const ContentLoader = {
       typeChart: raw.typeChart as TypeChart,
       questions,
       npcs: raw.npcs as Record<string, NpcDef>,
-      assets: raw.assets as AssetManifest
+      assets: raw.assets as AssetManifest,
+      equipment: {},
+      shops: {},
     };
 
     const top = validateGameContent(content);

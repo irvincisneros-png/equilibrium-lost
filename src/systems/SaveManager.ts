@@ -45,7 +45,10 @@ export const SaveManager = {
       // TODO Task 43: read spawn coords from tilemap objects layer once authored
       playerTile: { regionId: region1.id, x: 4, y: 14 },
       quizStats: {},
-      settings: { studyMode: false, answerTimer: false, musicVolume: 0.6 }
+      settings: { studyMode: false, answerTimer: false, musicVolume: 0.6 },
+      drachms: 0,
+      ownedEquipmentIds: [],
+      equipped: { weapon: null, armour: null, accessory: null },
     };
   },
   save(data: SaveData, storage: StorageLike): void {

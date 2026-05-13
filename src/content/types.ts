@@ -75,6 +75,7 @@ export interface EnemyDef {
   teachesSkillId?: string;     // TM-style: player learns this on defeat
   bossSoftScale?: boolean;     // region/final bosses soft-scale to player level
   battleBackgroundKey?: string; // overrides region default if set
+  dropEquipmentId?: string;        // first-clear boss drop; references an EquipmentDef id
 }
 
 // ---------- items ----------
@@ -137,7 +138,7 @@ export interface DialogueNode {
   choices?: DialogueChoice[];  // branch
   setFlag?: string;            // sets a story flag on visit
   end?: boolean;               // terminal node
-  launch?: 'shrine' | string; // 'shrine' or 'battle:<enemyId>' — handled by DialogueScene on end
+  launch?: 'shrine' | 'shop' | string; // 'shrine', 'shop', or 'battle:<enemyId>'
 }
 export interface NpcDef {
   id: string;
@@ -146,6 +147,31 @@ export interface NpcDef {
   tile: { x: number; y: number };
   facing?: 'up' | 'down' | 'left' | 'right';
   dialogue: DialogueNode[];    // node[0] is the entry node
+}
+
+// ---------- equipment ----------
+export interface EquipmentDef {
+  id: string;
+  name: string;
+  kind: 'weapon' | 'armour' | 'accessory';
+  family: string;            // forge-arms | crucible-plate | ignition-set | vialwork | glassweave | buffer-set | voltaic | shieldplate | charge-set | universal
+  wieldableBy: string[];     // classIds; empty array = any class (universal)
+  tier: 1 | 2 | 3;
+  atkBonus: number;
+  defBonus: number;
+  spdBonus: number;
+  hpBonus: number;
+  description: string;       // ≤15 words, chem-flavoured
+  shopPrice: number | null;  // null = boss-drop only
+  dropFrom: Array<'miniBoss' | 'regionBoss' | 'finalBoss'>;
+}
+
+// ---------- shops ----------
+export interface ShopDef {
+  id: string;
+  name: string;
+  regionId: string;
+  equipmentIds: string[];
 }
 
 // ---------- asset manifest ----------
@@ -188,6 +214,13 @@ export interface SaveData {
   playerTile: { regionId: string; x: number; y: number };
   quizStats: Record<string, TopicQuizStat>; // keyed by topic
   settings: SaveSettings;
+  drachms: number;                            // v4
+  ownedEquipmentIds: string[];                // v4
+  equipped: {                                 // v4
+    weapon: string | null;
+    armour: string | null;
+    accessory: string | null;
+  };
 }
 
 // ---------- loaded content bundle ----------
@@ -201,4 +234,6 @@ export interface GameContent {
   questions: Record<string, QuestionDef[]>; // keyed by topic
   npcs: Record<string, NpcDef>;
   assets: AssetManifest;
+  equipment: Record<string, EquipmentDef>;   // v4
+  shops: Record<string, ShopDef>;             // v4
 }
