@@ -6,6 +6,8 @@ import items from './data/items.json';
 import typeChart from './data/typeChart.json';
 import assets from './data/assetManifest.json';
 import npcs from './data/npcs.json';
+import equipment from './data/equipment.json';
+import shops from './data/shops.json';
 import atomicStructure from './data/questions/atomic-structure.json';
 import bonding from './data/questions/bonding.json';
 import reactionTypes from './data/questions/reaction-types.json';
@@ -27,6 +29,8 @@ export function loadGameContent(): { content: GameContent; warnings: string[] } 
     typeChart,
     questions: { 'atomic-structure': atomicStructure as unknown[], 'bonding': bonding as unknown[], 'reaction-types': reactionTypes as unknown[], 'balancing-equations': balancingEquations as unknown[], 'reaction-rates': reactionRates as unknown[], 'acids-bases': acidsBases as unknown[], 'energy-changes': energyChanges as unknown[], 'equilibrium': equilibrium as unknown[] },
     npcs: npcs as Record<string, unknown>,
-    assets
+    assets,
+    equipment: equipment as Record<string, unknown>,
+    shops: shops as Record<string, unknown>,
   });
 }

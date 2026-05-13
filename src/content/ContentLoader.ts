@@ -1,7 +1,8 @@
-import type { GameContent, QuestionDef, ItemDef, SkillDef, ClassDef, EnemyDef, RegionDef, NpcDef, AssetManifest, TypeChart } from './types';
+import type { GameContent, QuestionDef, ItemDef, SkillDef, ClassDef, EnemyDef, RegionDef, NpcDef, AssetManifest, TypeChart, EquipmentDef, ShopDef } from './types';
 import {
   validateClass, validateSkill, validateEnemy, validateItem, validateRegion, validateNpc,
-  validateAssetManifest, validateTypeChart, validateQuestion, validateGameContent, type ValidationResult
+  validateAssetManifest, validateTypeChart, validateQuestion, validateGameContent,
+  validateEquipment, validateShop, type ValidationResult
 } from './schema';
 
 export class ContentError extends Error {
@@ -12,6 +13,8 @@ interface RawContent {
   classes: unknown[]; skills: Record<string, unknown>; enemies: Record<string, unknown>;
   regions: unknown[]; items: Record<string, unknown>; typeChart: unknown;
   questions: Record<string, unknown[]>; npcs: Record<string, unknown>; assets: unknown;
+  equipment: Record<string, unknown>;   // new
+  shops: Record<string, unknown>;       // new
 }
 
 function collect(...rs: ValidationResult[]): ValidationResult {
@@ -52,6 +55,21 @@ export const ContentLoader = {
       questions[topic] = kept;
     }
 
+    // equipment
+    const equipment: Record<string, EquipmentDef> = {};
+    for (const [id, e] of Object.entries(raw.equipment)) {
+      const v = validateEquipment({ ...(e as object), id: (e as Record<string,unknown>)?.id ?? id });
+      if (v.errors.length) errors.push(...v.errors);
+      else equipment[id] = e as EquipmentDef;
+    }
+    // shops
+    const shops: Record<string, ShopDef> = {};
+    for (const [id, s] of Object.entries(raw.shops)) {
+      const v = validateShop({ ...(s as object), id: (s as Record<string,unknown>)?.id ?? id });
+      if (v.errors.length) errors.push(...v.errors);
+      else shops[id] = s as ShopDef;
+    }
+
     const content: GameContent = {
       classes: raw.classes as ClassDef[],
       skills: raw.skills as Record<string, SkillDef>,
@@ -62,8 +80,8 @@ export const ContentLoader = {
       questions,
       npcs: raw.npcs as Record<string, NpcDef>,
       assets: raw.assets as AssetManifest,
-      equipment: {},
-      shops: {},
+      equipment,    // new
+      shops,        // new
     };
 
     const top = validateGameContent(content);

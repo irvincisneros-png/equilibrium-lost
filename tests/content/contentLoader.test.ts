@@ -83,7 +83,9 @@ const minimalRaw = () => ({
     { id: 'BAD', topic: 'atomic-structure', difficulty: 1, format: 'mcq', prompt: 'p', options: ['a','b'], answerIndex: 0, explanation: 'e' } // malformed -> dropped
   ] },
   npcs: {},
-  assets: { images: {}, tilemaps: {}, audio: {}, placeholders: [] }
+  assets: { images: {}, tilemaps: {}, audio: {}, placeholders: [] },
+  equipment: {},
+  shops: {},
 });
 
 describe('ContentLoader.fromRaw', () => {
