@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { Affinity, GameContent, SaveData, SkillDef, StatusEffectInstance, TypeChart } from '../content/types';
+import { MusicManager } from '../systems/MusicManager';
 import { playSkillFx } from './battleFx';
 import type { BattleState, BattleEvent, BattleAction, BattleContext } from '../systems/BattleEngine';
 import { effectiveSkill, scaleSkillPower, MAX_TIER } from '../systems/skillTiers';
@@ -107,6 +108,17 @@ export class BattleScene extends Phaser.Scene {
 
     const enemyDef = this.content.enemies[this.params.enemyId];
     if (!enemyDef) { console.error(`[battle] unknown enemy "${this.params.enemyId}"`); this.returnHome(); return; }
+
+    // Select battle music based on enemy role
+    const battleMusicKey = (() => {
+      switch (enemyDef.role) {
+        case 'miniBoss':   return 'music_battle_miniboss';
+        case 'regionBoss': return 'music_battle_regionboss';
+        case 'finalBoss':  return 'music_battle_finalboss';
+        default:           return 'music_battle_normal';
+      }
+    })();
+    MusicManager.play(this, battleMusicKey);
 
     const region = this.content.regions.find(r => r.id === this.params.regionId) ?? this.content.regions[0];
     const bgKey = region?.battleBackgroundKey ?? 'bg_battle_elemental_reaches';

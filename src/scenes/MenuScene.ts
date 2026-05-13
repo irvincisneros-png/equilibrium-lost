@@ -5,6 +5,7 @@ import { previewRefine, applyRefine } from './skillRefine';
 import { MAX_TIER } from '../systems/skillTiers';
 import { persist as savePersist } from '../persist';
 import { totalXpForLevel, xpToNextLevel } from '../systems/Progression';
+import { MusicManager } from '../systems/MusicManager';
 
 interface MenuSceneData { returnTo?: string; returnData?: Record<string, unknown> }
 
@@ -215,12 +216,31 @@ export class MenuScene extends Phaser.Scene {
     r0.setData('label', `Study Mode: ${this.save.settings.studyMode ? 'ON' : 'off'}   — hints on, chain pressure off`);
     const r1 = this.addRow(272, () => this.toggleSetting('answerTimer'));
     r1.setData('label', `Answer Timer: ${this.save.settings.answerTimer ? 'ON' : 'off'}   — fast answers can crit`);
+    const volPct = Math.round((this.save.settings.musicVolume ?? 0.6) * 100);
+    const r2 = this.addRow(320, () => this.cycleVolume());
+    r2.setData('label', `Music Volume: ${volPct}%   — ←/→ to adjust`);
   }
 
   private toggleSetting(key: 'studyMode' | 'answerTimer'): void {
     this.save.settings[key] = !this.save.settings[key];
     this.persist();
     this.toast(`${key === 'studyMode' ? 'Study Mode' : 'Answer Timer'} ${this.save.settings[key] ? 'ON' : 'off'}`);
+    this.buildTab();
+  }
+
+  private cycleVolume(): void {
+    const LEVELS = [0, 0.25, 0.5, 0.75, 1.0];
+    const cur = this.save.settings.musicVolume ?? 0.6;
+    // Find the nearest level index, then advance to the next
+    let idx = LEVELS.findIndex(l => Math.abs(l - cur) < 0.01);
+    if (idx === -1) idx = LEVELS.findIndex(l => l >= cur);
+    if (idx === -1) idx = LEVELS.length - 1;
+    const nextIdx = (idx + 1) % LEVELS.length;
+    const newVal = LEVELS[nextIdx]!;
+    this.save.settings.musicVolume = newVal;
+    MusicManager.setVolume(newVal);
+    this.persist();
+    this.toast(`Music ${Math.round(newVal * 100)}%`);
     this.buildTab();
   }
 
@@ -245,7 +265,11 @@ export class MenuScene extends Phaser.Scene {
       case 'Skills': { const ids = this.save.unlockedSkillIds.filter(id => this.content.skills[id]); const id = ids[i]; if (id) this.toggleSkill(id); break; }
       case 'Refine': { const ids = this.save.unlockedSkillIds.filter(id => this.content.skills[id]); const id = ids[i]; if (id) this.refine(id); break; }
       case 'Items': { const entry = this.save.items[i]; if (entry) this.useItem(entry.itemId); break; }
-      case 'Settings': this.toggleSetting(i === 0 ? 'studyMode' : 'answerTimer'); break;
+      case 'Settings':
+        if (i === 0) this.toggleSetting('studyMode');
+        else if (i === 1) this.toggleSetting('answerTimer');
+        else this.cycleVolume();
+        break;
       case 'Save': this.persist(); this.toast('Saved.'); break;
       case 'Quit': this.quitToTitle(); break;
       case 'Status': break;

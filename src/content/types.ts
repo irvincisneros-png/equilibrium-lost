@@ -167,7 +167,7 @@ export type TypeChart = Record<string, Record<string, number>>;
 // ---------- save ----------
 export interface TopicQuizStat { topic: string; asked: number; correct: number; recentMisses: number; }
 export interface RegionProgress { entered: boolean; miniBossDefeated: boolean; bossDefeated: boolean; shrineCleared: boolean; }
-export interface SaveSettings { studyMode: boolean; answerTimer: boolean; }
+export interface SaveSettings { studyMode: boolean; answerTimer: boolean; musicVolume: number; }
 export interface SaveData {
   version: number;
   classId: string;

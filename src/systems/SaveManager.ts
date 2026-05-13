@@ -2,7 +2,7 @@ import type { GameContent, SaveData } from '../content/types';
 import { statsForLevel } from './Progression';
 
 export const SAVE_KEY = 'equilibrium-lost:save:v1';
-export const CURRENT_SAVE_VERSION = 2;
+export const CURRENT_SAVE_VERSION = 3;
 
 export interface StorageLike {
   getItem(k: string): string | null;
@@ -45,7 +45,7 @@ export const SaveManager = {
       // TODO Task 43: read spawn coords from tilemap objects layer once authored
       playerTile: { regionId: region1.id, x: 4, y: 14 },
       quizStats: {},
-      settings: { studyMode: false, answerTimer: false }
+      settings: { studyMode: false, answerTimer: false, musicVolume: 0.6 }
     };
   },
   save(data: SaveData, storage: StorageLike): void {
@@ -85,6 +85,11 @@ export const SaveManager = {
         o.skillTiers ??= {};
         o.reagentPoints ??= 0;
         o.version = 2;
+      },
+      (o) => { // 2 -> 3 : Music system — settings.musicVolume
+        const settings = (o.settings ??= { studyMode: false, answerTimer: false }) as Record<string, unknown>;
+        if (typeof settings.musicVolume !== 'number') settings.musicVolume = 0.6;
+        o.version = 3;
       }
     ];
     let v = typeof o.version === 'number' ? o.version : 0;
@@ -107,6 +112,7 @@ export const SaveManager = {
     }
     if (!isObj(o.skillTiers)) throw new Error('corrupt: bad skillTiers');
     if (typeof o.reagentPoints !== 'number') throw new Error('corrupt: bad reagentPoints');
+    if (typeof (o.settings as Record<string, unknown>).musicVolume !== 'number') throw new Error('corrupt: bad settings.musicVolume');
     return o as unknown as SaveData;
   },
 

@@ -38,14 +38,19 @@ export class BootScene extends Phaser.Scene {
 
   private loadRealImagesThenStart(manifest: AssetManifest): void {
     const imageEntries = Object.entries(manifest.images);
+    const audioEntries = Object.entries(manifest.audio ?? {});
     const requestedKeys = new Set(imageEntries.map(([key]) => key));
     const failedKeys = new Set<string>();
 
     const onFileLoadError = (file: unknown): void => {
       const key = String((file as { key?: unknown }).key ?? '');
-      if (!requestedKeys.has(key)) return;
-      failedKeys.add(key);
-      console.warn(`[assets] failed to load "${key}" — using generated placeholder`);
+      if (requestedKeys.has(key)) {
+        failedKeys.add(key);
+        console.warn(`[assets] failed to load "${key}" — using generated placeholder`);
+      } else {
+        // Audio or other non-image asset failed — log and continue gracefully
+        console.warn(`[assets] failed to load asset "${key}" — continuing without it`);
+      }
     };
 
     const finish = (): void => {
@@ -73,6 +78,12 @@ export class BootScene extends Phaser.Scene {
     for (const [key, url] of imageEntries) {
       if (this.textures.exists(key)) continue;
       this.load.image(key, url);
+      queued++;
+    }
+
+    for (const [key, url] of audioEntries) {
+      if (this.cache.audio.exists(key)) continue;
+      this.load.audio(key, url);
       queued++;
     }
 

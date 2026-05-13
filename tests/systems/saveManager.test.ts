@@ -26,7 +26,7 @@ describe('SaveManager.newGame', () => {
     expect(s.currentRegionId).toBe(content.regions[0]!.id);
     expect(s.regionProgress[content.regions[0]!.id]!.entered).toBe(true);
     expect(s.regionProgress[content.regions[0]!.id]!.bossDefeated).toBe(false);
-    expect(s.settings).toEqual({ studyMode: false, answerTimer: false });
+    expect(s.settings).toEqual({ studyMode: false, answerTimer: false, musicVolume: 0.6 });
   });
   it('throws for an unknown class id', () => { expect(() => SaveManager.newGame('nope', content)).toThrow(); });
 });
@@ -99,7 +99,7 @@ describe('SaveManager — migration', () => {
       expect(r.data.evolutionStage).toBe(0);
       expect(r.data.currentEnergy).toBe(100);
       expect(r.data.quizStats).toEqual({});
-      expect(r.data.settings).toEqual({ studyMode: false, answerTimer: false });
+      expect(r.data.settings).toEqual({ studyMode: false, answerTimer: false, musicVolume: 0.6 });
       expect(r.data.playerTile.regionId).toBe(r.data.currentRegionId);
     }
   });
@@ -114,21 +114,21 @@ describe('SaveManager — migration', () => {
 const firstClassId = content.classes[0]!.id;
 
 describe('SaveManager — save v2 (skillTiers + reagentPoints)', () => {
-  it('newGame seeds skillTiers:{} and reagentPoints:0 at version 2', () => {
+  it('newGame seeds skillTiers:{} and reagentPoints:0 at version 3', () => {
     const s = SaveManager.newGame(firstClassId, content);
-    expect(s.version).toBe(2);
+    expect(s.version).toBe(3);
     expect(s.skillTiers).toEqual({});
     expect(s.reagentPoints).toBe(0);
   });
 
-  it('migrates a v1 save by backfilling skillTiers / reagentPoints', () => {
+  it('migrates a v1 save by backfilling skillTiers / reagentPoints (and continues to v3)', () => {
     const v1: any = { ...SaveManager.newGame(firstClassId, content), version: 1 };
     delete v1.skillTiers; delete v1.reagentPoints;
     const storage = memStorage();
     storage.setItem(SAVE_KEY, JSON.stringify(v1));
     const r = SaveManager.load(content, storage);
     expect(r.ok).toBe(true);
-    if (r.ok) { expect(r.data.version).toBe(2); expect(r.data.skillTiers).toEqual({}); expect(r.data.reagentPoints).toBe(0); }
+    if (r.ok) { expect(r.data.version).toBe(3); expect(r.data.skillTiers).toEqual({}); expect(r.data.reagentPoints).toBe(0); }
   });
 
   it('keeps an explicit reagentPoints value through migration', () => {
@@ -138,6 +138,24 @@ describe('SaveManager — save v2 (skillTiers + reagentPoints)', () => {
     const r = SaveManager.load(content, storage);
     expect(r.ok && r.data.reagentPoints).toBe(99);
     expect(r.ok && (r.data as any).skillTiers['acid-splash']).toBe(2);
+  });
+});
+
+describe('SaveManager — save v3 (musicVolume)', () => {
+  it('newGame seeds settings.musicVolume=0.6 at version 3', () => {
+    const s = SaveManager.newGame(content.classes[0]!.id, content);
+    expect(s.version).toBe(3);
+    expect(s.settings.musicVolume).toBe(0.6);
+  });
+
+  it('migrates a v2 save by backfilling settings.musicVolume', () => {
+    const storage = memStorage();
+    const v2: any = { ...SaveManager.newGame(content.classes[0]!.id, content), version: 2 };
+    delete v2.settings.musicVolume;
+    storage.setItem(SAVE_KEY, JSON.stringify(v2));
+    const r = SaveManager.load(content, storage);
+    expect(r.ok).toBe(true);
+    if (r.ok) { expect(r.data.version).toBe(3); expect(r.data.settings.musicVolume).toBe(0.6); }
   });
 });
 
