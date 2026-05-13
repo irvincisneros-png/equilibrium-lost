@@ -707,7 +707,8 @@ export class BattleScene extends Phaser.Scene {
       await this.showBanner(banners[i] ?? '');
     }
 
-    if (enemyDef?.role === 'regionBoss') this.scene.start('WorldMapScene');
+    if (enemyDef?.role === 'finalBoss') this.scene.start('EndingScene');
+    else if (enemyDef?.role === 'regionBoss') this.scene.start('WorldMapScene');
     else this.returnHome();
   }
 
