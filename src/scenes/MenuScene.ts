@@ -14,10 +14,27 @@ const W = 1920, H = 1080, FONT = 'monospace';
 const TABS = ['Skills', 'Refine', 'Equipment', 'Items', 'Status', 'Save', 'Settings', 'Quit'] as const;
 type Tab = typeof TABS[number];
 
+// Layout constants — FF-style two-pane layout
+const TAB_COL_W = 200;          // width of the left tab column
+const FRAME_X = 60;             // outer frame left edge
+const FRAME_Y = 60;             // outer frame top edge
+const FRAME_W = W - 120;        // outer frame width
+const FRAME_H = H - 120;        // outer frame height
+const DIVIDER_X = FRAME_X + TAB_COL_W;   // x of vertical gold divider
+const CONTENT_X = DIVIDER_X + 24;        // content pane left margin
+const CONTENT_Y = FRAME_Y + 100;         // content pane top (below header)
+const CONTENT_W = FRAME_W - TAB_COL_W - 32;
+const TAB_START_Y = FRAME_Y + 108;       // first tab label y
+const TAB_ROW_H = 56;                    // height per tab row
+const GOLD = '#d4af37';
+const GOLD_N = 0xd4af37;
+const CREAM = '#c9b88b';
+const BRIGHT_GOLD = '#ffd166';
+
 /**
  * The in-game menu overlay: Skills loadout, Items (out-of-battle use), Status (stats + XP-to-next
  * + per-topic quiz accuracy), Save, Settings (Study Mode / Answer Timer), Quit to Title.
- * Launched on top of a paused caller; ←/→ switch tabs, ↑/↓ move within a tab, Enter activates,
+ * Launched on top of a paused caller; ↑/↓ switch tabs or move within a tab, Enter activates,
  * Esc closes. The only pure logic — loadout validation — lives in `setLoadout`.
  */
 export class MenuScene extends Phaser.Scene {
@@ -26,12 +43,20 @@ export class MenuScene extends Phaser.Scene {
   private returnTo = '';
   private returnData: Record<string, unknown> = {};
 
-  private tabHeaders: Phaser.GameObjects.Text[] = [];
+  private tabLabels: Phaser.GameObjects.Text[] = [];
+  private tabGlowStrips: Phaser.GameObjects.Rectangle[] = [];
   private tabIndex = 0;
   private rowIdx = 0;
   private tabObjs: Phaser.GameObjects.GameObject[] = [];
   private rowButtons: Phaser.GameObjects.Text[] = [];
   private toastText!: Phaser.GameObjects.Text;
+
+  // cursor caret
+  private caret!: Phaser.GameObjects.Text;
+  private caretTween!: Phaser.Tweens.Tween;
+
+  // frame group (persists across tab switches)
+  private frameGroup: Phaser.GameObjects.GameObject[] = [];
 
   constructor() { super('MenuScene'); }
 
@@ -46,52 +71,229 @@ export class MenuScene extends Phaser.Scene {
     if (!this.content || !save) { this.closeMenu(); return; }
     this.save = save;
     this.tabIndex = 0; this.rowIdx = 0; this.tabObjs = []; this.rowButtons = [];
+    this.frameGroup = [];
 
-    this.add.rectangle(0, 0, W, H, 0x05080d, 0.94).setOrigin(0, 0).setDepth(0);
-    this.add.text(W / 2, 24, '— Menu —', { fontFamily: FONT, fontSize: '40px', color: '#cdd6f4' }).setOrigin(0.5, 0).setDepth(1);
-    this.add.text(W / 2, H - 80, '←/→ tab   ↑/↓ select   Enter use   Esc close', { fontFamily: FONT, fontSize: '24px', color: '#566074' }).setOrigin(0.5, 0).setDepth(1);
-    this.toastText = this.add.text(W / 2, H - 44, '', { fontFamily: FONT, fontSize: '28px', color: '#f9e2af' }).setOrigin(0.5, 0).setDepth(1);
+    this.buildFrame();
+    this.buildTabColumn();
 
-    // tab headers
-    const startX = 96, gap = (W - 192) / TABS.length;
-    this.tabHeaders = TABS.map((t, i) => {
-      const txt = this.add.text(startX + i * gap + gap / 2, 96, t, { fontFamily: FONT, fontSize: '32px', color: '#8fa3c0' }).setOrigin(0.5, 0).setDepth(1).setInteractive({ useHandCursor: true });
-      txt.on('pointerdown', () => { this.tabIndex = i; this.rowIdx = 0; this.buildTab(); });
-      return txt;
-    });
+    this.toastText = this.add.text(CONTENT_X + CONTENT_W / 2, FRAME_Y + FRAME_H - 36, '', {
+      fontFamily: FONT, fontSize: '28px', color: '#f9e2af',
+    }).setOrigin(0.5, 0).setDepth(3);
 
     // input
     const kb = this.input.keyboard;
     if (kb) {
-      kb.on('keydown-LEFT', this.onLeft, this);
-      kb.on('keydown-RIGHT', this.onRight, this);
       kb.on('keydown-UP', this.onUp, this);
       kb.on('keydown-DOWN', this.onDown, this);
       kb.on('keydown-ENTER', this.onConfirm, this);
       kb.on('keydown-SPACE', this.onConfirm, this);
       kb.on('keydown-ESC', this.onClose, this);
+      // Legacy tab-switch keys (LEFT/RIGHT previously switched tabs — repurposed to tab nav)
+      kb.on('keydown-LEFT', this.onTabUp, this);
+      kb.on('keydown-RIGHT', this.onTabDown, this);
       this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-        kb.off('keydown-LEFT', this.onLeft, this);
-        kb.off('keydown-RIGHT', this.onRight, this);
         kb.off('keydown-UP', this.onUp, this);
         kb.off('keydown-DOWN', this.onDown, this);
         kb.off('keydown-ENTER', this.onConfirm, this);
         kb.off('keydown-SPACE', this.onConfirm, this);
         kb.off('keydown-ESC', this.onClose, this);
+        kb.off('keydown-LEFT', this.onTabUp, this);
+        kb.off('keydown-RIGHT', this.onTabDown, this);
       });
     }
+
+    // Entrance animation — frame fades in, tab column slides in from left
+    const allFrame = [...this.frameGroup, ...this.tabLabels, ...this.tabGlowStrips, this.caret] as Phaser.GameObjects.GameObject[];
+    allFrame.forEach(o => { if ('setAlpha' in o) (o as unknown as Phaser.GameObjects.Components.Alpha).setAlpha(0); });
+    this.tabLabels.forEach(t => t.setX(t.x - 20));
+
+    this.tweens.add({
+      targets: allFrame,
+      alpha: 1,
+      duration: 250,
+      ease: 'Power2',
+    });
+    this.tweens.add({
+      targets: this.tabLabels,
+      x: `+=${20}`,
+      duration: 250,
+      ease: 'Power2',
+    });
 
     this.buildTab();
   }
 
+  // --- frame / chrome -------------------------------------------------------
+
+  private buildFrame(): void {
+    const gfx = this.add.graphics().setDepth(1);
+
+    // Background gradient approximation — two overlapping rects
+    gfx.fillStyle(0x0d1b2a, 1);
+    gfx.fillRect(FRAME_X, FRAME_Y, FRAME_W, FRAME_H);
+    // Vignette — dark edges, lighter centre
+    gfx.fillStyle(0x000000, 0.32);
+    gfx.fillRect(FRAME_X, FRAME_Y, FRAME_W, 80);         // top shadow
+    gfx.fillRect(FRAME_X, FRAME_Y + FRAME_H - 80, FRAME_W, 80); // bottom shadow
+    gfx.fillRect(FRAME_X, FRAME_Y, 80, FRAME_H);         // left shadow
+    gfx.fillRect(FRAME_X + FRAME_W - 80, FRAME_Y, 80, FRAME_H); // right shadow
+    // Inner lighter band (centre glow)
+    gfx.fillStyle(0x1b263b, 0.5);
+    gfx.fillRect(FRAME_X + 80, FRAME_Y + 80, FRAME_W - 160, FRAME_H - 160);
+
+    // Gold outer border (2px)
+    gfx.lineStyle(2, GOLD_N, 1);
+    gfx.strokeRect(FRAME_X, FRAME_Y, FRAME_W, FRAME_H);
+
+    // Corner braces — L-shaped gold strokes, 16px each side
+    const BRACE = 16;
+    const corners = [
+      [FRAME_X, FRAME_Y],
+      [FRAME_X + FRAME_W, FRAME_Y],
+      [FRAME_X, FRAME_Y + FRAME_H],
+      [FRAME_X + FRAME_W, FRAME_Y + FRAME_H],
+    ] as const;
+    gfx.lineStyle(3, GOLD_N, 1);
+    // top-left
+    gfx.beginPath(); gfx.moveTo(FRAME_X, FRAME_Y + BRACE); gfx.lineTo(FRAME_X, FRAME_Y); gfx.lineTo(FRAME_X + BRACE, FRAME_Y); gfx.strokePath();
+    // top-right
+    gfx.beginPath(); gfx.moveTo(FRAME_X + FRAME_W - BRACE, FRAME_Y); gfx.lineTo(FRAME_X + FRAME_W, FRAME_Y); gfx.lineTo(FRAME_X + FRAME_W, FRAME_Y + BRACE); gfx.strokePath();
+    // bottom-left
+    gfx.beginPath(); gfx.moveTo(FRAME_X, FRAME_Y + FRAME_H - BRACE); gfx.lineTo(FRAME_X, FRAME_Y + FRAME_H); gfx.lineTo(FRAME_X + BRACE, FRAME_Y + FRAME_H); gfx.strokePath();
+    // bottom-right
+    gfx.beginPath(); gfx.moveTo(FRAME_X + FRAME_W - BRACE, FRAME_Y + FRAME_H); gfx.lineTo(FRAME_X + FRAME_W, FRAME_Y + FRAME_H); gfx.lineTo(FRAME_X + FRAME_W, FRAME_Y + FRAME_H - BRACE); gfx.strokePath();
+
+    // Vertical gold divider between tab column and content pane
+    gfx.lineStyle(1, GOLD_N, 0.7);
+    gfx.beginPath(); gfx.moveTo(DIVIDER_X, FRAME_Y + 8); gfx.lineTo(DIVIDER_X, FRAME_Y + FRAME_H - 8); gfx.strokePath();
+
+    // Header area — "MENU" title in right pane
+    const headerCx = CONTENT_X + CONTENT_W / 2;
+    const headerY = FRAME_Y + 28;
+    this.add.text(headerCx, headerY, 'MENU', {
+      fontFamily: FONT, fontSize: '36px', color: GOLD, fontStyle: 'bold',
+    }).setOrigin(0.5, 0).setDepth(2);
+
+    // Thin gold accent line under the header title
+    gfx.lineStyle(1, GOLD_N, 0.8);
+    gfx.beginPath(); gfx.moveTo(CONTENT_X, FRAME_Y + 88); gfx.lineTo(CONTENT_X + CONTENT_W, FRAME_Y + 88); gfx.strokePath();
+
+    // Footer hint strip
+    this.add.text(FRAME_X + FRAME_W / 2, FRAME_Y + FRAME_H - 32,
+      '↑↓ Navigate    ↵ Select    Esc Back',
+      { fontFamily: FONT, fontSize: '22px', color: '#566074' },
+    ).setOrigin(0.5, 1).setDepth(2);
+
+    this.frameGroup.push(gfx);
+  }
+
+  private buildTabColumn(): void {
+    this.tabLabels = [];
+    this.tabGlowStrips = [];
+
+    TABS.forEach((t, i) => {
+      const y = TAB_START_Y + i * TAB_ROW_H;
+
+      // Glow strip behind active tab (initially hidden)
+      const strip = this.add.rectangle(FRAME_X + 6, y + TAB_ROW_H / 2, TAB_COL_W - 12, 34, GOLD_N, 0)
+        .setOrigin(0, 0.5).setDepth(1);
+      this.tabGlowStrips.push(strip);
+
+      // Tab label
+      const label = this.add.text(FRAME_X + 28, y + TAB_ROW_H / 2, t, {
+        fontFamily: FONT, fontSize: '28px', color: CREAM,
+      }).setOrigin(0, 0.5).setDepth(2).setInteractive({ useHandCursor: true });
+
+      label.on('pointerdown', () => { this.tabIndex = i; this.rowIdx = 0; this.buildTab(); });
+      this.tabLabels.push(label);
+    });
+
+    // Blinking caret — placed left of active tab label
+    this.caret = this.add.text(FRAME_X + 10, TAB_START_Y + TAB_ROW_H / 2, '▶', {
+      fontFamily: FONT, fontSize: '22px', color: GOLD,
+    }).setOrigin(0, 0.5).setDepth(3);
+
+    // Caret blink tween
+    this.caretTween = this.tweens.add({
+      targets: this.caret,
+      alpha: { from: 1, to: 0.4 },
+      duration: 600,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Sine.easeInOut',
+    });
+  }
+
+  private updateTabHighlights(): void {
+    TABS.forEach((_, i) => {
+      const isActive = i === this.tabIndex;
+      this.tabLabels[i]?.setColor(isActive ? BRIGHT_GOLD : CREAM);
+      this.tabGlowStrips[i]?.setFillStyle(GOLD_N, isActive ? 0.15 : 0);
+    });
+
+    // Move caret to active tab row
+    const activeY = TAB_START_Y + this.tabIndex * TAB_ROW_H + TAB_ROW_H / 2;
+    this.caret.setY(activeY);
+  }
+
   // --- input ---------------------------------------------------------------
 
-  private onLeft(): void { this.tabIndex = (this.tabIndex + TABS.length - 1) % TABS.length; this.rowIdx = 0; this.buildTab(); }
-  private onRight(): void { this.tabIndex = (this.tabIndex + 1) % TABS.length; this.rowIdx = 0; this.buildTab(); }
-  private onUp(): void { const n = this.rowCount(); if (n > 1) { this.rowIdx = (this.rowIdx + n - 1) % n; this.highlightRows(); } }
-  private onDown(): void { const n = this.rowCount(); if (n > 1) { this.rowIdx = (this.rowIdx + 1) % n; this.highlightRows(); } }
+  /** Move to previous tab (UP or LEFT arrow) */
+  private onTabUp(): void {
+    this.tabIndex = (this.tabIndex + TABS.length - 1) % TABS.length;
+    this.rowIdx = 0;
+    this.pulseCaret();
+    this.buildTab();
+  }
+
+  /** Move to next tab (DOWN or RIGHT arrow when rowCount === 0 context, handled at onUp/onDown) */
+  private onTabDown(): void {
+    this.tabIndex = (this.tabIndex + 1) % TABS.length;
+    this.rowIdx = 0;
+    this.pulseCaret();
+    this.buildTab();
+  }
+
+  private onUp(): void {
+    const n = this.rowCount();
+    if (n > 1) {
+      this.rowIdx = (this.rowIdx + n - 1) % n;
+      this.highlightRows();
+    } else {
+      // No rows in content pane — navigate tabs
+      this.onTabUp();
+    }
+  }
+
+  private onDown(): void {
+    const n = this.rowCount();
+    if (n > 1) {
+      this.rowIdx = (this.rowIdx + 1) % n;
+      this.highlightRows();
+    } else {
+      this.onTabDown();
+    }
+  }
+
   private onConfirm(): void { this.activateRow(this.rowIdx); }
   private onClose(): void { this.closeMenu(); }
+
+  private pulseCaret(): void {
+    // Briefly pause the blink and scale up then back
+    if (this.caretTween) this.caretTween.pause();
+    this.caret.setAlpha(1);
+    this.tweens.add({
+      targets: this.caret,
+      scaleX: 1.2, scaleY: 1.2,
+      duration: 60,
+      yoyo: true,
+      ease: 'Power1',
+      onComplete: () => {
+        this.caret.setScale(1, 1);
+        if (this.caretTween) this.caretTween.resume();
+      },
+    });
+  }
 
   // --- tab building --------------------------------------------------------
 
@@ -100,7 +302,7 @@ export class MenuScene extends Phaser.Scene {
   private buildTab(): void {
     this.tabObjs.forEach(o => o.destroy());
     this.tabObjs = []; this.rowButtons = [];
-    this.tabHeaders.forEach((h, i) => h.setColor(i === this.tabIndex ? '#f9e2af' : '#8fa3c0'));
+    this.updateTabHighlights();
     switch (this.tab()) {
       case 'Skills': this.buildSkillsTab(); break;
       case 'Refine': this.buildRefineTab(); break;
@@ -118,7 +320,7 @@ export class MenuScene extends Phaser.Scene {
 
   private addRow(y: number, onClick: () => void): Phaser.GameObjects.Text {
     const idx = this.rowButtons.length;
-    const txt = this.add.text(160, y, '', { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(1).setInteractive({ useHandCursor: true });
+    const txt = this.add.text(CONTENT_X, y, '', { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4' }).setOrigin(0, 0).setDepth(2).setInteractive({ useHandCursor: true });
     txt.on('pointerover', () => { this.rowIdx = idx; this.highlightRows(); });
     txt.on('pointerdown', () => { this.rowIdx = idx; onClick(); });
     this.addObj(txt);
@@ -127,21 +329,21 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private buildSkillsTab(): void {
-    this.addObj(this.add.text(160, 168, `Equipped ${this.save.equippedSkillIds.length}/5  ·  Enter toggles`, { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
+    this.addObj(this.add.text(CONTENT_X, CONTENT_Y, `Equipped ${this.save.equippedSkillIds.length}/5  ·  Enter toggles`, { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(2));
     const skills = this.save.unlockedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     skills.forEach((s, i) => {
       const equipped = this.save.equippedSkillIds.includes(s.id);
-      const row = this.addRow(224 + i * 48, () => this.toggleSkill(s.id));
+      const row = this.addRow(CONTENT_Y + 56 + i * 48, () => this.toggleSkill(s.id));
       row.setData('label', `${equipped ? '◆' : '◇'} ${s.name}  [${s.affinity}] P${s.power} E${s.energyCost}${s.topic === null ? ' ·basic' : ''}`);
     });
   }
 
   private buildRefineTab(): void {
-    this.addObj(this.add.text(160, 168, `Reagent Points: ${this.save.reagentPoints}  ·  Enter to refine`, { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
+    this.addObj(this.add.text(CONTENT_X, CONTENT_Y, `Reagent Points: ${this.save.reagentPoints}  ·  Enter to refine`, { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(2));
     const skills = this.save.unlockedSkillIds.map(id => this.content.skills[id]).filter((s): s is SkillDef => !!s);
     skills.forEach((s, i) => {
       const p = previewRefine(this.save, s.id, this.content);
-      const row = this.addRow(224 + i * 48, () => this.refine(s.id));
+      const row = this.addRow(CONTENT_Y + 56 + i * 48, () => this.refine(s.id));
       const tierTag = `T${p.tier}/${MAX_TIER}`;
       const label = p.atMax
         ? `${s.name}  [${s.affinity}]  ${tierTag}  — MAX`
@@ -155,24 +357,24 @@ export class MenuScene extends Phaser.Scene {
     const equipMap = this.content.equipment ?? {};
     const base = this.save.stats;
     const eff = effectiveStats(this.save, equipMap);
-    this.addObj(this.add.text(160, 168,
+    this.addObj(this.add.text(CONTENT_X, CONTENT_Y,
       `Effective:  ATK ${eff.atk}  DEF ${eff.def}  SPD ${eff.spd}  HP ${eff.hp}  ·  Enter equips/unequips`,
-      { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
-    this.addObj(this.add.text(160, 204,
+      { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(2));
+    this.addObj(this.add.text(CONTENT_X, CONTENT_Y + 36,
       `Base:       ATK ${base.atk}  DEF ${base.def}  SPD ${base.spd}  HP ${base.hp}`,
-      { fontFamily: FONT, fontSize: '24px', color: '#566074' }).setDepth(1));
+      { fontFamily: FONT, fontSize: '24px', color: '#566074' }).setDepth(2));
 
     const allOwned = this.save.ownedEquipmentIds
       .map(id => equipMap[id])
       .filter((e): e is import('../content/types').EquipmentDef => !!e && canEquip(e, this.save.classId));
 
-    let y = 256;
+    let y = CONTENT_Y + 88;
     for (const slotKey of ['weapon', 'armour', 'accessory'] as const) {
-      this.addObj(this.add.text(160, y, `── ${slotKey.charAt(0).toUpperCase() + slotKey.slice(1)} ──`, { fontFamily: FONT, fontSize: '26px', color: '#89dceb' }).setDepth(1));
+      this.addObj(this.add.text(CONTENT_X, y, `── ${slotKey.charAt(0).toUpperCase() + slotKey.slice(1)} ──`, { fontFamily: FONT, fontSize: '26px', color: '#89dceb' }).setDepth(2));
       y += 40;
       const slotItems = allOwned.filter(e => e.kind === slotKey);
       if (slotItems.length === 0) {
-        this.addObj(this.add.text(180, y, '  (none owned)', { fontFamily: FONT, fontSize: '26px', color: '#566074' }).setDepth(1));
+        this.addObj(this.add.text(CONTENT_X + 20, y, '  (none owned)', { fontFamily: FONT, fontSize: '26px', color: '#566074' }).setDepth(2));
         y += 40;
       } else {
         slotItems.forEach(e => {
@@ -214,11 +416,11 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private buildItemsTab(): void {
-    this.addObj(this.add.text(160, 168, 'Items  ·  Enter to use (out of battle)', { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
-    if (this.save.items.length === 0) { this.addObj(this.add.text(160, 224, '(empty)', { fontFamily: FONT, fontSize: '28px', color: '#566074' }).setDepth(1)); return; }
+    this.addObj(this.add.text(CONTENT_X, CONTENT_Y, 'Items  ·  Enter to use (out of battle)', { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(2));
+    if (this.save.items.length === 0) { this.addObj(this.add.text(CONTENT_X, CONTENT_Y + 56, '(empty)', { fontFamily: FONT, fontSize: '28px', color: '#566074' }).setDepth(2)); return; }
     this.save.items.forEach((entry, i) => {
       const def = this.content.items[entry.itemId];
-      const row = this.addRow(224 + i * 48, () => this.useItem(entry.itemId));
+      const row = this.addRow(CONTENT_Y + 56 + i * 48, () => this.useItem(entry.itemId));
       row.setData('label', `${def?.name ?? entry.itemId}  ×${entry.qty}  — ${def?.description ?? ''}`);
     });
   }
@@ -258,17 +460,17 @@ export class MenuScene extends Phaser.Scene {
     const stats = Object.values(s.quizStats);
     if (stats.length === 0) lines.push('  (no questions answered yet)');
     else for (const q of stats) lines.push(`  ${q.topic}: ${q.correct}/${q.asked}${q.recentMisses ? `  (misses: ${q.recentMisses})` : ''}`);
-    this.addObj(this.add.text(160, 176, lines.join('\n'), { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4', lineSpacing: 12 }).setDepth(1));
+    this.addObj(this.add.text(CONTENT_X, CONTENT_Y, lines.join('\n'), { fontFamily: FONT, fontSize: '28px', color: '#cdd6f4', lineSpacing: 12 }).setDepth(2));
   }
 
   private buildSettingsTab(): void {
-    this.addObj(this.add.text(160, 168, 'Settings  ·  Enter / ←→ toggles', { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
-    const r0 = this.addRow(224, () => this.toggleSetting('studyMode'));
+    this.addObj(this.add.text(CONTENT_X, CONTENT_Y, 'Settings  ·  Enter / ←→ toggles', { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(2));
+    const r0 = this.addRow(CONTENT_Y + 56, () => this.toggleSetting('studyMode'));
     r0.setData('label', `Study Mode: ${this.save.settings.studyMode ? 'ON' : 'off'}   — hints on, chain pressure off`);
-    const r1 = this.addRow(272, () => this.toggleSetting('answerTimer'));
+    const r1 = this.addRow(CONTENT_Y + 104, () => this.toggleSetting('answerTimer'));
     r1.setData('label', `Answer Timer: ${this.save.settings.answerTimer ? 'ON' : 'off'}   — fast answers can crit`);
     const volPct = Math.round((this.save.settings.musicVolume ?? 0.6) * 100);
-    const r2 = this.addRow(320, () => this.cycleVolume());
+    const r2 = this.addRow(CONTENT_Y + 152, () => this.cycleVolume());
     r2.setData('label', `Music Volume: ${volPct}%   — ←/→ to adjust`);
   }
 
@@ -296,7 +498,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   private buildButtonTab(label: string): void {
-    const row = this.addRow(224, () => this.activateRow(0));
+    const row = this.addRow(CONTENT_Y + 56, () => this.activateRow(0));
     row.setData('label', `▶ ${label}`);
   }
 
