@@ -38,10 +38,3 @@ export function effectiveSkill(skill: SkillDef, tier: number): SkillDef {
   }
   return next;
 }
-
-/** Total RP already sunk into a skill at the given tier (sum of the tier costs paid). */
-export function rpSpentAtTier(tier: number): number {
-  let sum = 0;
-  for (let i = 0; i < Math.min(MAX_TIER, Math.max(0, tier)); i++) sum += REFINE_TIER_COSTS[i] ?? 0;
-  return sum;
-}

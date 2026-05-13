@@ -77,6 +77,13 @@ describe('applyVictory', () => {
     expect(after.reagentPoints).toBe(RP_AWARDS.regionBoss);
   });
 
+  it('a final-boss win grants RP_AWARDS.finalBoss', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const protium = content.enemies['protium']!;
+    const { save: after } = applyVictory(save, { ...protium, role: 'finalBoss' }, region1, 0, content);
+    expect(after.reagentPoints).toBe(RP_AWARDS.finalBoss);
+  });
+
   it('a victory banner mentions the Reagent Points gained', () => {
     const save = SaveManager.newGame('pyron', content);
     const protium = content.enemies['protium']!;
