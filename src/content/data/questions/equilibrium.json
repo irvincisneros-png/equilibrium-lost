@@ -1,1293 +1,1293 @@
 [
-  {
-    "id": "eq-001",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "What does the symbol ⇌ mean in a chemical equation?",
-    "options": [
-      "The reaction is very fast",
-      "The reaction is reversible — it can go in both directions",
-      "The reaction only goes in one direction",
-      "The reaction produces equal amounts of all products"
-    ],
-    "answerIndex": 1,
-    "explanation": "The double-headed arrow ⇌ shows the reaction is reversible: forward and reverse reactions both occur.",
-    "hint": "Look at the arrow — does it point in one direction or two?"
-  },
-  {
-    "id": "eq-002",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which of the following best describes a reversible reaction?",
-    "options": [
-      "A reaction that goes to completion and stops",
-      "A reaction where the products can react together to reform the original reactants",
-      "A reaction that releases energy",
-      "A reaction that only works with a catalyst"
-    ],
-    "answerIndex": 1,
-    "explanation": "In a reversible reaction, products can re-form the reactants, so both the forward and reverse reactions occur.",
-    "hint": "'Reversible' means it can go backwards — what does that tell you about the products?"
-  },
-  {
-    "id": "eq-003",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "At dynamic equilibrium, the concentrations of reactants and products …",
-    "options": [
-      "are changing rapidly",
-      "are all equal to each other",
-      "remain constant over time",
-      "are all zero because the reaction has stopped"
-    ],
-    "answerIndex": 2,
-    "explanation": "At equilibrium the concentrations stay constant because the forward and reverse reaction rates are equal — not because the reaction has stopped.",
-    "hint": "If both reactions keep going at equal rates, what happens to the amounts of each substance?"
-  },
-  {
-    "id": "eq-004",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which word best describes equilibrium that is 'dynamic'?",
-    "options": [
-      "The reaction has completely finished",
-      "Both forward and reverse reactions are still happening at equal rates",
-      "Only one direction of the reaction is occurring",
-      "The reaction reaches a very high temperature"
-    ],
-    "answerIndex": 1,
-    "explanation": "'Dynamic' means moving — at dynamic equilibrium both reactions continue simultaneously, but at equal rates so there is no net change.",
-    "hint": "Dynamic means active — something is still happening. What is it?"
-  },
-  {
-    "id": "eq-005",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Why must a reversible reaction be in a closed system to reach equilibrium?",
-    "options": [
-      "Open systems have too much oxygen present",
-      "Temperature cannot be controlled in an open system",
-      "Closed systems always reach equilibrium faster",
-      "If the system is open, products can escape and the reverse reaction cannot occur"
-    ],
-    "answerIndex": 3,
-    "explanation": "If the system is open, gases or substances can escape. The reverse reaction requires both products to be present, so equilibrium cannot be established if something escapes.",
-    "hint": "Think about what would happen if a gas product could float away — could it react backwards?"
-  },
-  {
-    "id": "eq-006",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which of these is a macroscopic property that stays CONSTANT at equilibrium?",
-    "options": [
-      "The colour of the mixture (if a coloured substance is involved)",
-      "The rate of the forward reaction (it keeps increasing)",
-      "The number of individual molecules present",
-      "The temperature of the reaction mixture (it keeps rising)"
-    ],
-    "answerIndex": 0,
-    "explanation": "Macroscopic properties such as colour, concentration, and pressure stay constant at equilibrium because the rates of the forward and reverse reactions are equal.",
-    "hint": "Macroscopic means observable without a microscope. Which property could you see staying the same?"
-  },
-  {
-    "id": "eq-007",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "The Haber process makes ammonia from nitrogen and hydrogen. The equation is: N₂ + 3H₂ ⇌ 2NH₃. Which statement is true?",
-    "options": [
-      "The reaction goes to completion and all nitrogen is converted to ammonia",
-      "Both the formation and decomposition of ammonia occur simultaneously at equilibrium",
-      "Ammonia cannot break down back into nitrogen and hydrogen",
-      "No catalyst is needed for this reaction to work"
-    ],
-    "answerIndex": 1,
-    "explanation": "The ⇌ symbol tells us both directions occur. At equilibrium, ammonia forms from N₂ and H₂ and also breaks back down, both at equal rates.",
-    "hint": "The ⇌ symbol is the key — what does it tell you about both directions?"
-  },
-  {
-    "id": "eq-008",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "A student says 'at equilibrium the reaction has stopped.' What is wrong with this statement?",
-    "options": [
-      "Nothing — equilibrium does mean the reaction has stopped",
-      "At equilibrium only the forward reaction is still occurring",
-      "At equilibrium both forward and reverse reactions are still occurring, just at equal rates",
-      "Equilibrium is reached only when all the reactant is used up"
-    ],
-    "answerIndex": 2,
-    "explanation": "Equilibrium is dynamic: both reactions continue at the same rate, so concentrations remain constant — but the reaction has not stopped.",
-    "hint": "What does 'dynamic' mean? Is the equilibrium static or active?"
-  },
-  {
-    "id": "eq-009",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which condition is required for a reversible reaction to reach equilibrium?",
-    "options": [
-      "The system must be open so that gases can escape",
-      "The temperature must be above 300 °C",
-      "The system must be closed so that no substances can enter or leave",
-      "A catalyst must always be present"
-    ],
-    "answerIndex": 2,
-    "explanation": "Equilibrium requires a closed system: if reactants or products escape, the concentrations change and equilibrium cannot be maintained.",
-    "hint": "Think about a sealed bottle versus an open one — which can maintain constant concentrations?"
-  },
-  {
-    "id": "eq-010",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "In the Haber process N₂ + 3H₂ ⇌ 2NH₃, the forward reaction is exothermic. If the temperature is raised, the equilibrium position will shift …",
-    "options": [
-      "to the right, making more NH₃",
-      "neither — temperature has no effect on equilibrium",
-      "to the left, making more N₂ and H₂",
-      "to the right because higher temperature always helps"
-    ],
-    "answerIndex": 2,
-    "explanation": "Raising the temperature favours the endothermic direction. Because the forward reaction is exothermic, the reverse (endothermic) reaction is favoured, shifting equilibrium to the left.",
-    "hint": "Which direction is endothermic? Raising temperature favours that direction."
-  },
-  {
-    "id": "eq-011",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "What does Le Châtelier's principle state?",
-    "options": [
-      "Equilibrium is always reached within seconds",
-      "A catalyst always shifts the position of equilibrium to the right",
-      "If a change is applied to a system at equilibrium, the system will respond to oppose that change",
-      "Concentration changes have no effect on equilibrium"
-    ],
-    "answerIndex": 2,
-    "explanation": "Le Châtelier's principle: any stress (change in concentration, temperature, or pressure) causes the equilibrium to shift to partially counteract the stress.",
-    "hint": "'Oppose' is the key word — the system fights back against any change."
-  },
-  {
-    "id": "eq-012",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "If more reactant is added to a reaction at equilibrium, which direction will the equilibrium shift?",
-    "options": [
-      "To the left (reverse direction)",
-      "It will shift left only if the reaction is exothermic",
-      "It will not shift — adding more reactant has no effect",
-      "To the right (forward direction)"
-    ],
-    "answerIndex": 3,
-    "explanation": "Adding more reactant increases its concentration; the system responds by using up some of the extra reactant, shifting equilibrium to the right (forward direction).",
-    "hint": "The system opposes the increase in reactant — which direction uses up reactant?"
-  },
-  {
-    "id": "eq-013",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "A catalyst is added to a reaction mixture at equilibrium. What happens to the position of the equilibrium?",
-    "options": [
-      "Equilibrium shifts to the right — more products form",
-      "Equilibrium shifts to the left — more reactants form",
-      "The position of equilibrium does not change",
-      "The catalyst removes the equilibrium"
-    ],
-    "answerIndex": 2,
-    "explanation": "A catalyst speeds up both the forward and reverse reactions equally. It helps the system reach equilibrium faster but does not change where equilibrium lies.",
-    "hint": "Does a catalyst affect the forward reaction only, or both directions equally?"
-  },
-  {
-    "id": "eq-014",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "In the reaction CO₂(aq) ⇌ CO₂(g), what happens when you open a can of fizzy drink?",
-    "options": [
-      "Pressure increases, so CO₂ stays dissolved",
-      "The catalyst is removed, so equilibrium is lost",
-      "Temperature rises and shifts equilibrium to the left",
-      "Pressure decreases, so the equilibrium shifts to produce more CO₂(g) — the drink goes flat"
-    ],
-    "answerIndex": 3,
-    "explanation": "Opening the can releases pressure; the lower pressure favours the gas-phase CO₂, so dissolved CO₂ escapes as bubbles — the equilibrium shifts right.",
-    "hint": "Think about the pressure inside the sealed can versus after opening it."
-  },
-  {
-    "id": "eq-015",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "The chromate/dichromate equilibrium involves a colour change: 2CrO₄²⁻ (yellow) + 2H⁺ ⇌ Cr₂O₇²⁻ (orange) + H₂O. If acid is added, what colour change occurs?",
-    "options": [
-      "Yellow to orange, because equilibrium shifts right",
-      "Orange to yellow, because equilibrium shifts right",
-      "Yellow to orange, because equilibrium shifts left",
-      "No colour change occurs"
-    ],
-    "answerIndex": 0,
-    "explanation": "Adding acid increases H⁺ concentration; the equilibrium shifts right to use up the extra H⁺, producing more orange Cr₂O₇²⁻.",
-    "hint": "Adding acid increases H⁺. Which direction uses up H⁺?"
-  },
-  {
-    "id": "eq-016",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which of the following will NOT shift the position of equilibrium?",
-    "options": [
-      "Increasing the concentration of a reactant",
-      "Changing the temperature",
-      "Adding a catalyst",
-      "Decreasing the pressure for a gaseous reaction"
-    ],
-    "answerIndex": 2,
-    "explanation": "A catalyst speeds both forward and reverse reactions equally; it does not change the equilibrium position — only the time taken to reach it.",
-    "hint": "Which option affects both directions equally and has no 'net' effect?"
-  },
-  {
-    "id": "eq-017",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "For the reaction N₂(g) + 3H₂(g) ⇌ 2NH₃(g): the left side has 4 moles of gas and the right side has 2. If pressure is increased, equilibrium shifts …",
-    "options": [
-      "to the left — away from the side with fewer gas moles",
-      "to the right — towards the side with fewer gas moles",
-      "neither — pressure has no effect on reactions involving gases",
-      "randomly to one side"
-    ],
-    "answerIndex": 1,
-    "explanation": "Increasing pressure shifts equilibrium towards the side with fewer moles of gas. Here the right side has 2 moles vs 4, so equilibrium shifts right, producing more NH₃.",
-    "hint": "Higher pressure favours fewer moles of gas — count the gas moles on each side."
-  },
-  {
-    "id": "eq-018",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Warming a carbonated drink causes bubbles to form. Why?",
-    "options": [
-      "Heat provides energy to break the chemical bonds in water",
-      "The drink undergoes thermal decomposition",
-      "Higher temperature makes CO₂ dissolve better",
-      "Higher temperature shifts the CO₂(aq) ⇌ CO₂(g) equilibrium towards the gas phase"
-    ],
-    "answerIndex": 3,
-    "explanation": "CO₂ is less soluble at higher temperatures. Raising the temperature shifts the equilibrium towards CO₂(g), so more gas escapes as bubbles.",
-    "hint": "As temperature rises, does CO₂ become more or less soluble in the liquid?"
-  },
-  {
-    "id": "eq-019",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which of these correctly states the effect of increasing pressure on a gaseous equilibrium?",
-    "options": [
-      "Equilibrium shifts towards the side with fewer moles of gas",
-      "Equilibrium shifts towards the side with more moles of gas",
-      "Pressure only affects non-gaseous reactions",
-      "Equilibrium shifts to the exothermic side"
-    ],
-    "answerIndex": 0,
-    "explanation": "Increasing pressure favours the side that occupies less volume, which is the side with fewer moles of gas. This is a direct application of Le Châtelier's principle.",
-    "hint": "More pressure → system tries to reduce gas moles. Which side has fewer?"
-  },
-  {
-    "id": "eq-020",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "In the contact process for making sulfuric acid: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g). The left side has 3 moles of gas; the right has 2. If pressure is increased, the equilibrium shifts …",
-    "options": [
-      "Left — 3 moles on the left",
-      "Right — 2 moles on the right",
-      "Neither — only the rate changes",
-      "Right — because SO₃ is more reactive"
-    ],
-    "answerIndex": 1,
-    "explanation": "Higher pressure favours fewer gas moles. The right side has 2 moles vs 3 on the left, so the equilibrium shifts right to produce more SO₃.",
-    "hint": "Count the gas moles on each side, then decide which way a pressure increase pushes equilibrium."
-  },
-  {
-    "id": "eq-021",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which sentence correctly describes the equilibrium position 'lying to the right'?",
-    "options": [
-      "At equilibrium, the mixture contains more products than reactants",
-      "The reverse reaction is faster than the forward reaction",
-      "At equilibrium, the mixture contains more reactants than products",
-      "All the reactants have been converted to products"
-    ],
-    "answerIndex": 0,
-    "explanation": "'Equilibrium lies to the right' means the mixture contains a higher proportion of products than reactants at equilibrium.",
-    "hint": "'Right' refers to the product side of the equation — what proportion is greater?"
-  },
-  {
-    "id": "eq-022",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "When a product is removed from a system at equilibrium, the equilibrium shifts …",
-    "options": [
-      "To the left — to make more reactant",
-      "It depends on whether the reaction is exothermic or endothermic",
-      "Neither direction — removing product has no effect",
-      "To the right — to replace the removed product"
-    ],
-    "answerIndex": 3,
-    "explanation": "Removing product decreases its concentration; by Le Châtelier's principle the system shifts right to partially restore the product's concentration.",
-    "hint": "The system tries to oppose the decrease in product. Which direction makes more product?"
-  },
-  {
-    "id": "eq-023",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Why does ammonia production in the Haber process use a moderately high temperature (~450 °C) rather than a very low temperature, even though the forward reaction is exothermic?",
-    "options": [
-      "Low temperatures would cause an explosion",
-      "A lower temperature shifts equilibrium left, making less NH₃",
-      "A higher temperature gives a better yield — equilibrium shifts right",
-      "A moderate temperature is a compromise: low enough for a reasonable yield, fast enough for a practical rate"
-    ],
-    "answerIndex": 3,
-    "explanation": "Very low temperature gives a high equilibrium yield but the rate is too slow to be practical. A moderate temperature (~450 °C) balances yield and reaction rate.",
-    "hint": "Think about the trade-off: what happens to yield if temperature drops, and what happens to rate?"
-  },
-  {
-    "id": "eq-024",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which of the following is evidence that a system is at dynamic equilibrium?",
-    "options": [
-      "All of the reactants have been converted to products",
-      "The reaction mixture is emitting bubbles constantly, which are growing",
-      "The colour of the mixture stays constant over time (no change in macroscopic properties)",
-      "The temperature of the mixture keeps rising"
-    ],
-    "answerIndex": 2,
-    "explanation": "A constant, unchanging colour (or concentration) is macroscopic evidence that forward and reverse rates are equal — the system is at equilibrium.",
-    "hint": "What does 'no visible change' over time indicate about the rates of the two opposing reactions?"
-  },
-  {
-    "id": "eq-025",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "For the reaction: H₂(g) + I₂(g) ⇌ 2HI(g), there are 2 moles of gas on both sides. If pressure is increased, the equilibrium position will …",
-    "options": [
-      "Shift right — towards HI",
-      "Shift left — towards H₂ and I₂",
-      "Not shift — because moles of gas are equal on both sides",
-      "Shift right because HI is a gas"
-    ],
-    "answerIndex": 2,
-    "explanation": "When both sides of a gaseous equilibrium have the same number of moles, changing pressure has no effect on the equilibrium position.",
-    "hint": "Count gas moles on each side. Are they the same or different?"
-  },
-  {
-    "id": "eq-026",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "The Haber process runs at about 200 atm pressure. Why is very high pressure used?",
-    "options": [
-      "High pressure increases temperature, helping the exothermic reaction",
-      "High pressure removes the activation energy barrier",
-      "High pressure prevents the catalyst from being deactivated",
-      "High pressure shifts the equilibrium towards fewer gas moles (right), increasing the yield of NH₃"
-    ],
-    "answerIndex": 3,
-    "explanation": "N₂ + 3H₂ ⇌ 2NH₃ has 4 moles on the left and 2 on the right. High pressure shifts equilibrium right, giving a better yield of ammonia.",
-    "hint": "How many gas moles are on each side? Which side does higher pressure favour?"
-  },
-  {
-    "id": "eq-027",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "For the endothermic reaction A ⇌ B, increasing the temperature will …",
-    "options": [
-      "Shift equilibrium to the left, increasing [A] and decreasing [B]",
-      "Shift equilibrium to the right, increasing [B] and decreasing [A]",
-      "Have no effect because catalysts are not involved",
-      "Remove all of substance A"
-    ],
-    "answerIndex": 1,
-    "explanation": "For an endothermic reaction, raising temperature provides energy that drives the forward (endothermic) direction, shifting equilibrium right and increasing the yield of B.",
-    "hint": "Temperature increase favours the endothermic direction — which direction is endothermic here?"
-  },
-  {
-    "id": "eq-028",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "In the contact process 2SO₂ + O₂ ⇌ 2SO₃ (forward reaction exothermic), what conditions maximise the yield of SO₃?",
-    "options": [
-      "High temperature and low pressure",
-      "Low temperature and high pressure",
-      "High temperature and high pressure",
-      "Low temperature and low pressure"
-    ],
-    "answerIndex": 1,
-    "explanation": "Low temperature favours the exothermic forward reaction (more yield); high pressure favours the side with fewer gas moles (2 moles of SO₃ vs 3 moles of reactant gas).",
-    "hint": "Apply Le Châtelier separately for temperature and pressure — which combination maximises product yield?"
-  },
-  {
-    "id": "eq-029",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "Iron(III) thiocyanate forms a deep red solution: Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺. If Fe³⁺ is added, what happens?",
-    "options": [
-      "The solution turns deeper red — equilibrium shifts right to use up Fe³⁺",
-      "The solution becomes lighter — equilibrium shifts left",
-      "No change — the reaction has already reached equilibrium",
-      "The solution turns yellow — equilibrium shifts right"
-    ],
-    "answerIndex": 0,
-    "explanation": "Adding Fe³⁺ increases its concentration. The equilibrium shifts right to use up the extra Fe³⁺, producing more FeSCN²⁺ and making the solution deeper red.",
-    "hint": "More Fe³⁺ → system shifts to use it up. In which direction does more FeSCN²⁺ form?"
-  },
-  {
-    "id": "eq-030",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "In the chromate/dichromate equilibrium, which change would shift the equilibrium to the left (forming more yellow CrO₄²⁻)?",
-    "options": [
-      "Adding hydrochloric acid",
-      "Adding sodium hydroxide solution (to remove H⁺)",
-      "Adding more dichromate solution",
-      "Raising the temperature"
-    ],
-    "answerIndex": 1,
-    "explanation": "Adding NaOH removes H⁺ ions from the solution. By Le Châtelier's principle, the equilibrium shifts left to replace the removed H⁺, producing more yellow CrO₄²⁻.",
-    "hint": "Which change removes H⁺ from the system? Which direction re-produces H⁺?"
-  },
-  {
-    "id": "eq-031",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "A student adds a catalyst to speed up the Haber process. Which statement best describes the outcome?",
-    "options": [
-      "The yield of ammonia increases because equilibrium shifts right",
-      "The catalyst shifts equilibrium right by lowering the activation energy",
-      "The yield of ammonia stays the same but equilibrium is reached faster",
-      "The catalyst shifts equilibrium left because it reverses the reaction"
-    ],
-    "answerIndex": 2,
-    "explanation": "A catalyst speeds both forward and reverse reactions equally. It does not shift the equilibrium position, so yield is unchanged — but equilibrium is reached in less time.",
-    "hint": "Does a catalyst change where equilibrium lies, or only how fast it is reached?"
-  },
-  {
-    "id": "eq-032",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "For the reaction N₂O₄(g) ⇌ 2NO₂(g): N₂O₄ is colourless and NO₂ is brown. If the volume of the container is decreased (pressure increased), what is observed?",
-    "options": [
-      "The mixture momentarily becomes darker, then lightens slightly as equilibrium shifts left",
-      "The mixture becomes darker brown immediately and stays darker",
-      "The mixture becomes colourless because equilibrium shifts fully right",
-      "No colour change — pressure does not affect this equilibrium"
-    ],
-    "answerIndex": 0,
-    "explanation": "Compressing the gas instantly increases concentration (darker). Then equilibrium shifts left (towards fewer gas moles: 1 mole N₂O₄ vs 2 moles NO₂), producing more N₂O₄ and lightening the colour slightly.",
-    "hint": "Two things happen: an immediate concentration effect, then the equilibrium shift. Which side has fewer gas moles?"
-  },
-  {
-    "id": "eq-033",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "In the Haber process, ammonia is continuously removed from the reaction vessel. Why is this done?",
-    "options": [
-      "To stop the reverse reaction completely",
-      "To reduce the pressure in the vessel",
-      "To prevent the catalyst from being poisoned",
-      "To shift equilibrium to the right by removing a product, increasing the overall yield"
-    ],
-    "answerIndex": 3,
-    "explanation": "Removing a product shifts equilibrium to the right by Le Châtelier's principle, so more N₂ and H₂ react to produce more NH₃, increasing overall yield.",
-    "hint": "What does Le Châtelier say happens when a product is removed?"
-  },
-  {
-    "id": "eq-034",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "The forward reaction A(g) + B(g) ⇌ C(g) + D(g) is endothermic. Increasing temperature will …",
-    "options": [
-      "Shift equilibrium right (more C and D); the system absorbs the added energy",
-      "Shift equilibrium left (more A and B); lowering temperature removes energy",
-      "Not affect the equilibrium because both sides have equal moles of gas",
-      "Only affect the rate, not the position, of equilibrium"
-    ],
-    "answerIndex": 0,
-    "explanation": "Temperature increase favours the endothermic direction. Since the forward reaction is endothermic, equilibrium shifts right, producing more C and D.",
-    "hint": "Temperature increase gives energy to the endothermic direction. Which direction is endothermic here?"
-  },
-  {
-    "id": "eq-035",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "In a sealed bottle of sparkling water, CO₂(aq) ⇌ CO₂(g). The bottle is warm and has less CO₂ dissolved. This is because …",
-    "options": [
-      "Higher temperature shifts equilibrium toward CO₂(g), so CO₂ is less soluble in warm water",
-      "The solubility of CO₂ increases with temperature, so less stays as CO₂(g)",
-      "The CO₂ molecules are moving faster and take up more space",
-      "The pressure inside the warm bottle is lower than in a cold bottle"
-    ],
-    "answerIndex": 0,
-    "explanation": "Dissolving CO₂ is an exothermic process. Raising temperature shifts equilibrium to the endothermic direction (releasing CO₂ gas), so gases are less soluble in warmer liquids.",
-    "hint": "Dissolving is exothermic — what does raising temperature do to an exothermic process?"
-  },
-  {
-    "id": "eq-036",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "For 2SO₂(g) + O₂(g) ⇌ 2SO₃(g), the catalyst used in industry is vanadium(V) oxide (V₂O₅). Which statement is TRUE?",
-    "options": [
-      "V₂O₅ increases the yield of SO₃ by shifting equilibrium right",
-      "V₂O₅ increases the equilibrium yield of SO₃ by lowering the reaction temperature",
-      "V₂O₅ shifts the equilibrium left by speeding up the reverse reaction more",
-      "V₂O₅ decreases the activation energy for both forward and reverse reactions equally"
-    ],
-    "answerIndex": 3,
-    "explanation": "A catalyst lowers the activation energy for both reactions equally; it does not change the equilibrium yield, only the rate at which equilibrium is reached.",
-    "hint": "Catalysts affect the rate, not the position. What do they do to activation energy?"
-  },
-  {
-    "id": "eq-037",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "A chemist monitors an equilibrium mixture and finds the concentrations are no longer changing. She concludes equilibrium has been reached. Which additional piece of evidence would best confirm this?",
-    "options": [
-      "The reaction mixture has changed colour",
-      "Adding more reactant causes a temporary increase in product formation, followed by a return to a constant concentration",
-      "The temperature has risen steadily",
-      "Removing the container lid causes no visible change"
-    ],
-    "answerIndex": 1,
-    "explanation": "If adding more reactant temporarily shifts the system but it then settles to new constant concentrations, this confirms the dynamic nature of equilibrium — consistent with Le Châtelier's principle.",
-    "hint": "Which option shows the system is responsive to change yet self-correcting — the hallmark of dynamic equilibrium?"
-  },
-  {
-    "id": "eq-038",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "Consider: CaCO₃(s) ⇌ CaO(s) + CO₂(g). What would happen if more solid CaCO₃ were added to this system at equilibrium?",
-    "options": [
-      "Equilibrium shifts right to produce more CO₂",
-      "Equilibrium shifts left",
-      "No shift — the position of equilibrium is unaffected by adding a pure solid",
-      "The solid reacts with the gas and the equilibrium is destroyed"
-    ],
-    "answerIndex": 2,
-    "explanation": "Pure solids and liquids do not appear in the equilibrium expression. Adding more solid CaCO₃ does not change any concentration, so the position of equilibrium is unaffected.",
-    "hint": "Do concentrations of pure solids change when you add more of them?"
-  },
-  {
-    "id": "eq-039",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "In the Haber process, engineers choose 450 °C as the operating temperature. Why NOT use a lower temperature to get a higher yield of NH₃?",
-    "options": [
-      "At low temperatures the equilibrium yield would be higher, but the reaction rate would be unacceptably slow, making the process uneconomic",
-      "Low temperatures cause the catalyst to stop working",
-      "Low temperatures cause the nitrogen to condense to a liquid",
-      "The forward reaction is endothermic, so lower temperature gives a lower yield"
-    ],
-    "answerIndex": 0,
-    "explanation": "The forward reaction is exothermic, so lower temperature shifts equilibrium right (better yield). However, the rate becomes too slow to be commercially viable, so a compromise temperature is used.",
-    "hint": "The yield-vs-rate trade-off is central here. What does low temperature do to each?"
-  },
-  {
-    "id": "eq-040",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "A reaction at equilibrium is disturbed by increasing pressure. The system shifts towards the side with fewer gas moles. What does this tell us about the system's response?",
-    "options": [
-      "It is trying to reduce the pressure by reducing the number of gas moles — consistent with Le Châtelier's principle",
-      "It is trying to increase the pressure further",
-      "It is producing fewer products overall",
-      "It is reversing the reaction entirely"
-    ],
-    "answerIndex": 0,
-    "explanation": "Fewer gas moles occupy less volume and exert less pressure. By shifting to fewer moles of gas, the system partially counteracts the pressure increase — exactly as Le Châtelier predicts.",
-    "hint": "The system opposes the applied stress. If pressure increased, how does producing fewer moles of gas help?"
-  },
-  {
-    "id": "eq-041",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "Which combination of changes would increase BOTH the rate of reaching equilibrium AND the yield of NH₃ in the Haber process (N₂ + 3H₂ ⇌ 2NH₃, forward rxn exothermic)?",
-    "options": [
-      "Decrease temperature and add a catalyst and increase pressure",
-      "Increase temperature and increase pressure",
-      "Decrease temperature alone",
-      "Add a catalyst alone"
-    ],
-    "answerIndex": 0,
-    "explanation": "Decreasing temperature shifts equilibrium right (more yield); adding a catalyst speeds up reaching equilibrium; increasing pressure shifts toward 2 moles of gas (more yield). Together these improve both rate and yield.",
-    "hint": "Think about each factor separately: which one improves yield, which speeds up rate, which does both?"
-  },
-  {
-    "id": "eq-042",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "Which statement is correct about a reaction that has 'equilibrium lying well to the left'?",
-    "options": [
-      "Almost all of the reactants have been converted to products",
-      "The forward reaction is faster than the reverse",
-      "Only a very small fraction of reactants has been converted to products at equilibrium",
-      "The reaction is at equilibrium only momentarily"
-    ],
-    "answerIndex": 2,
-    "explanation": "If equilibrium lies to the left, the mixture is mostly reactants — very little product has formed at equilibrium.",
-    "hint": "'Left' means the reactant side. What does it mean if equilibrium lies on that side?"
-  },
-  {
-    "id": "eq-043",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "In the reaction 2NO₂(g) ⇌ N₂O₄(g), the forward reaction is exothermic. A mixture at equilibrium is cooled. What happens?",
-    "options": [
-      "More N₂O₄ forms — equilibrium shifts right towards the exothermic (forward) direction",
-      "More NO₂ forms — equilibrium shifts left towards the endothermic direction",
-      "No change — temperature does not affect equilibrium position",
-      "More N₂O₄ forms because it has a lower boiling point"
-    ],
-    "answerIndex": 0,
-    "explanation": "Cooling the system reduces temperature. Le Châtelier predicts the system will shift in the exothermic direction to release heat and partially compensate. Since the forward reaction is exothermic, equilibrium shifts right — more N₂O₄ forms.",
-    "hint": "Lowering temperature favours the exothermic direction. Which direction is that here?"
-  },
-  {
-    "id": "eq-044",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "The concentration of products in an equilibrium system is suddenly halved (e.g. by dilution). Which direction does the equilibrium shift?",
-    "options": [
-      "Left — to restore the original product concentration",
-      "Right — dilution increases pressure",
-      "Neither — dilution affects all concentrations equally so equilibrium is unaffected",
-      "Right — to restore the lost product"
-    ],
-    "answerIndex": 3,
-    "explanation": "Removing or reducing product concentrations shifts equilibrium to the right (forward direction) to partially restore the product, as predicted by Le Châtelier's principle.",
-    "hint": "The system opposes any decrease. If product concentration drops, which direction makes more product?"
-  },
-  {
-    "id": "eq-045",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "A reaction has the equation A(g) ⇌ B(g) + C(g). If the pressure is increased (by decreasing volume), the equilibrium will shift …",
-    "options": [
-      "Right — towards more gas moles (2 moles) to relieve pressure",
-      "Neither — because the temperature is unchanged",
-      "Left — towards fewer gas moles (1 mole) to relieve the pressure increase",
-      "Neither — a catalyst would be needed to shift it"
-    ],
-    "answerIndex": 2,
-    "explanation": "The left side has 1 mole of gas; the right has 2. Increasing pressure favours the side with fewer moles — the left side — so equilibrium shifts left.",
-    "hint": "Which side has fewer moles of gas? That's the side higher pressure favours."
-  },
-  {
-    "id": "eq-046",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "A student argues that using a catalyst in the Haber process increases the equilibrium yield of ammonia. What should the teacher say?",
-    "options": [
-      "Correct — the catalyst increases both rate and yield",
-      "Incorrect — the catalyst speeds both forward and reverse reactions equally; the equilibrium position is unchanged, so yield is unaffected",
-      "Correct — catalysts always increase yield in industrial processes",
-      "Incorrect — catalysts only affect the temperature, not the yield"
-    ],
-    "answerIndex": 1,
-    "explanation": "Catalysts lower the activation energy for both directions equally. They speed up reaching equilibrium but do not change where equilibrium lies, so the yield of ammonia is unaffected.",
-    "hint": "Which aspect of a reaction does a catalyst change — and which does it leave unchanged?"
-  },
-  {
-    "id": "eq-047",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "For the endothermic reaction PCl₅(g) ⇌ PCl₃(g) + Cl₂(g), which change increases the yield of PCl₃?",
-    "options": [
-      "Lower temperature and higher pressure",
-      "Lower temperature and lower pressure",
-      "Higher temperature and lower pressure",
-      "Higher temperature and higher pressure"
-    ],
-    "answerIndex": 2,
-    "explanation": "Higher temperature favours the endothermic forward direction (more PCl₃). Lower pressure favours the side with more gas moles (2 moles on the right vs 1 on the left). Both changes shift equilibrium right.",
-    "hint": "Apply Le Châtelier for temperature (forward is endothermic) and for pressure (count gas moles on each side)."
-  },
-  {
-    "id": "eq-048",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "In the equilibrium N₂(g) + O₂(g) ⇌ 2NO(g) (endothermic forward reaction), which statement is correct about the effect of increasing PRESSURE?",
-    "options": [
-      "Equilibrium shifts right — more NO forms",
-      "The position of equilibrium is unaffected because both sides have equal moles of gas",
-      "Equilibrium shifts left — less NO forms",
-      "More N₂ is used up because it has a lower boiling point than O₂"
-    ],
-    "answerIndex": 1,
-    "explanation": "Both sides have 2 moles of gas (1N₂ + 1O₂ = 2 moles left; 2 moles right). Equal moles means changing pressure has no effect on the equilibrium position.",
-    "hint": "Count moles of gas on each side carefully. Are they the same?"
-  },
-  {
-    "id": "eq-049",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "The equilibrium CoCl₄²⁻(aq) + 6H₂O ⇌ Co(H₂O)₆²⁺(aq) + 4Cl⁻ involves a colour change: CoCl₄²⁻ is blue and Co(H₂O)₆²⁺ is pink. The forward reaction is endothermic. A beaker of the equilibrium mixture is placed in ice. What is observed?",
-    "options": [
-      "The solution turns bluer — equilibrium shifts right",
-      "The solution turns pinker — equilibrium shifts left",
-      "The solution turns pinker — equilibrium shifts right",
-      "The solution turns bluer — equilibrium shifts left"
-    ],
-    "answerIndex": 3,
-    "explanation": "Cooling favours the exothermic direction. The forward reaction is endothermic, so the reverse reaction is exothermic. Cooling shifts equilibrium left, producing more blue CoCl₄²⁻ — the solution turns bluer.",
-    "hint": "Cooling favours the exothermic direction. Is the exothermic direction forward (→ pink) or reverse (→ blue)?"
-  },
-  {
-    "id": "eq-050",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "Cooling the cobalt chloride equilibrium (blue CoCl₄²⁻ ⇌ pink Co(H₂O)₆²⁺, forward endothermic) makes the solution …",
-    "options": [
-      "Pink — equilibrium shifts right",
-      "Bluer — equilibrium shifts left toward the exothermic direction",
-      "Colourless — all colour is lost",
-      "Unchanged — temperature never affects colour"
-    ],
-    "answerIndex": 1,
-    "explanation": "Cooling favours the exothermic direction. The reverse reaction is exothermic, so the equilibrium shifts left, producing more blue CoCl₄²⁻.",
-    "hint": "Cooling favours the exothermic direction. Is the exothermic direction forward or reverse?"
-  },
-  {
-    "id": "eq-051",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "A gas-phase equilibrium has more moles of gas on the product side. A sealed syringe containing the mixture is compressed. Which best describes the sequence of events?",
-    "options": [
-      "Concentrations all increase instantly; then equilibrium shifts right to produce more gas and restore the mole count",
-      "Equilibrium is destroyed; no new equilibrium is reached",
-      "Concentrations all decrease; then equilibrium shifts right",
-      "Concentrations all increase instantly; then equilibrium shifts left towards fewer moles of gas, partially reducing the pressure"
-    ],
-    "answerIndex": 3,
-    "explanation": "Compression instantly raises all concentrations (and pressure). Le Châtelier predicts a shift towards fewer moles of gas (left in this case), which partially relieves the pressure increase.",
-    "hint": "Two things happen in sequence: an immediate physical effect, then an equilibrium shift. Which side has fewer gas moles?"
-  },
-  {
-    "id": "eq-052",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "In the Haber process, which of the following correctly explains why 200 atm is used but 20 000 atm is not, even though higher pressure gives even better yield?",
-    "options": [
-      "Very high pressure would shift equilibrium left, reducing yield",
-      "Building equipment to safely contain very high pressures is extremely expensive and technically difficult, making it uneconomical",
-      "Very high pressure is safe to use — engineers simply prefer 200 atm for tradition",
-      "At 20 000 atm the catalyst is poisoned"
-    ],
-    "answerIndex": 1,
-    "explanation": "While higher pressure does give better yield, the engineering cost and safety challenges of building reactors that operate at tens of thousands of atmospheres makes the process uneconomical. A compromise pressure (~200 atm) is used.",
-    "hint": "Think beyond the chemistry — what practical issues arise with very high pressures in industry?"
-  },
-  {
-    "id": "eq-053",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "In the reaction A(g) + B(g) ⇌ C(g) + D(g), ΔH = +60 kJ mol⁻¹. The system is at equilibrium. Both the temperature and pressure are increased simultaneously. Which is correct?",
-    "options": [
-      "Equilibrium shifts right (temperature effect dominates for endothermic) and the pressure change has no net effect",
-      "Equilibrium shifts left (temperature effect for exothermic)",
-      "Equilibrium shifts right due to pressure (more product moles) but left due to temperature",
-      "Equilibrium shifts left due to pressure (fewer product moles) and right due to temperature"
-    ],
-    "answerIndex": 0,
-    "explanation": "ΔH positive means the forward reaction is endothermic — raising temperature shifts equilibrium right. Both sides have 2 moles of gas (1A + 1B = 2; 1C + 1D = 2), so pressure has no net effect on position.",
-    "hint": "First check the sign of ΔH for direction from temperature. Then count gas moles on each side for the pressure effect."
-  },
-  {
-    "id": "eq-054",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "Consider an industrial equilibrium where the desired product forms on the side with MORE moles of gas. An engineer wants a high yield. What does Le Châtelier's principle predict about pressure?",
-    "options": [
-      "High pressure favours the side with fewer moles — so low pressure is used to increase yield for this reaction",
-      "Low pressure favours the side with fewer moles — so high pressure increases yield here",
-      "Pressure has no effect on any industrial equilibrium",
-      "High pressure always increases yield regardless of moles"
-    ],
-    "answerIndex": 0,
-    "explanation": "High pressure shifts equilibrium towards fewer gas moles. If the product side has MORE moles, high pressure would shift equilibrium away from products — so lower pressure gives better yield.",
-    "hint": "Le Châtelier says high pressure favours fewer moles. If the product side has more moles, does high or low pressure help?"
-  },
-  {
-    "id": "eq-055",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "A student tests whether a system has reached equilibrium by adding a tiny labelled (isotopically-tagged) molecule of a reactant. Even though all macroscopic concentrations stay constant, the tagged atom is found in the product molecules shortly after. What does this tell us?",
-    "options": [
-      "The system was not at equilibrium because there was still reaction occurring",
-      "Isotope tagging always produces this result and tells us nothing about equilibrium",
-      "The tagged molecule disrupted the equilibrium so the observation is invalid",
-      "The system is at dynamic equilibrium — the forward reaction is still proceeding, incorporating the tagged atom into products, but overall concentrations do not change because the reverse reaction balances it"
-    ],
-    "answerIndex": 3,
-    "explanation": "Finding the tagged atom in products confirms the forward reaction is still occurring. The fact that concentrations remain constant shows the reverse reaction is equally active — this is the definition of dynamic equilibrium.",
-    "hint": "What does it mean if atoms are still moving between reactants and products even though concentrations are constant?"
-  },
-  {
-    "id": "eq-056",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "In the Haber process N₂ + 3H₂ ⇌ 2NH₃ (forward exothermic), which set of conditions gives the HIGHEST equilibrium yield of NH₃ (ignoring rate considerations)?",
-    "options": [
-      "High temperature, low pressure",
-      "Low temperature, low pressure",
-      "High temperature, high pressure",
-      "Low temperature, high pressure"
-    ],
-    "answerIndex": 3,
-    "explanation": "Low temperature favours the exothermic forward direction (higher yield); high pressure favours fewer gas moles (2 vs 4), also shifting right. Together, low T and high P give the highest equilibrium yield.",
-    "hint": "For each variable (T and P), decide which direction Le Châtelier favours for more NH₃."
-  },
-  {
-    "id": "eq-057",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "A reaction at equilibrium is disturbed by removing some of the catalyst. What happens to the equilibrium position?",
-    "options": [
-      "Equilibrium shifts to the left because less catalyst means less forward reaction",
-      "Equilibrium shifts to the right to compensate for the slower rate",
-      "The equilibrium position is unchanged — it just takes longer to reach the same position if the system is disturbed",
-      "The equilibrium is permanently destroyed"
-    ],
-    "answerIndex": 2,
-    "explanation": "Catalysts do not affect the equilibrium position. Removing catalyst means equilibrium is reached more slowly, but once reached, the same position (same concentrations) results.",
-    "hint": "Catalysts affect rate, not position. If you remove the catalyst, does the 'destination' of equilibrium change?"
-  },
-  {
-    "id": "eq-058",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "Nitrogen monoxide is formed in car engines by the endothermic reaction N₂(g) + O₂(g) ⇌ 2NO(g). The reaction occurs at very high temperatures (>2000 °C). Which correctly explains why NO forms in the engine but decomposes when gases cool in the exhaust?",
-    "options": [
-      "High temp favours the endothermic forward reaction, giving more NO; cooling favours the exothermic reverse reaction, decomposing NO back to N₂ and O₂",
-      "High temp increases pressure, forcing equilibrium right; cooling decreases pressure",
-      "NO is kinetically unstable at all temperatures",
-      "The catalyst in the engine only works above 2000 °C"
-    ],
-    "answerIndex": 0,
-    "explanation": "The forward reaction is endothermic, so high temperatures shift equilibrium right (more NO). When gases cool, the exothermic reverse reaction is favoured, decomposing NO. The rate of the reverse reaction at low temperatures is very slow, however, allowing NO to persist — leading to pollution.",
-    "hint": "Apply Le Châtelier to both high and low temperature scenarios for this endothermic reaction."
-  },
-  {
-    "id": "eq-059",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "In the Haber process, the yield of ammonia at equilibrium is only about 15% under typical conditions, yet this is commercially viable. Which combination of industrial strategies makes this possible?",
-    "options": [
-      "Raising temperature to shift equilibrium right AND using a catalyst to increase yield",
-      "Continuously removing ammonia (shifting equilibrium right) AND recycling unreacted N₂ and H₂",
-      "Running the reaction at very low temperature to increase yield AND using a very high pressure",
-      "Adding more nitrogen continuously to shift equilibrium right AND using a catalyst to increase yield"
-    ],
-    "answerIndex": 1,
-    "explanation": "Continuously removing NH₃ shifts equilibrium right (Le Châtelier), producing more. Recycling unreacted N₂ and H₂ ensures raw materials are not wasted. Together, these strategies achieve commercially viable production despite a low equilibrium yield per pass.",
-    "hint": "Even a low yield per pass can be productive if the unreacted starting materials are recovered and reused — and if equilibrium is continuously driven forward."
-  },
-  {
-    "id": "eq-060",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "A reversible reaction in a closed system is initially allowed to reach equilibrium. The temperature is then raised rapidly. Which graph best describes the change in concentration of the PRODUCT over time?",
-    "options": [
-      "Concentration stays constant — temperature has no effect",
-      "Concentration rises then falls in a wave pattern and never stabilises",
-      "Concentration falls immediately to zero, then recovers",
-      "Concentration rises sharply for an endothermic forward reaction, then levels off at a new (higher) constant value"
-    ],
-    "answerIndex": 3,
-    "explanation": "For an endothermic forward reaction, raising temperature shifts equilibrium right. Product concentration rises (non-instantaneously) as the new equilibrium is established, then levels off at a new, higher constant value.",
-    "hint": "After a temperature increase, what happens in stages: immediate, then equilibration to a new position?"
-  },
-  {
-    "id": "eq-061",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "The reaction 2HI(g) ⇌ H₂(g) + I₂(g) is run in a sealed container. The forward reaction is slightly endothermic. Which graph of [HI] against time correctly shows what happens when the system reaches equilibrium after starting with pure HI?",
-    "options": [
-      "[HI] decreases rapidly, then levels off at a non-zero constant value (some HI remains at equilibrium)",
-      "[HI] decreases sharply then rises back to its original value",
-      "[HI] decreases all the way to zero as all HI converts",
-      "[HI] remains constant from the start"
-    ],
-    "answerIndex": 0,
-    "explanation": "Starting with pure HI, the forward reaction proceeds, decreasing [HI]. As H₂ and I₂ build up, the reverse reaction begins. Eventually both rates equalise at a non-zero [HI] — equilibrium.",
-    "hint": "At equilibrium, do all the reactants disappear, or does some remain? What does the graph look like at that point?"
-  },
-  {
-    "id": "eq-062",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "An exothermic forward reaction A ⇌ B is at equilibrium at 300 K with [B]/[A] = 4. The temperature is raised to 400 K. Which correctly describes the new equilibrium ratio [B]/[A]?",
-    "options": [
-      "Less than 4 — equilibrium shifts left because the reverse (endothermic) direction is favoured at higher temperature",
-      "Greater than 4 — equilibrium shifts right because higher temperature speeds the forward reaction more",
-      "Still 4 — changing temperature only changes rate, not position",
-      "Equal to 0 — all B converts back to A at higher temperature"
-    ],
-    "answerIndex": 0,
-    "explanation": "The forward reaction is exothermic. Raising temperature favours the endothermic direction (reverse reaction), shifting equilibrium left. Less B and more A form, so [B]/[A] decreases below 4.",
-    "hint": "Raising temperature favours the endothermic direction — which direction is that for an exothermic forward reaction?"
-  },
-  {
-    "id": "eq-063",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "In the contact process 2SO₂ + O₂ ⇌ 2SO₃ (ΔH = −196 kJ mol⁻¹), industry uses ~450 °C rather than 200 °C. Which best explains this compromise despite lower yield at 450 °C?",
-    "options": [
-      "At 200 °C the vanadium catalyst is inactive, making the rate negligibly slow",
-      "At 200 °C the equilibrium yield is lower because the reaction is endothermic",
-      "Higher temperature shifts equilibrium right for this exothermic reaction",
-      "450 °C produces a byproduct that is needed for the process"
-    ],
-    "answerIndex": 0,
-    "explanation": "The forward reaction is exothermic; low temperature gives better equilibrium yield. However, below about 400 °C the V₂O₅ catalyst is insufficiently active, making the process too slow. The 450 °C compromise balances a reasonable yield with an acceptable reaction rate.",
-    "hint": "The catalyst has a minimum operating temperature. What happens at temperatures below that threshold?"
-  },
-  {
-    "id": "eq-064",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "A student says: 'At equilibrium, the rates of the forward and reverse reactions are both zero.' A second student says: 'At equilibrium, the rates are equal but non-zero.' Who is correct, and what evidence supports the correct view?",
-    "options": [
-      "Student 1 — constant concentrations prove no reactions are occurring",
-      "Student 2 — isotope-labelling experiments show atoms continuing to transfer between reactants and products even when macroscopic concentrations are constant",
-      "Student 1 — if reactions were still occurring, concentrations would change",
-      "Both are partially correct — the net rate is zero but some individual steps may still occur"
-    ],
-    "answerIndex": 1,
-    "explanation": "Dynamic equilibrium means both reactions are still occurring. Isotope-labelling experiments (and other evidence) show atoms continue to exchange even at equilibrium — the rates are equal but neither is zero.",
-    "hint": "'Dynamic' means active. What experimental evidence distinguishes dynamic from static equilibrium?"
-  },
-  {
-    "id": "eq-065",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which of the following is true about the Haber process?",
-    "options": [
-      "The equation is N₂ + 3H₂ ⇌ 2NH₃ and it makes nitrogen from ammonia",
-      "The reaction goes to completion and all nitrogen becomes ammonia",
-      "The equation is N₂ + H₂ ⇌ NH₃ and no catalyst is needed",
-      "The equation is N₂ + 3H₂ ⇌ 2NH₃ and it makes ammonia from nitrogen and hydrogen"
-    ],
-    "answerIndex": 3,
-    "explanation": "The Haber process: N₂ + 3H₂ ⇌ 2NH₃ — nitrogen and hydrogen (from the air and natural gas) combine to form ammonia. It is a reversible equilibrium reaction.",
-    "hint": "Which molecule is the product in the Haber process, and what are the raw materials?"
-  },
-  {
-    "id": "eq-066",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "At dynamic equilibrium, the rate of the forward reaction compared to the rate of the reverse reaction is …",
-    "options": [
-      "Greater than the reverse reaction rate",
-      "Less than the reverse reaction rate",
-      "Equal to the reverse reaction rate",
-      "Zero for both directions"
-    ],
-    "answerIndex": 2,
-    "explanation": "At dynamic equilibrium, the forward and reverse reaction rates are exactly equal — this is why concentrations remain constant.",
-    "hint": "If concentrations are not changing, what must be true about the rates of the two opposing reactions?"
-  },
-  {
-    "id": "eq-067",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "In which type of system can a reversible reaction reach equilibrium?",
-    "options": [
-      "An open system where gases can escape",
-      "Any system, open or closed",
-      "A closed system where no substances enter or leave",
-      "Only in a vacuum"
-    ],
-    "answerIndex": 2,
-    "explanation": "Equilibrium requires a closed system. In an open system, products (or reactants) escape and the reverse reaction cannot maintain equal rates.",
-    "hint": "What needs to be 'trapped' for both forward and reverse reactions to occur at the same rate?"
-  },
-  {
-    "id": "eq-068",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "A student investigates the Fe³⁺/SCN⁻ equilibrium: Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺ (deep red). Some Na₃PO₄ is added, which removes Fe³⁺ ions from solution. What happens?",
-    "options": [
-      "The solution turns deeper red",
-      "The solution becomes less red (lighter) as equilibrium shifts left to replace the lost Fe³⁺",
-      "The solution colour is unaffected",
-      "The solution turns green because a new product forms"
-    ],
-    "answerIndex": 1,
-    "explanation": "Removing Fe³⁺ decreases its concentration. Le Châtelier predicts a shift left to partially restore [Fe³⁺], consuming FeSCN²⁺ and reducing the red colour.",
-    "hint": "Which direction reverses to produce more Fe³⁺? What happens to the red colour?"
-  },
-  {
-    "id": "eq-069",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "The yield of a product in an equilibrium reaction is 30% at 25 °C. A catalyst is added. What is the expected yield now?",
-    "options": [
-      "Greater than 30% — the catalyst increases yield",
-      "Less than 30% — the catalyst reverses the reaction",
-      "30% — catalysts do not change the equilibrium position",
-      "It cannot be determined without more information"
-    ],
-    "answerIndex": 2,
-    "explanation": "A catalyst does not change the equilibrium position; it only speeds up reaching equilibrium. The yield remains at 30%.",
-    "hint": "Does a catalyst change where equilibrium lies, or just how quickly it is reached?"
-  },
-  {
-    "id": "eq-070",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "For the endothermic reaction X(g) ⇌ 2Y(g), which set of conditions would give the LOWEST yield of Y?",
-    "options": [
-      "High temperature, low pressure",
-      "Low temperature, low pressure",
-      "High temperature, high pressure",
-      "Low temperature, high pressure"
-    ],
-    "answerIndex": 3,
-    "explanation": "Low temperature disfavours the endothermic forward reaction (less Y); high pressure disfavours the side with more moles of gas (2 moles Y vs 1 mole X), also reducing Y. So low T, high P minimises yield.",
-    "hint": "Which direction does each change push equilibrium for an endothermic reaction with more product moles?"
-  },
-  {
-    "id": "eq-071",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "Two reactions are run in sealed vessels at the same temperature. Reaction 1 has a very high equilibrium yield (equilibrium lies far right). Reaction 2 has a very low equilibrium yield (equilibrium lies far left). Both are then catalysed. Which statement is correct?",
-    "options": [
-      "Both reactions reach their respective equilibrium positions faster; the equilibrium yields are unchanged",
-      "After adding catalyst, both reactions will have the same yield because catalysts equalise equilibrium positions",
-      "Reaction 1 increases in yield; Reaction 2 decreases in yield",
-      "Both reactions are permanently shifted to the right"
-    ],
-    "answerIndex": 0,
-    "explanation": "A catalyst lowers the activation energy of both forward and reverse reactions equally. It accelerates reaching equilibrium but does not alter the equilibrium position (or yield) of either reaction.",
-    "hint": "Catalysts affect the route but not the destination. Does either equilibrium position change?"
-  },
-  {
-    "id": "eq-072",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "The reaction SO₃(g) + H₂O(l) ⇌ H₂SO₄(l) goes essentially to completion (equilibrium lies very far right). What does this tell you about the equilibrium?",
-    "options": [
-      "The reaction is very fast",
-      "The reverse reaction rate is negligibly small at this temperature compared to the forward rate",
-      "There is no reverse reaction at all",
-      "A catalyst is not needed"
-    ],
-    "answerIndex": 1,
-    "explanation": "When equilibrium lies very far right, the forward rate greatly exceeds the reverse rate. The concentrations of reactants become very small — though the reverse reaction still occurs, it is negligible.",
-    "hint": "'Far to the right' means very little reactant remains — what does that imply about the relative rates?"
-  },
-  {
-    "id": "eq-073",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which of the following is a real-life example of a reversible reaction used in industry?",
-    "options": [
-      "Burning coal to generate electricity",
-      "The combustion of hydrogen",
-      "The electrolysis of water",
-      "The Haber process: N₂ + 3H₂ ⇌ 2NH₃"
-    ],
-    "answerIndex": 3,
-    "explanation": "The Haber process is the most famous industrial reversible equilibrium reaction, using it to produce ammonia at commercially useful rates and yields.",
-    "hint": "Which option uses the ⇌ symbol — a hallmark of reversible reactions?"
-  },
-  {
-    "id": "eq-074",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "In a sealed bottle of fizzy drink, CO₂ is in equilibrium: CO₂(aq) ⇌ CO₂(g). Inside the sealed bottle, the pressure of CO₂ gas is HIGH. Which way does this push the equilibrium?",
-    "options": [
-      "Right — towards more CO₂(g)",
-      "Left — because high pressure favours more gas",
-      "Neither — pressure does not affect dissolved gases",
-      "Left — towards CO₂(aq), keeping CO₂ dissolved"
-    ],
-    "answerIndex": 3,
-    "explanation": "High pressure of CO₂(g) in the bottle pushes equilibrium left (by Le Châtelier's principle), keeping CO₂ dissolved in the liquid. Opening the bottle reduces pressure and equilibrium shifts right — CO₂ escapes.",
-    "hint": "High pressure pushes the equilibrium towards the side that reduces gas. Which side is that?"
-  },
-  {
-    "id": "eq-075",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "A teacher demonstrates the NO₂/N₂O₄ equilibrium: 2NO₂(g) ⇌ N₂O₄(g). Brown NO₂ converts to colourless N₂O₄. When a syringe of the equilibrium mixture is plunged into hot water, what colour change is expected (the forward reaction is exothermic)?",
-    "options": [
-      "Darker brown — equilibrium shifts left towards the endothermic (reverse) direction",
-      "Lighter (less brown) — equilibrium shifts right towards the exothermic direction",
-      "No colour change — temperature does not affect this equilibrium",
-      "Lighter — equilibrium shifts right because hot water provides activation energy"
-    ],
-    "answerIndex": 0,
-    "explanation": "Heating favours the endothermic direction. Since the forward reaction is exothermic, the reverse reaction is endothermic — so heating shifts equilibrium left, producing more brown NO₂.",
-    "hint": "Heating favours the endothermic direction. Is the endothermic direction forward or reverse here?"
-  },
-  {
-    "id": "eq-076",
-    "topic": "equilibrium",
-    "difficulty": 3,
-    "format": "mcq",
-    "prompt": "In a nitrogen/oxygen/NO equilibrium at very high temperatures (inside a lightning bolt or car engine), large amounts of NO form. As the gases quickly cool, very little NO decomposes back to N₂ and O₂ even though thermodynamics predicts this. Why?",
-    "options": [
-      "Cooling shifts equilibrium right — towards more NO",
-      "NO is thermodynamically stable at all temperatures",
-      "The rate of the reverse reaction at low temperatures is so slow (kinetically limited) that NO does not decompose within relevant time scales, even though equilibrium favours decomposition",
-      "The equilibrium is not reversible at low temperatures"
-    ],
-    "answerIndex": 2,
-    "explanation": "This is a kinetic vs thermodynamic distinction. Equilibrium thermodynamics predicts NO should decompose at lower temperatures, but the rate of decomposition is extremely slow — NO is kinetically trapped. This distinction between kinetic and thermodynamic control is important in chemistry.",
-    "hint": "The thermodynamics says NO should decompose, but does it in practice? What might stop it?"
-  },
-  {
-    "id": "eq-077",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "What is the main product of the Haber process?",
-    "options": [
-      "Nitric acid",
-      "Nitrogen dioxide",
-      "Ammonia (NH₃)",
-      "Nitrogen monoxide"
-    ],
-    "answerIndex": 2,
-    "explanation": "The Haber process produces ammonia (NH₃) from nitrogen (N₂) and hydrogen (H₂): N₂ + 3H₂ ⇌ 2NH₃. Ammonia is mainly used to make fertilisers.",
-    "hint": "The Haber process feeds the world — it makes the building block of fertilisers."
-  },
-  {
-    "id": "eq-078",
-    "topic": "equilibrium",
-    "difficulty": 2,
-    "format": "mcq",
-    "prompt": "The industrial contact process makes SO₃ which is then converted to sulfuric acid. The equilibrium step is 2SO₂(g) + O₂(g) ⇌ 2SO₃(g). An excess of O₂ is fed into the reactor. Why?",
-    "options": [
-      "O₂ speeds up the catalyst",
-      "By Le Châtelier's principle, excess O₂ shifts equilibrium right, converting more SO₂ to SO₃",
-      "Excess O₂ raises the pressure, shifting equilibrium left",
-      "O₂ lowers the activation energy for the forward reaction"
-    ],
-    "answerIndex": 1,
-    "explanation": "Adding excess O₂ increases its concentration. By Le Châtelier's principle the equilibrium shifts right to use up the added O₂, producing more SO₃ and increasing yield.",
-    "hint": "Le Châtelier: adding more of a reactant shifts equilibrium towards which side?"
-  },
-  {
-    "id": "eq-079",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "mcq",
-    "prompt": "Which statement about the position of equilibrium is correct?",
-    "options": [
-      "If equilibrium 'lies to the right', the mixture is mainly reactants",
-      "Equilibrium can only lie to the right for exothermic reactions",
-      "If equilibrium 'lies to the right', no reverse reaction is occurring",
-      "If equilibrium 'lies to the left', the mixture is mainly reactants"
-    ],
-    "answerIndex": 3,
-    "explanation": "'Equilibrium lies to the left' means the reactant side dominates — there is more reactant than product in the equilibrium mixture.",
-    "hint": "'Left' is the reactant side of the equation. What does 'lying to the left' imply?"
-  },
-  {
-    "id": "eq-080",
-    "topic": "equilibrium",
-    "difficulty": 1,
-    "format": "balanceEquation",
-    "prompt": "The Haber process makes ammonia from nitrogen and hydrogen. The reaction is reversible. Balance the equation: __ N₂ + __ H₂ ⇌ __ NH₃",
-    "equation": {
-      "reactants": [
-        {
-          "formula": "N2",
-          "coeff": 1
-        },
-        {
-          "formula": "H2",
-          "coeff": 3
-        }
-      ],
-      "products": [
-        {
-          "formula": "NH3",
-          "coeff": 2
-        }
-      ]
+ {
+  "id": "eq-001",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "What does the symbol ⇌ mean in a chemical equation?",
+  "options": [
+   "The reaction is very fast",
+   "The reaction is reversible — it can go in both directions",
+   "The reaction only goes in one direction",
+   "The reaction produces equal amounts of all products"
+  ],
+  "answerIndex": 1,
+  "explanation": "The double-headed arrow ⇌ shows the reaction is reversible: forward and reverse reactions both occur.",
+  "hint": "Look at the arrow — does it point in one direction or two?"
+ },
+ {
+  "id": "eq-002",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which of the following best describes a reversible reaction?",
+  "options": [
+   "A reaction that goes to completion and stops",
+   "A reaction where the products can react together to reform the original reactants",
+   "A reaction that releases energy",
+   "A reaction that only works with a catalyst"
+  ],
+  "answerIndex": 1,
+  "explanation": "In a reversible reaction, products can re-form the reactants, so both the forward and reverse reactions occur.",
+  "hint": "'Reversible' means it can go backwards — what does that tell you about the products?"
+ },
+ {
+  "id": "eq-003",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "At dynamic equilibrium, the concentrations of reactants and products …",
+  "options": [
+   "are changing rapidly",
+   "are all equal to each other",
+   "remain constant over time",
+   "are all zero because the reaction has stopped"
+  ],
+  "answerIndex": 2,
+  "explanation": "At equilibrium the concentrations stay constant because the forward and reverse reaction rates are equal — not because the reaction has stopped.",
+  "hint": "If both reactions keep going at equal rates, what happens to the amounts of each substance?"
+ },
+ {
+  "id": "eq-004",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which word best describes equilibrium that is 'dynamic'?",
+  "options": [
+   "The reaction has completely finished",
+   "Both forward and reverse reactions are still happening at equal rates",
+   "Only one direction of the reaction is occurring",
+   "The reaction reaches a very high temperature"
+  ],
+  "answerIndex": 1,
+  "explanation": "'Dynamic' means moving — at dynamic equilibrium both reactions continue simultaneously, but at equal rates so there is no net change.",
+  "hint": "Dynamic means active — something is still happening. What is it?"
+ },
+ {
+  "id": "eq-005",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Why must a reversible reaction be in a closed system to reach equilibrium?",
+  "options": [
+   "Open systems have too much oxygen present",
+   "Temperature cannot be controlled in an open system",
+   "Closed systems always reach equilibrium faster",
+   "If the system is open, products can escape and the reverse reaction cannot occur"
+  ],
+  "answerIndex": 3,
+  "explanation": "If the system is open, gases or substances can escape. The reverse reaction requires both products to be present, so equilibrium cannot be established if something escapes.",
+  "hint": "Think about what would happen if a gas product could float away — could it react backwards?"
+ },
+ {
+  "id": "eq-006",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which of these is a macroscopic property that stays CONSTANT at equilibrium?",
+  "options": [
+   "The colour of the mixture (if a coloured substance is involved)",
+   "The rate of the forward reaction (it keeps increasing)",
+   "The number of individual molecules present",
+   "The temperature of the reaction mixture (it keeps rising)"
+  ],
+  "answerIndex": 0,
+  "explanation": "Macroscopic properties such as colour, concentration, and pressure stay constant at equilibrium because the rates of the forward and reverse reactions are equal.",
+  "hint": "Macroscopic means observable without a microscope. Which property could you see staying the same?"
+ },
+ {
+  "id": "eq-007",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "The Haber process makes ammonia from nitrogen and hydrogen. The equation is: N₂ + 3H₂ ⇌ 2NH₃. Which statement is true?",
+  "options": [
+   "The reaction goes to completion and all nitrogen is converted to ammonia",
+   "Both the formation and decomposition of ammonia occur simultaneously at equilibrium",
+   "Ammonia cannot break down back into nitrogen and hydrogen",
+   "No catalyst is needed for this reaction to work"
+  ],
+  "answerIndex": 1,
+  "explanation": "The ⇌ symbol tells us both directions occur. At equilibrium, ammonia forms from N₂ and H₂ and also breaks back down, both at equal rates.",
+  "hint": "The ⇌ symbol is the key — what does it tell you about both directions?"
+ },
+ {
+  "id": "eq-008",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "A student says 'at equilibrium the reaction has stopped.' What is wrong with this statement?",
+  "options": [
+   "Nothing — equilibrium does mean the reaction has stopped",
+   "At equilibrium only the forward reaction is still occurring",
+   "At equilibrium both forward and reverse reactions are still occurring, just at equal rates",
+   "Equilibrium is reached only when all the reactant is used up"
+  ],
+  "answerIndex": 2,
+  "explanation": "Equilibrium is dynamic: both reactions continue at the same rate, so concentrations remain constant — but the reaction has not stopped.",
+  "hint": "What does 'dynamic' mean? Is the equilibrium static or active?"
+ },
+ {
+  "id": "eq-009",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which condition is required for a reversible reaction to reach equilibrium?",
+  "options": [
+   "The system must be open so that gases can escape",
+   "The temperature must be above 300 °C",
+   "The system must be closed so that no substances can enter or leave",
+   "A catalyst must always be present"
+  ],
+  "answerIndex": 2,
+  "explanation": "Equilibrium requires a closed system: if reactants or products escape, the concentrations change and equilibrium cannot be maintained.",
+  "hint": "Think about a sealed bottle versus an open one — which can maintain constant concentrations?"
+ },
+ {
+  "id": "eq-010",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "In the Haber process N₂ + 3H₂ ⇌ 2NH₃, the forward reaction is exothermic. If the temperature is raised, the equilibrium position will shift …",
+  "options": [
+   "to the right, making more NH₃",
+   "neither — temperature has no effect on equilibrium",
+   "to the left, making more N₂ and H₂",
+   "to the right because higher temperature always helps"
+  ],
+  "answerIndex": 2,
+  "explanation": "Raising the temperature favours the endothermic direction. Because the forward reaction is exothermic, the reverse (endothermic) reaction is favoured, shifting equilibrium to the left.",
+  "hint": "Which direction is endothermic? Raising temperature favours that direction."
+ },
+ {
+  "id": "eq-011",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "What does Le Châtelier's principle state?",
+  "options": [
+   "Equilibrium is always reached within seconds",
+   "A catalyst always shifts the position of equilibrium to the right",
+   "If a change is applied to a system at equilibrium, the system will respond to oppose that change",
+   "Concentration changes have no effect on equilibrium"
+  ],
+  "answerIndex": 2,
+  "explanation": "Le Châtelier's principle: any stress (change in concentration, temperature, or pressure) causes the equilibrium to shift to partially counteract the stress.",
+  "hint": "'Oppose' is the key word — the system fights back against any change."
+ },
+ {
+  "id": "eq-012",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "If more reactant is added to a reaction at equilibrium, which direction will the equilibrium shift?",
+  "options": [
+   "To the left (reverse direction)",
+   "It will shift left only if the reaction is exothermic",
+   "It will not shift — adding more reactant has no effect",
+   "To the right (forward direction)"
+  ],
+  "answerIndex": 3,
+  "explanation": "Adding more reactant increases its concentration; the system responds by using up some of the extra reactant, shifting equilibrium to the right (forward direction).",
+  "hint": "The system opposes the increase in reactant — which direction uses up reactant?"
+ },
+ {
+  "id": "eq-013",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "A catalyst is added to a reaction mixture at equilibrium. What happens to the position of the equilibrium?",
+  "options": [
+   "Equilibrium shifts to the right — more products form",
+   "Equilibrium shifts to the left — more reactants form",
+   "The position of equilibrium does not change",
+   "The catalyst removes the equilibrium"
+  ],
+  "answerIndex": 2,
+  "explanation": "A catalyst speeds up both the forward and reverse reactions equally. It helps the system reach equilibrium faster but does not change where equilibrium lies.",
+  "hint": "Does a catalyst affect the forward reaction only, or both directions equally?"
+ },
+ {
+  "id": "eq-014",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "In the reaction CO₂(aq) ⇌ CO₂(g), what happens when you open a can of fizzy drink?",
+  "options": [
+   "Pressure increases, so CO₂ stays dissolved",
+   "The catalyst is removed, so equilibrium is lost",
+   "Temperature rises and shifts equilibrium to the left",
+   "Pressure decreases, so the equilibrium shifts to produce more CO₂(g) — the drink goes flat"
+  ],
+  "answerIndex": 3,
+  "explanation": "Opening the can releases pressure; the lower pressure favours the gas-phase CO₂, so dissolved CO₂ escapes as bubbles — the equilibrium shifts right.",
+  "hint": "Think about the pressure inside the sealed can versus after opening it."
+ },
+ {
+  "id": "eq-015",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "The chromate/dichromate equilibrium involves a colour change: 2CrO₄²⁻ (yellow) + 2H⁺ ⇌ Cr₂O₇²⁻ (orange) + H₂O. If acid is added, what colour change occurs?",
+  "options": [
+   "Yellow to orange, because equilibrium shifts right",
+   "Orange to yellow, because equilibrium shifts right",
+   "Yellow to orange, because equilibrium shifts left",
+   "No colour change occurs"
+  ],
+  "answerIndex": 0,
+  "explanation": "Adding acid increases H⁺ concentration; the equilibrium shifts right to use up the extra H⁺, producing more orange Cr₂O₇²⁻.",
+  "hint": "Adding acid increases H⁺. Which direction uses up H⁺?"
+ },
+ {
+  "id": "eq-016",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which of the following will NOT shift the position of equilibrium?",
+  "options": [
+   "Increasing the concentration of a reactant",
+   "Changing the temperature",
+   "Adding a catalyst",
+   "Decreasing the pressure for a gaseous reaction"
+  ],
+  "answerIndex": 2,
+  "explanation": "A catalyst speeds both forward and reverse reactions equally; it does not change the equilibrium position — only the time taken to reach it.",
+  "hint": "Which option affects both directions equally and has no 'net' effect?"
+ },
+ {
+  "id": "eq-017",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "For the reaction N₂(g) + 3H₂(g) ⇌ 2NH₃(g): the left side has 4 moles of gas and the right side has 2. If pressure is increased, equilibrium shifts …",
+  "options": [
+   "to the left — away from the side with fewer gas moles",
+   "to the right — towards the side with fewer gas moles",
+   "neither — pressure has no effect on reactions involving gases",
+   "randomly to one side"
+  ],
+  "answerIndex": 1,
+  "explanation": "Increasing pressure shifts equilibrium towards the side with fewer moles of gas. Here the right side has 2 moles vs 4, so equilibrium shifts right, producing more NH₃.",
+  "hint": "Higher pressure favours fewer moles of gas — count the gas moles on each side."
+ },
+ {
+  "id": "eq-018",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Warming a carbonated drink causes bubbles to form. Why?",
+  "options": [
+   "Heat provides energy to break the chemical bonds in water",
+   "The drink undergoes thermal decomposition",
+   "Higher temperature makes CO₂ dissolve better",
+   "Higher temperature shifts the CO₂(aq) ⇌ CO₂(g) equilibrium towards the gas phase"
+  ],
+  "answerIndex": 3,
+  "explanation": "CO₂ is less soluble at higher temperatures. Raising the temperature shifts the equilibrium towards CO₂(g), so more gas escapes as bubbles.",
+  "hint": "As temperature rises, does CO₂ become more or less soluble in the liquid?"
+ },
+ {
+  "id": "eq-019",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which of these correctly states the effect of increasing pressure on a gaseous equilibrium?",
+  "options": [
+   "Equilibrium shifts towards the side with fewer moles of gas",
+   "Equilibrium shifts towards the side with more moles of gas",
+   "Pressure only affects non-gaseous reactions",
+   "Equilibrium shifts to the exothermic side"
+  ],
+  "answerIndex": 0,
+  "explanation": "Increasing pressure favours the side that occupies less volume, which is the side with fewer moles of gas. This is a direct application of Le Châtelier's principle.",
+  "hint": "More pressure → system tries to reduce gas moles. Which side has fewer?"
+ },
+ {
+  "id": "eq-020",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "In the contact process for making sulfuric acid: 2SO₂(g) + O₂(g) ⇌ 2SO₃(g). The left side has 3 moles of gas; the right has 2. If pressure is increased, the equilibrium shifts …",
+  "options": [
+   "Left — 3 moles on the left",
+   "Right — 2 moles on the right",
+   "Neither — only the rate changes",
+   "Right — because SO₃ is more reactive"
+  ],
+  "answerIndex": 1,
+  "explanation": "Higher pressure favours fewer gas moles. The right side has 2 moles vs 3 on the left, so the equilibrium shifts right to produce more SO₃.",
+  "hint": "Count the gas moles on each side, then decide which way a pressure increase pushes equilibrium."
+ },
+ {
+  "id": "eq-021",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which sentence correctly describes the equilibrium position 'lying to the right'?",
+  "options": [
+   "At equilibrium, the mixture contains more products than reactants",
+   "The reverse reaction is faster than the forward reaction",
+   "At equilibrium, the mixture contains more reactants than products",
+   "All the reactants have been converted to products"
+  ],
+  "answerIndex": 0,
+  "explanation": "'Equilibrium lies to the right' means the mixture contains a higher proportion of products than reactants at equilibrium.",
+  "hint": "'Right' refers to the product side of the equation — what proportion is greater?"
+ },
+ {
+  "id": "eq-022",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "When a product is removed from a system at equilibrium, the equilibrium shifts …",
+  "options": [
+   "To the left — to make more reactant",
+   "It depends on whether the reaction is exothermic or endothermic",
+   "Neither direction — removing product has no effect",
+   "To the right — to replace the removed product"
+  ],
+  "answerIndex": 3,
+  "explanation": "Removing product decreases its concentration; by Le Châtelier's principle the system shifts right to partially restore the product's concentration.",
+  "hint": "The system tries to oppose the decrease in product. Which direction makes more product?"
+ },
+ {
+  "id": "eq-023",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Why does ammonia production in the Haber process use a moderately high temperature (~450 °C) rather than a very low temperature, even though the forward reaction is exothermic?",
+  "options": [
+   "Low temperatures would cause an explosion",
+   "A lower temperature shifts equilibrium left, making less NH₃",
+   "A higher temperature gives a better yield — equilibrium shifts right",
+   "A moderate temperature is a compromise: low enough for a reasonable yield, fast enough for a practical rate"
+  ],
+  "answerIndex": 3,
+  "explanation": "Very low temperature gives a high equilibrium yield but the rate is too slow to be practical. A moderate temperature (~450 °C) balances yield and reaction rate.",
+  "hint": "Think about the trade-off: what happens to yield if temperature drops, and what happens to rate?"
+ },
+ {
+  "id": "eq-024",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which of the following is evidence that a system is at dynamic equilibrium?",
+  "options": [
+   "All of the reactants have been converted to products",
+   "The reaction mixture is emitting bubbles constantly, which are growing",
+   "The colour of the mixture stays constant over time (no change in macroscopic properties)",
+   "The temperature of the mixture keeps rising"
+  ],
+  "answerIndex": 2,
+  "explanation": "A constant, unchanging colour (or concentration) is macroscopic evidence that forward and reverse rates are equal — the system is at equilibrium.",
+  "hint": "What does 'no visible change' over time indicate about the rates of the two opposing reactions?"
+ },
+ {
+  "id": "eq-025",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "For the reaction: H₂(g) + I₂(g) ⇌ 2HI(g), there are 2 moles of gas on both sides. If pressure is increased, the equilibrium position will …",
+  "options": [
+   "Shift right — towards HI",
+   "Shift left — towards H₂ and I₂",
+   "Not shift — because moles of gas are equal on both sides",
+   "Shift right because HI is a gas"
+  ],
+  "answerIndex": 2,
+  "explanation": "When both sides of a gaseous equilibrium have the same number of moles, changing pressure has no effect on the equilibrium position.",
+  "hint": "Count gas moles on each side. Are they the same or different?"
+ },
+ {
+  "id": "eq-026",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "The Haber process runs at about 200 atm pressure. Why is very high pressure used?",
+  "options": [
+   "High pressure increases temperature, helping the exothermic reaction",
+   "High pressure removes the activation energy barrier",
+   "High pressure prevents the catalyst from being deactivated",
+   "High pressure shifts the equilibrium towards fewer gas moles (right), increasing the yield of NH₃"
+  ],
+  "answerIndex": 3,
+  "explanation": "N₂ + 3H₂ ⇌ 2NH₃ has 4 moles on the left and 2 on the right. High pressure shifts equilibrium right, giving a better yield of ammonia.",
+  "hint": "How many gas moles are on each side? Which side does higher pressure favour?"
+ },
+ {
+  "id": "eq-027",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "For the endothermic reaction A ⇌ B, increasing the temperature will …",
+  "options": [
+   "Shift equilibrium to the left, increasing [A] and decreasing [B]",
+   "Shift equilibrium to the right, increasing [B] and decreasing [A]",
+   "Have no effect because catalysts are not involved",
+   "Remove all of substance A"
+  ],
+  "answerIndex": 1,
+  "explanation": "For an endothermic reaction, raising temperature provides energy that drives the forward (endothermic) direction, shifting equilibrium right and increasing the yield of B.",
+  "hint": "Temperature increase favours the endothermic direction — which direction is endothermic here?"
+ },
+ {
+  "id": "eq-028",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "In the contact process 2SO₂ + O₂ ⇌ 2SO₃ (forward reaction exothermic), what conditions maximise the yield of SO₃?",
+  "options": [
+   "High temperature and low pressure",
+   "Low temperature and high pressure",
+   "High temperature and high pressure",
+   "Low temperature and low pressure"
+  ],
+  "answerIndex": 1,
+  "explanation": "Low temperature favours the exothermic forward reaction (more yield); high pressure favours the side with fewer gas moles (2 moles of SO₃ vs 3 moles of reactant gas).",
+  "hint": "Apply Le Châtelier separately for temperature and pressure — which combination maximises product yield?"
+ },
+ {
+  "id": "eq-029",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "Iron(III) thiocyanate forms a deep red solution: Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺. If Fe³⁺ is added, what happens?",
+  "options": [
+   "The solution turns deeper red — equilibrium shifts right to use up Fe³⁺",
+   "The solution becomes lighter — equilibrium shifts left",
+   "No change — the reaction has already reached equilibrium",
+   "The solution turns yellow — equilibrium shifts right"
+  ],
+  "answerIndex": 0,
+  "explanation": "Adding Fe³⁺ increases its concentration. The equilibrium shifts right to use up the extra Fe³⁺, producing more FeSCN²⁺ and making the solution deeper red.",
+  "hint": "More Fe³⁺ → system shifts to use it up. In which direction does more FeSCN²⁺ form?"
+ },
+ {
+  "id": "eq-030",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "In the chromate/dichromate equilibrium, which change would shift the equilibrium to the left (forming more yellow CrO₄²⁻)?",
+  "options": [
+   "Adding hydrochloric acid",
+   "Adding sodium hydroxide solution (to remove H⁺)",
+   "Adding more dichromate solution",
+   "Raising the temperature"
+  ],
+  "answerIndex": 1,
+  "explanation": "Adding NaOH removes H⁺ ions from the solution. By Le Châtelier's principle, the equilibrium shifts left to replace the removed H⁺, producing more yellow CrO₄²⁻.",
+  "hint": "Which change removes H⁺ from the system? Which direction re-produces H⁺?"
+ },
+ {
+  "id": "eq-031",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "A student adds a catalyst to speed up the Haber process. Which statement best describes the outcome?",
+  "options": [
+   "The yield of ammonia increases because equilibrium shifts right",
+   "The catalyst shifts equilibrium right by lowering the activation energy",
+   "The yield of ammonia stays the same but equilibrium is reached faster",
+   "The catalyst shifts equilibrium left because it reverses the reaction"
+  ],
+  "answerIndex": 2,
+  "explanation": "A catalyst speeds both forward and reverse reactions equally. It does not shift the equilibrium position, so yield is unchanged — but equilibrium is reached in less time.",
+  "hint": "Does a catalyst change where equilibrium lies, or only how fast it is reached?"
+ },
+ {
+  "id": "eq-032",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "For the reaction N₂O₄(g) ⇌ 2NO₂(g): N₂O₄ is colourless and NO₂ is brown. If the volume of the container is decreased (pressure increased), what is observed?",
+  "options": [
+   "The mixture momentarily becomes darker, then lightens slightly as equilibrium shifts left",
+   "The mixture becomes darker brown immediately and stays darker",
+   "The mixture becomes colourless because equilibrium shifts fully right",
+   "No colour change — pressure does not affect this equilibrium"
+  ],
+  "answerIndex": 0,
+  "explanation": "Compressing the gas instantly increases concentration (darker). Then equilibrium shifts left (towards fewer gas moles: 1 mole N₂O₄ vs 2 moles NO₂), producing more N₂O₄ and lightening the colour slightly.",
+  "hint": "Two things happen: an immediate concentration effect, then the equilibrium shift. Which side has fewer gas moles?"
+ },
+ {
+  "id": "eq-033",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "In the Haber process, ammonia is continuously removed from the reaction vessel. Why is this done?",
+  "options": [
+   "To stop the reverse reaction completely",
+   "To reduce the pressure in the vessel",
+   "To prevent the catalyst from being poisoned",
+   "To shift equilibrium to the right by removing a product, increasing the overall yield"
+  ],
+  "answerIndex": 3,
+  "explanation": "Removing a product shifts equilibrium to the right by Le Châtelier's principle, so more N₂ and H₂ react to produce more NH₃, increasing overall yield.",
+  "hint": "What does Le Châtelier say happens when a product is removed?"
+ },
+ {
+  "id": "eq-034",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "The forward reaction A(g) + B(g) ⇌ C(g) + D(g) is endothermic. Increasing temperature will …",
+  "options": [
+   "Shift equilibrium right (more C and D); the system absorbs the added energy",
+   "Shift equilibrium left (more A and B); lowering temperature removes energy",
+   "Not affect the equilibrium because both sides have equal moles of gas",
+   "Only affect the rate, not the position, of equilibrium"
+  ],
+  "answerIndex": 0,
+  "explanation": "Temperature increase favours the endothermic direction. Since the forward reaction is endothermic, equilibrium shifts right, producing more C and D.",
+  "hint": "Temperature increase gives energy to the endothermic direction. Which direction is endothermic here?"
+ },
+ {
+  "id": "eq-035",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "In a sealed bottle of sparkling water, CO₂(aq) ⇌ CO₂(g). The bottle is warm and has less CO₂ dissolved. This is because …",
+  "options": [
+   "Higher temperature shifts equilibrium toward CO₂(g), so CO₂ is less soluble in warm water",
+   "The solubility of CO₂ increases with temperature, so less stays as CO₂(g)",
+   "The CO₂ molecules are moving faster and take up more space",
+   "The pressure inside the warm bottle is lower than in a cold bottle"
+  ],
+  "answerIndex": 0,
+  "explanation": "Dissolving CO₂ is an exothermic process. Raising temperature shifts equilibrium to the endothermic direction (releasing CO₂ gas), so gases are less soluble in warmer liquids.",
+  "hint": "Dissolving is exothermic — what does raising temperature do to an exothermic process?"
+ },
+ {
+  "id": "eq-036",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "For 2SO₂(g) + O₂(g) ⇌ 2SO₃(g), the catalyst used in industry is vanadium(V) oxide (V₂O₅). Which statement is TRUE?",
+  "options": [
+   "V₂O₅ increases the yield of SO₃ by shifting equilibrium right",
+   "V₂O₅ increases the equilibrium yield of SO₃ by lowering the reaction temperature",
+   "V₂O₅ shifts the equilibrium left by speeding up the reverse reaction more",
+   "V₂O₅ decreases the activation energy for both forward and reverse reactions equally"
+  ],
+  "answerIndex": 3,
+  "explanation": "A catalyst lowers the activation energy for both reactions equally; it does not change the equilibrium yield, only the rate at which equilibrium is reached.",
+  "hint": "Catalysts affect the rate, not the position. What do they do to activation energy?"
+ },
+ {
+  "id": "eq-037",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "A chemist monitors an equilibrium mixture and finds the concentrations are no longer changing. She concludes equilibrium has been reached. Which additional piece of evidence would best confirm this?",
+  "options": [
+   "The reaction mixture has changed colour",
+   "Adding more reactant causes a temporary increase in product formation, followed by a return to a constant concentration",
+   "The temperature has risen steadily",
+   "Removing the container lid causes no visible change"
+  ],
+  "answerIndex": 1,
+  "explanation": "If adding more reactant temporarily shifts the system but it then settles to new constant concentrations, this confirms the dynamic nature of equilibrium — consistent with Le Châtelier's principle.",
+  "hint": "Which option shows the system is responsive to change yet self-correcting — the hallmark of dynamic equilibrium?"
+ },
+ {
+  "id": "eq-038",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "Consider: CaCO₃(s) ⇌ CaO(s) + CO₂(g). What would happen if more solid CaCO₃ were added to this system at equilibrium?",
+  "options": [
+   "Equilibrium shifts right to produce more CO₂",
+   "Equilibrium shifts left",
+   "No shift — the position of equilibrium is unaffected by adding a pure solid",
+   "The solid reacts with the gas and the equilibrium is destroyed"
+  ],
+  "answerIndex": 2,
+  "explanation": "Pure solids and liquids do not appear in the equilibrium expression. Adding more solid CaCO₃ does not change any concentration, so the position of equilibrium is unaffected.",
+  "hint": "Do concentrations of pure solids change when you add more of them?"
+ },
+ {
+  "id": "eq-039",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "In the Haber process, engineers choose 450 °C as the operating temperature. Why NOT use a lower temperature to get a higher yield of NH₃?",
+  "options": [
+   "At low temperatures the equilibrium yield would be higher, but the reaction rate would be unacceptably slow, making the process uneconomic",
+   "Low temperatures cause the catalyst to stop working",
+   "Low temperatures cause the nitrogen to condense to a liquid",
+   "The forward reaction is endothermic, so lower temperature gives a lower yield"
+  ],
+  "answerIndex": 0,
+  "explanation": "The forward reaction is exothermic, so lower temperature shifts equilibrium right (better yield). However, the rate becomes too slow to be commercially viable, so a compromise temperature is used.",
+  "hint": "The yield-vs-rate trade-off is central here. What does low temperature do to each?"
+ },
+ {
+  "id": "eq-040",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "A reaction at equilibrium is disturbed by increasing pressure. The system shifts towards the side with fewer gas moles. What does this tell us about the system's response?",
+  "options": [
+   "It is trying to reduce the pressure by reducing the number of gas moles — consistent with Le Châtelier's principle",
+   "It is trying to increase the pressure further",
+   "It is producing fewer products overall",
+   "It is reversing the reaction entirely"
+  ],
+  "answerIndex": 0,
+  "explanation": "Fewer gas moles occupy less volume and exert less pressure. By shifting to fewer moles of gas, the system partially counteracts the pressure increase — exactly as Le Châtelier predicts.",
+  "hint": "The system opposes the applied stress. If pressure increased, how does producing fewer moles of gas help?"
+ },
+ {
+  "id": "eq-041",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "Which single change in the Haber process (N₂ + 3H₂ ⇌ 2NH₃, forward reaction exothermic) increases BOTH the rate of reaching equilibrium AND the equilibrium yield of NH₃?",
+  "options": [
+   "Increasing the pressure",
+   "Increasing the temperature",
+   "Adding a catalyst",
+   "Removing some hydrogen"
+  ],
+  "answerIndex": 0,
+  "explanation": "Higher pressure shifts the position of equilibrium toward the side with fewer gas moles (2 mol NH₃ vs 4 mol of reactants), raising the yield, and also speeds the reaction by crowding the molecules together. A catalyst speeds things up but does not change the yield; higher temperature speeds it up but lowers the yield (forward reaction is exothermic).",
+  "hint": "You need one change that BOTH speeds the reaction AND pushes the equilibrium toward ammonia — think about the number of gas molecules on each side."
+ },
+ {
+  "id": "eq-042",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "Which statement is correct about a reaction that has 'equilibrium lying well to the left'?",
+  "options": [
+   "Almost all of the reactants have been converted to products",
+   "The forward reaction is faster than the reverse",
+   "Only a very small fraction of reactants has been converted to products at equilibrium",
+   "The reaction is at equilibrium only momentarily"
+  ],
+  "answerIndex": 2,
+  "explanation": "If equilibrium lies to the left, the mixture is mostly reactants — very little product has formed at equilibrium.",
+  "hint": "'Left' means the reactant side. What does it mean if equilibrium lies on that side?"
+ },
+ {
+  "id": "eq-043",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "In the reaction 2NO₂(g) ⇌ N₂O₄(g), the forward reaction is exothermic. A mixture at equilibrium is cooled. What happens?",
+  "options": [
+   "More N₂O₄ forms — equilibrium shifts right towards the exothermic (forward) direction",
+   "More NO₂ forms — equilibrium shifts left towards the endothermic direction",
+   "No change — temperature does not affect equilibrium position",
+   "More N₂O₄ forms because it has a lower boiling point"
+  ],
+  "answerIndex": 0,
+  "explanation": "Cooling the system reduces temperature. Le Châtelier predicts the system will shift in the exothermic direction to release heat and partially compensate. Since the forward reaction is exothermic, equilibrium shifts right — more N₂O₄ forms.",
+  "hint": "Lowering temperature favours the exothermic direction. Which direction is that here?"
+ },
+ {
+  "id": "eq-044",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "The concentration of products in an equilibrium system is suddenly halved (e.g. by dilution). Which direction does the equilibrium shift?",
+  "options": [
+   "Left — to restore the original product concentration",
+   "Right — dilution increases pressure",
+   "Neither — dilution affects all concentrations equally so equilibrium is unaffected",
+   "Right — to restore the lost product"
+  ],
+  "answerIndex": 3,
+  "explanation": "Removing or reducing product concentrations shifts equilibrium to the right (forward direction) to partially restore the product, as predicted by Le Châtelier's principle.",
+  "hint": "The system opposes any decrease. If product concentration drops, which direction makes more product?"
+ },
+ {
+  "id": "eq-045",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "A reaction has the equation A(g) ⇌ B(g) + C(g). If the pressure is increased (by decreasing volume), the equilibrium will shift …",
+  "options": [
+   "Right — towards more gas moles (2 moles) to relieve pressure",
+   "Neither — because the temperature is unchanged",
+   "Left — towards fewer gas moles (1 mole) to relieve the pressure increase",
+   "Neither — a catalyst would be needed to shift it"
+  ],
+  "answerIndex": 2,
+  "explanation": "The left side has 1 mole of gas; the right has 2. Increasing pressure favours the side with fewer moles — the left side — so equilibrium shifts left.",
+  "hint": "Which side has fewer moles of gas? That's the side higher pressure favours."
+ },
+ {
+  "id": "eq-046",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "A student argues that using a catalyst in the Haber process increases the equilibrium yield of ammonia. What should the teacher say?",
+  "options": [
+   "Correct — the catalyst increases both rate and yield",
+   "Incorrect — the catalyst speeds both forward and reverse reactions equally; the equilibrium position is unchanged, so yield is unaffected",
+   "Correct — catalysts always increase yield in industrial processes",
+   "Incorrect — catalysts only affect the temperature, not the yield"
+  ],
+  "answerIndex": 1,
+  "explanation": "Catalysts lower the activation energy for both directions equally. They speed up reaching equilibrium but do not change where equilibrium lies, so the yield of ammonia is unaffected.",
+  "hint": "Which aspect of a reaction does a catalyst change — and which does it leave unchanged?"
+ },
+ {
+  "id": "eq-047",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "For the endothermic reaction PCl₅(g) ⇌ PCl₃(g) + Cl₂(g), which change increases the yield of PCl₃?",
+  "options": [
+   "Lower temperature and higher pressure",
+   "Lower temperature and lower pressure",
+   "Higher temperature and lower pressure",
+   "Higher temperature and higher pressure"
+  ],
+  "answerIndex": 2,
+  "explanation": "Higher temperature favours the endothermic forward direction (more PCl₃). Lower pressure favours the side with more gas moles (2 moles on the right vs 1 on the left). Both changes shift equilibrium right.",
+  "hint": "Apply Le Châtelier for temperature (forward is endothermic) and for pressure (count gas moles on each side)."
+ },
+ {
+  "id": "eq-048",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "In the equilibrium N₂(g) + O₂(g) ⇌ 2NO(g) (endothermic forward reaction), which statement is correct about the effect of increasing PRESSURE?",
+  "options": [
+   "Equilibrium shifts right — more NO forms",
+   "The position of equilibrium is unaffected because both sides have equal moles of gas",
+   "Equilibrium shifts left — less NO forms",
+   "More N₂ is used up because it has a lower boiling point than O₂"
+  ],
+  "answerIndex": 1,
+  "explanation": "Both sides have 2 moles of gas (1N₂ + 1O₂ = 2 moles left; 2 moles right). Equal moles means changing pressure has no effect on the equilibrium position.",
+  "hint": "Count moles of gas on each side carefully. Are they the same?"
+ },
+ {
+  "id": "eq-049",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "The equilibrium CoCl₄²⁻(aq) + 6H₂O ⇌ Co(H₂O)₆²⁺(aq) + 4Cl⁻ involves a colour change: CoCl₄²⁻ is blue and Co(H₂O)₆²⁺ is pink. The forward reaction is endothermic. A beaker of the equilibrium mixture is placed in ice. What is observed?",
+  "options": [
+   "The solution turns bluer — equilibrium shifts right",
+   "The solution turns pinker — equilibrium shifts left",
+   "The solution turns pinker — equilibrium shifts right",
+   "The solution turns bluer — equilibrium shifts left"
+  ],
+  "answerIndex": 3,
+  "explanation": "Cooling favours the exothermic direction. The forward reaction is endothermic, so the reverse reaction is exothermic. Cooling shifts equilibrium left, producing more blue CoCl₄²⁻ — the solution turns bluer.",
+  "hint": "Cooling favours the exothermic direction. Is the exothermic direction forward (→ pink) or reverse (→ blue)?"
+ },
+ {
+  "id": "eq-050",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "Cooling the cobalt chloride equilibrium (blue CoCl₄²⁻ ⇌ pink Co(H₂O)₆²⁺, forward endothermic) makes the solution …",
+  "options": [
+   "Pink — equilibrium shifts right",
+   "Bluer — equilibrium shifts left toward the exothermic direction",
+   "Colourless — all colour is lost",
+   "Unchanged — temperature never affects colour"
+  ],
+  "answerIndex": 1,
+  "explanation": "Cooling favours the exothermic direction. The reverse reaction is exothermic, so the equilibrium shifts left, producing more blue CoCl₄²⁻.",
+  "hint": "Cooling favours the exothermic direction. Is the exothermic direction forward or reverse?"
+ },
+ {
+  "id": "eq-051",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "A gas-phase equilibrium has more moles of gas on the product side. A sealed syringe containing the mixture is compressed. Which best describes the sequence of events?",
+  "options": [
+   "Concentrations all increase instantly; then equilibrium shifts right to produce more gas and restore the mole count",
+   "Equilibrium is destroyed; no new equilibrium is reached",
+   "Concentrations all decrease; then equilibrium shifts right",
+   "Concentrations all increase instantly; then equilibrium shifts left towards fewer moles of gas, partially reducing the pressure"
+  ],
+  "answerIndex": 3,
+  "explanation": "Compression instantly raises all concentrations (and pressure). Le Châtelier predicts a shift towards fewer moles of gas (left in this case), which partially relieves the pressure increase.",
+  "hint": "Two things happen in sequence: an immediate physical effect, then an equilibrium shift. Which side has fewer gas moles?"
+ },
+ {
+  "id": "eq-052",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "In the Haber process, which of the following correctly explains why 200 atm is used but 20 000 atm is not, even though higher pressure gives even better yield?",
+  "options": [
+   "Very high pressure would shift equilibrium left, reducing yield",
+   "Building equipment to safely contain very high pressures is extremely expensive and technically difficult, making it uneconomical",
+   "Very high pressure is safe to use — engineers simply prefer 200 atm for tradition",
+   "At 20 000 atm the catalyst is poisoned"
+  ],
+  "answerIndex": 1,
+  "explanation": "While higher pressure does give better yield, the engineering cost and safety challenges of building reactors that operate at tens of thousands of atmospheres makes the process uneconomical. A compromise pressure (~200 atm) is used.",
+  "hint": "Think beyond the chemistry — what practical issues arise with very high pressures in industry?"
+ },
+ {
+  "id": "eq-053",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "In the reaction A(g) + B(g) ⇌ C(g) + D(g), ΔH = +60 kJ mol⁻¹. The system is at equilibrium. Both the temperature and pressure are increased simultaneously. Which is correct?",
+  "options": [
+   "Equilibrium shifts right (temperature effect dominates for endothermic) and the pressure change has no net effect",
+   "Equilibrium shifts left (temperature effect for exothermic)",
+   "Equilibrium shifts right due to pressure (more product moles) but left due to temperature",
+   "Equilibrium shifts left due to pressure (fewer product moles) and right due to temperature"
+  ],
+  "answerIndex": 0,
+  "explanation": "ΔH positive means the forward reaction is endothermic — raising temperature shifts equilibrium right. Both sides have 2 moles of gas (1A + 1B = 2; 1C + 1D = 2), so pressure has no net effect on position.",
+  "hint": "First check the sign of ΔH for direction from temperature. Then count gas moles on each side for the pressure effect."
+ },
+ {
+  "id": "eq-054",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "Consider an industrial equilibrium where the desired product forms on the side with MORE moles of gas. An engineer wants a high yield. What does Le Châtelier's principle predict about pressure?",
+  "options": [
+   "High pressure favours the side with fewer moles — so low pressure is used to increase yield for this reaction",
+   "Low pressure favours the side with fewer moles — so high pressure increases yield here",
+   "Pressure has no effect on any industrial equilibrium",
+   "High pressure always increases yield regardless of moles"
+  ],
+  "answerIndex": 0,
+  "explanation": "High pressure shifts equilibrium towards fewer gas moles. If the product side has MORE moles, high pressure would shift equilibrium away from products — so lower pressure gives better yield.",
+  "hint": "Le Châtelier says high pressure favours fewer moles. If the product side has more moles, does high or low pressure help?"
+ },
+ {
+  "id": "eq-055",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "A student tests whether a system has reached equilibrium by adding a tiny labelled (isotopically-tagged) molecule of a reactant. Even though all macroscopic concentrations stay constant, the tagged atom is found in the product molecules shortly after. What does this tell us?",
+  "options": [
+   "The system was not at equilibrium because there was still reaction occurring",
+   "Isotope tagging always produces this result and tells us nothing about equilibrium",
+   "The tagged molecule disrupted the equilibrium so the observation is invalid",
+   "The system is at dynamic equilibrium — the forward reaction is still proceeding, incorporating the tagged atom into products, but overall concentrations do not change because the reverse reaction balances it"
+  ],
+  "answerIndex": 3,
+  "explanation": "Finding the tagged atom in products confirms the forward reaction is still occurring. The fact that concentrations remain constant shows the reverse reaction is equally active — this is the definition of dynamic equilibrium.",
+  "hint": "What does it mean if atoms are still moving between reactants and products even though concentrations are constant?"
+ },
+ {
+  "id": "eq-056",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "In the Haber process N₂ + 3H₂ ⇌ 2NH₃ (forward exothermic), which set of conditions gives the HIGHEST equilibrium yield of NH₃ (ignoring rate considerations)?",
+  "options": [
+   "High temperature, low pressure",
+   "Low temperature, low pressure",
+   "High temperature, high pressure",
+   "Low temperature, high pressure"
+  ],
+  "answerIndex": 3,
+  "explanation": "Low temperature favours the exothermic forward direction (higher yield); high pressure favours fewer gas moles (2 vs 4), also shifting right. Together, low T and high P give the highest equilibrium yield.",
+  "hint": "For each variable (T and P), decide which direction Le Châtelier favours for more NH₃."
+ },
+ {
+  "id": "eq-057",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "A reaction at equilibrium is disturbed by removing some of the catalyst. What happens to the equilibrium position?",
+  "options": [
+   "Equilibrium shifts to the left because less catalyst means less forward reaction",
+   "Equilibrium shifts to the right to compensate for the slower rate",
+   "The equilibrium position is unchanged — it just takes longer to reach the same position if the system is disturbed",
+   "The equilibrium is permanently destroyed"
+  ],
+  "answerIndex": 2,
+  "explanation": "Catalysts do not affect the equilibrium position. Removing catalyst means equilibrium is reached more slowly, but once reached, the same position (same concentrations) results.",
+  "hint": "Catalysts affect rate, not position. If you remove the catalyst, does the 'destination' of equilibrium change?"
+ },
+ {
+  "id": "eq-058",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "Nitrogen monoxide is formed in car engines by the endothermic reaction N₂(g) + O₂(g) ⇌ 2NO(g). The reaction occurs at very high temperatures (>2000 °C). Which correctly explains why NO forms in the engine but decomposes when gases cool in the exhaust?",
+  "options": [
+   "High temp favours the endothermic forward reaction, giving more NO; cooling favours the exothermic reverse reaction, decomposing NO back to N₂ and O₂",
+   "High temp increases pressure, forcing equilibrium right; cooling decreases pressure",
+   "NO is kinetically unstable at all temperatures",
+   "The catalyst in the engine only works above 2000 °C"
+  ],
+  "answerIndex": 0,
+  "explanation": "The forward reaction is endothermic, so high temperatures shift equilibrium right (more NO). When gases cool, the exothermic reverse reaction is favoured, decomposing NO. The rate of the reverse reaction at low temperatures is very slow, however, allowing NO to persist — leading to pollution.",
+  "hint": "Apply Le Châtelier to both high and low temperature scenarios for this endothermic reaction."
+ },
+ {
+  "id": "eq-059",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "In the Haber process, the yield of ammonia at equilibrium is only about 15% under typical conditions, yet this is commercially viable. Which combination of industrial strategies makes this possible?",
+  "options": [
+   "Raising temperature to shift equilibrium right AND using a catalyst to increase yield",
+   "Continuously removing ammonia (shifting equilibrium right) AND recycling unreacted N₂ and H₂",
+   "Running the reaction at very low temperature to increase yield AND using a very high pressure",
+   "Adding more nitrogen continuously to shift equilibrium right AND using a catalyst to increase yield"
+  ],
+  "answerIndex": 1,
+  "explanation": "Continuously removing NH₃ shifts equilibrium right (Le Châtelier), producing more. Recycling unreacted N₂ and H₂ ensures raw materials are not wasted. Together, these strategies achieve commercially viable production despite a low equilibrium yield per pass.",
+  "hint": "Even a low yield per pass can be productive if the unreacted starting materials are recovered and reused — and if equilibrium is continuously driven forward."
+ },
+ {
+  "id": "eq-060",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "A reversible reaction in a closed system is initially allowed to reach equilibrium. The temperature is then raised rapidly. Which graph best describes the change in concentration of the PRODUCT over time?",
+  "options": [
+   "Concentration stays constant — temperature has no effect",
+   "Concentration rises then falls in a wave pattern and never stabilises",
+   "Concentration falls immediately to zero, then recovers",
+   "Concentration rises sharply for an endothermic forward reaction, then levels off at a new (higher) constant value"
+  ],
+  "answerIndex": 3,
+  "explanation": "For an endothermic forward reaction, raising temperature shifts equilibrium right. Product concentration rises (non-instantaneously) as the new equilibrium is established, then levels off at a new, higher constant value.",
+  "hint": "After a temperature increase, what happens in stages: immediate, then equilibration to a new position?"
+ },
+ {
+  "id": "eq-061",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "The reaction 2HI(g) ⇌ H₂(g) + I₂(g) is run in a sealed container. The forward reaction is slightly endothermic. Which graph of [HI] against time correctly shows what happens when the system reaches equilibrium after starting with pure HI?",
+  "options": [
+   "[HI] decreases rapidly, then levels off at a non-zero constant value (some HI remains at equilibrium)",
+   "[HI] decreases sharply then rises back to its original value",
+   "[HI] decreases all the way to zero as all HI converts",
+   "[HI] remains constant from the start"
+  ],
+  "answerIndex": 0,
+  "explanation": "Starting with pure HI, the forward reaction proceeds, decreasing [HI]. As H₂ and I₂ build up, the reverse reaction begins. Eventually both rates equalise at a non-zero [HI] — equilibrium.",
+  "hint": "At equilibrium, do all the reactants disappear, or does some remain? What does the graph look like at that point?"
+ },
+ {
+  "id": "eq-062",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "An exothermic forward reaction A ⇌ B is at equilibrium at 300 K with [B]/[A] = 4. The temperature is raised to 400 K. Which correctly describes the new equilibrium ratio [B]/[A]?",
+  "options": [
+   "Less than 4 — equilibrium shifts left because the reverse (endothermic) direction is favoured at higher temperature",
+   "Greater than 4 — equilibrium shifts right because higher temperature speeds the forward reaction more",
+   "Still 4 — changing temperature only changes rate, not position",
+   "Equal to 0 — all B converts back to A at higher temperature"
+  ],
+  "answerIndex": 0,
+  "explanation": "The forward reaction is exothermic. Raising temperature favours the endothermic direction (reverse reaction), shifting equilibrium left. Less B and more A form, so [B]/[A] decreases below 4.",
+  "hint": "Raising temperature favours the endothermic direction — which direction is that for an exothermic forward reaction?"
+ },
+ {
+  "id": "eq-063",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "In the contact process 2SO₂ + O₂ ⇌ 2SO₃ (ΔH = −196 kJ mol⁻¹), industry uses ~450 °C rather than 200 °C. Which best explains this compromise despite lower yield at 450 °C?",
+  "options": [
+   "At 200 °C the vanadium catalyst is inactive, making the rate negligibly slow",
+   "At 200 °C the equilibrium yield is lower because the reaction is endothermic",
+   "Higher temperature shifts equilibrium right for this exothermic reaction",
+   "450 °C produces a byproduct that is needed for the process"
+  ],
+  "answerIndex": 0,
+  "explanation": "The forward reaction is exothermic; low temperature gives better equilibrium yield. However, below about 400 °C the V₂O₅ catalyst is insufficiently active, making the process too slow. The 450 °C compromise balances a reasonable yield with an acceptable reaction rate.",
+  "hint": "The catalyst has a minimum operating temperature. What happens at temperatures below that threshold?"
+ },
+ {
+  "id": "eq-064",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "A student says: 'At equilibrium, the rates of the forward and reverse reactions are both zero.' A second student says: 'At equilibrium, the rates are equal but non-zero.' Who is correct, and what evidence supports the correct view?",
+  "options": [
+   "Student 1 — constant concentrations prove no reactions are occurring",
+   "Student 2 — isotope-labelling experiments show atoms continuing to transfer between reactants and products even when macroscopic concentrations are constant",
+   "Student 1 — if reactions were still occurring, concentrations would change",
+   "Both are partially correct — the net rate is zero but some individual steps may still occur"
+  ],
+  "answerIndex": 1,
+  "explanation": "Dynamic equilibrium means both reactions are still occurring. Isotope-labelling experiments (and other evidence) show atoms continue to exchange even at equilibrium — the rates are equal but neither is zero.",
+  "hint": "'Dynamic' means active. What experimental evidence distinguishes dynamic from static equilibrium?"
+ },
+ {
+  "id": "eq-065",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which of the following is true about the Haber process?",
+  "options": [
+   "The equation is N₂ + 3H₂ ⇌ 2NH₃ and it makes nitrogen from ammonia",
+   "The reaction goes to completion and all nitrogen becomes ammonia",
+   "The equation is N₂ + H₂ ⇌ NH₃ and no catalyst is needed",
+   "The equation is N₂ + 3H₂ ⇌ 2NH₃ and it makes ammonia from nitrogen and hydrogen"
+  ],
+  "answerIndex": 3,
+  "explanation": "The Haber process: N₂ + 3H₂ ⇌ 2NH₃ — nitrogen and hydrogen (from the air and natural gas) combine to form ammonia. It is a reversible equilibrium reaction.",
+  "hint": "Which molecule is the product in the Haber process, and what are the raw materials?"
+ },
+ {
+  "id": "eq-066",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "At dynamic equilibrium, the rate of the forward reaction compared to the rate of the reverse reaction is …",
+  "options": [
+   "Greater than the reverse reaction rate",
+   "Less than the reverse reaction rate",
+   "Equal to the reverse reaction rate",
+   "Zero for both directions"
+  ],
+  "answerIndex": 2,
+  "explanation": "At dynamic equilibrium, the forward and reverse reaction rates are exactly equal — this is why concentrations remain constant.",
+  "hint": "If concentrations are not changing, what must be true about the rates of the two opposing reactions?"
+ },
+ {
+  "id": "eq-067",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "In which type of system can a reversible reaction reach equilibrium?",
+  "options": [
+   "An open system where gases can escape",
+   "Any system, open or closed",
+   "A closed system where no substances enter or leave",
+   "Only in a vacuum"
+  ],
+  "answerIndex": 2,
+  "explanation": "Equilibrium requires a closed system. In an open system, products (or reactants) escape and the reverse reaction cannot maintain equal rates.",
+  "hint": "What needs to be 'trapped' for both forward and reverse reactions to occur at the same rate?"
+ },
+ {
+  "id": "eq-068",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "A student investigates the Fe³⁺/SCN⁻ equilibrium: Fe³⁺ + SCN⁻ ⇌ FeSCN²⁺ (deep red). Some Na₃PO₄ is added, which removes Fe³⁺ ions from solution. What happens?",
+  "options": [
+   "The solution turns deeper red",
+   "The solution becomes less red (lighter) as equilibrium shifts left to replace the lost Fe³⁺",
+   "The solution colour is unaffected",
+   "The solution turns green because a new product forms"
+  ],
+  "answerIndex": 1,
+  "explanation": "Removing Fe³⁺ decreases its concentration. Le Châtelier predicts a shift left to partially restore [Fe³⁺], consuming FeSCN²⁺ and reducing the red colour.",
+  "hint": "Which direction reverses to produce more Fe³⁺? What happens to the red colour?"
+ },
+ {
+  "id": "eq-069",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "The yield of a product in an equilibrium reaction is 30% at 25 °C. A catalyst is added. What is the expected yield now?",
+  "options": [
+   "Greater than 30% — the catalyst increases yield",
+   "Less than 30% — the catalyst reverses the reaction",
+   "30% — catalysts do not change the equilibrium position",
+   "It cannot be determined without more information"
+  ],
+  "answerIndex": 2,
+  "explanation": "A catalyst does not change the equilibrium position; it only speeds up reaching equilibrium. The yield remains at 30%.",
+  "hint": "Does a catalyst change where equilibrium lies, or just how quickly it is reached?"
+ },
+ {
+  "id": "eq-070",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "For the endothermic reaction X(g) ⇌ 2Y(g), which set of conditions would give the LOWEST yield of Y?",
+  "options": [
+   "High temperature, low pressure",
+   "Low temperature, low pressure",
+   "High temperature, high pressure",
+   "Low temperature, high pressure"
+  ],
+  "answerIndex": 3,
+  "explanation": "Low temperature disfavours the endothermic forward reaction (less Y); high pressure disfavours the side with more moles of gas (2 moles Y vs 1 mole X), also reducing Y. So low T, high P minimises yield.",
+  "hint": "Which direction does each change push equilibrium for an endothermic reaction with more product moles?"
+ },
+ {
+  "id": "eq-071",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "Two reactions are run in sealed vessels at the same temperature. Reaction 1 has a very high equilibrium yield (equilibrium lies far right). Reaction 2 has a very low equilibrium yield (equilibrium lies far left). Both are then catalysed. Which statement is correct?",
+  "options": [
+   "Both reactions reach their respective equilibrium positions faster; the equilibrium yields are unchanged",
+   "After adding catalyst, both reactions will have the same yield because catalysts equalise equilibrium positions",
+   "Reaction 1 increases in yield; Reaction 2 decreases in yield",
+   "Both reactions are permanently shifted to the right"
+  ],
+  "answerIndex": 0,
+  "explanation": "A catalyst lowers the activation energy of both forward and reverse reactions equally. It accelerates reaching equilibrium but does not alter the equilibrium position (or yield) of either reaction.",
+  "hint": "Catalysts affect the route but not the destination. Does either equilibrium position change?"
+ },
+ {
+  "id": "eq-072",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "The reaction SO₃(g) + H₂O(l) ⇌ H₂SO₄(l) goes essentially to completion (equilibrium lies very far right). What does this tell you about the equilibrium?",
+  "options": [
+   "The reaction is very fast",
+   "The reverse reaction rate is negligibly small at this temperature compared to the forward rate",
+   "There is no reverse reaction at all",
+   "A catalyst is not needed"
+  ],
+  "answerIndex": 1,
+  "explanation": "When equilibrium lies very far right, the forward rate greatly exceeds the reverse rate. The concentrations of reactants become very small — though the reverse reaction still occurs, it is negligible.",
+  "hint": "'Far to the right' means very little reactant remains — what does that imply about the relative rates?"
+ },
+ {
+  "id": "eq-073",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which of the following is a real-life example of a reversible reaction used in industry?",
+  "options": [
+   "Burning coal to generate electricity",
+   "The combustion of hydrogen",
+   "The electrolysis of water",
+   "The Haber process: N₂ + 3H₂ ⇌ 2NH₃"
+  ],
+  "answerIndex": 3,
+  "explanation": "The Haber process is the most famous industrial reversible equilibrium reaction, using it to produce ammonia at commercially useful rates and yields.",
+  "hint": "Which option uses the ⇌ symbol — a hallmark of reversible reactions?"
+ },
+ {
+  "id": "eq-074",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "In a sealed bottle of fizzy drink, CO₂ is in equilibrium: CO₂(aq) ⇌ CO₂(g). Inside the sealed bottle, the pressure of CO₂ gas is HIGH. Which way does this push the equilibrium?",
+  "options": [
+   "Right — towards more CO₂(g)",
+   "Left — because high pressure favours more gas",
+   "Neither — pressure does not affect dissolved gases",
+   "Left — towards CO₂(aq), keeping CO₂ dissolved"
+  ],
+  "answerIndex": 3,
+  "explanation": "High pressure of CO₂(g) in the bottle pushes equilibrium left (by Le Châtelier's principle), keeping CO₂ dissolved in the liquid. Opening the bottle reduces pressure and equilibrium shifts right — CO₂ escapes.",
+  "hint": "High pressure pushes the equilibrium towards the side that reduces gas. Which side is that?"
+ },
+ {
+  "id": "eq-075",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "A teacher demonstrates the NO₂/N₂O₄ equilibrium: 2NO₂(g) ⇌ N₂O₄(g). Brown NO₂ converts to colourless N₂O₄. When a syringe of the equilibrium mixture is plunged into hot water, what colour change is expected (the forward reaction is exothermic)?",
+  "options": [
+   "Darker brown — equilibrium shifts left towards the endothermic (reverse) direction",
+   "Lighter (less brown) — equilibrium shifts right towards the exothermic direction",
+   "No colour change — temperature does not affect this equilibrium",
+   "Lighter — equilibrium shifts right because hot water provides activation energy"
+  ],
+  "answerIndex": 0,
+  "explanation": "Heating favours the endothermic direction. Since the forward reaction is exothermic, the reverse reaction is endothermic — so heating shifts equilibrium left, producing more brown NO₂.",
+  "hint": "Heating favours the endothermic direction. Is the endothermic direction forward or reverse here?"
+ },
+ {
+  "id": "eq-076",
+  "topic": "equilibrium",
+  "difficulty": 3,
+  "format": "mcq",
+  "prompt": "In a nitrogen/oxygen/NO equilibrium at very high temperatures (inside a lightning bolt or car engine), large amounts of NO form. As the gases quickly cool, very little NO decomposes back to N₂ and O₂ even though thermodynamics predicts this. Why?",
+  "options": [
+   "Cooling shifts equilibrium right — towards more NO",
+   "NO is thermodynamically stable at all temperatures",
+   "The rate of the reverse reaction at low temperatures is so slow (kinetically limited) that NO does not decompose within relevant time scales, even though equilibrium favours decomposition",
+   "The equilibrium is not reversible at low temperatures"
+  ],
+  "answerIndex": 2,
+  "explanation": "This is a kinetic vs thermodynamic distinction. Equilibrium thermodynamics predicts NO should decompose at lower temperatures, but the rate of decomposition is extremely slow — NO is kinetically trapped. This distinction between kinetic and thermodynamic control is important in chemistry.",
+  "hint": "The thermodynamics says NO should decompose, but does it in practice? What might stop it?"
+ },
+ {
+  "id": "eq-077",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "What is the main product of the Haber process?",
+  "options": [
+   "Nitric acid",
+   "Nitrogen dioxide",
+   "Ammonia (NH₃)",
+   "Nitrogen monoxide"
+  ],
+  "answerIndex": 2,
+  "explanation": "The Haber process produces ammonia (NH₃) from nitrogen (N₂) and hydrogen (H₂): N₂ + 3H₂ ⇌ 2NH₃. Ammonia is mainly used to make fertilisers.",
+  "hint": "The Haber process feeds the world — it makes the building block of fertilisers."
+ },
+ {
+  "id": "eq-078",
+  "topic": "equilibrium",
+  "difficulty": 2,
+  "format": "mcq",
+  "prompt": "The industrial contact process makes SO₃ which is then converted to sulfuric acid. The equilibrium step is 2SO₂(g) + O₂(g) ⇌ 2SO₃(g). An excess of O₂ is fed into the reactor. Why?",
+  "options": [
+   "O₂ speeds up the catalyst",
+   "By Le Châtelier's principle, excess O₂ shifts equilibrium right, converting more SO₂ to SO₃",
+   "Excess O₂ raises the pressure, shifting equilibrium left",
+   "O₂ lowers the activation energy for the forward reaction"
+  ],
+  "answerIndex": 1,
+  "explanation": "Adding excess O₂ increases its concentration. By Le Châtelier's principle the equilibrium shifts right to use up the added O₂, producing more SO₃ and increasing yield.",
+  "hint": "Le Châtelier: adding more of a reactant shifts equilibrium towards which side?"
+ },
+ {
+  "id": "eq-079",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "mcq",
+  "prompt": "Which statement about the position of equilibrium is correct?",
+  "options": [
+   "If equilibrium 'lies to the right', the mixture is mainly reactants",
+   "Equilibrium can only lie to the right for exothermic reactions",
+   "If equilibrium 'lies to the right', no reverse reaction is occurring",
+   "If equilibrium 'lies to the left', the mixture is mainly reactants"
+  ],
+  "answerIndex": 3,
+  "explanation": "'Equilibrium lies to the left' means the reactant side dominates — there is more reactant than product in the equilibrium mixture.",
+  "hint": "'Left' is the reactant side of the equation. What does 'lying to the left' imply?"
+ },
+ {
+  "id": "eq-080",
+  "topic": "equilibrium",
+  "difficulty": 1,
+  "format": "balanceEquation",
+  "prompt": "The Haber process makes ammonia from nitrogen and hydrogen. The reaction is reversible. Balance the equation: __ N₂ + __ H₂ ⇌ __ NH₃",
+  "equation": {
+   "reactants": [
+    {
+     "formula": "N2",
+     "coeff": 1
     },
-    "explanation": "N₂ + 3H₂ ⇌ 2NH₃ — 2 nitrogen atoms and 6 hydrogen atoms on each side. These are the lowest whole-number coefficients.",
-    "hint": "Start with 1 N₂ (2 N atoms). You need 2 NH₃ on the right to balance N. Then count H atoms in 2 NH₃ and balance H₂ on the left."
-  }
+    {
+     "formula": "H2",
+     "coeff": 3
+    }
+   ],
+   "products": [
+    {
+     "formula": "NH3",
+     "coeff": 2
+    }
+   ]
+  },
+  "explanation": "N₂ + 3H₂ ⇌ 2NH₃ — 2 nitrogen atoms and 6 hydrogen atoms on each side. These are the lowest whole-number coefficients.",
+  "hint": "Start with 1 N₂ (2 N atoms). You need 2 NH₃ on the right to balance N. Then count H atoms in 2 NH₃ and balance H₂ on the left."
+ }
 ]
