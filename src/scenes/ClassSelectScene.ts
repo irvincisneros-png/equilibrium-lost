@@ -57,38 +57,47 @@ export class ClassSelectScene extends Phaser.Scene {
       this.panels.push(bg);
 
       // Class name
-      this.add.text(px + panelW / 2, py + 40, cls.name, {
+      this.add.text(px + panelW / 2, py + 24, cls.name, {
         fontFamily: FONT, fontSize: '44px', color: TEXT_COLOR
       }).setOrigin(0.5, 0);
 
       // Theme
-      this.add.text(px + panelW / 2, py + 104, cls.theme, {
-        fontFamily: FONT, fontSize: '28px', color: '#8fa3c0',
+      this.add.text(px + panelW / 2, py + 80, cls.theme, {
+        fontFamily: FONT, fontSize: '26px', color: '#8fa3c0',
         wordWrap: { width: panelW - 40 }, align: 'center'
       }).setOrigin(0.5, 0);
 
+      // Hero portrait (stage-0 battle art)
+      const portraitKey = `hero_${cls.id}_0_battle`;
+      const portraitFrame = this.add.rectangle(px + panelW / 2, py + 300, 320, 320, 0x000000, 0)
+        .setStrokeStyle(2, 0x415a77, 0.7);
+      void portraitFrame;
+      if (this.textures.exists(portraitKey)) {
+        this.add.image(px + panelW / 2, py + 300, portraitKey).setDisplaySize(316, 316);
+      }
+
       // Stats
       const stats = cls.baseStats;
-      this.add.text(px + 32, py + 220, [
+      this.add.text(px + 32, py + 484, [
         'HP:  ' + stats.hp,
         'ATK: ' + stats.atk,
         'DEF: ' + stats.def,
         'SPD: ' + stats.spd,
       ].join('\n'), {
-        fontFamily: FONT, fontSize: '32px', color: TEXT_COLOR, lineSpacing: 12
+        fontFamily: FONT, fontSize: '30px', color: TEXT_COLOR, lineSpacing: 10
       });
 
       // Signature affinity
-      this.add.text(px + 32, py + 440, 'Affinity: ' + cls.signatureAffinity, {
-        fontFamily: FONT, fontSize: '32px', color: '#f9e2af'
+      this.add.text(px + 32, py + 660, 'Affinity: ' + cls.signatureAffinity, {
+        fontFamily: FONT, fontSize: '30px', color: '#f9e2af'
       });
 
       // Starting skills
       const skillNames = cls.startingSkillIds
         .map(id => content.skills[id]?.name ?? id)
         .join('\n• ');
-      this.add.text(px + 32, py + 500, 'Skills:\n• ' + skillNames, {
-        fontFamily: FONT, fontSize: '28px', color: '#a6e3a1', lineSpacing: 12
+      this.add.text(px + 32, py + 712, 'Skills:\n• ' + skillNames, {
+        fontFamily: FONT, fontSize: '26px', color: '#a6e3a1', lineSpacing: 10
       });
 
       // Playstyle blurb
