@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import type { QuestionDef, BalanceEquationSpec } from '../content/types';
 import { OrderStepsWidget } from './OrderStepsWidget';
+import { renderQuestionVisual } from './VisualRenderer';
 
 export interface QuizAnswer {
   index?: number;          // mcq selection 0..3
@@ -25,6 +26,11 @@ const DIGIT_KEYS = ['ONE', 'TWO', 'THREE', 'FOUR'] as const;
 const LETTER_KEYS = ['A', 'B', 'C', 'D'] as const;
 const TIMER_MS = 5000;
 const CORRECTION_MS = 2000;
+
+/** Height allocated for the visual panel when a question has a visual. */
+const VISUAL_PANEL_H = 220;
+/** Horizontal padding on each side within the visual window. */
+const VISUAL_PAD = 12;
 
 type AnyHandler = (...args: unknown[]) => void;
 
@@ -56,6 +62,11 @@ export class QuizPanel extends Phaser.GameObjects.Container {
   private focusIdx = 0;
   private timerActive = false;
 
+  /** Container for the procedural diagram; created/destroyed per ask(). */
+  private visualContainer: Phaser.GameObjects.Container | null = null;
+  /** Whether the current question has a visual (shifts contentTop down). */
+  private hasVisual = false;
+
   constructor(scene: Phaser.Scene, x: number, y: number, w: number, h: number) {
     super(scene, x, y);
     this.panelW = w; this.panelH = h;
@@ -76,6 +87,16 @@ export class QuizPanel extends Phaser.GameObjects.Container {
   ask(question: QuestionDef, opts: QuizAskOptions): Promise<QuizAnswer> {
     this.reset();
     this.setVisible(true);
+
+    // Render optional visual panel (mcq only)
+    if (question.visual && question.format === 'mcq') {
+      this.hasVisual = true;
+      this.buildVisualPanel(question);
+      this.promptText.setY(VISUAL_PANEL_H + 12);
+    } else {
+      this.promptText.setY(32);
+    }
+
     this.promptText.setText(question.prompt);
     this.hintText.setText(opts.studyMode && question.hint ? `Hint: ${question.hint}` : '');
 
@@ -165,7 +186,10 @@ export class QuizPanel extends Phaser.GameObjects.Container {
   }
 
   /** Y at which option/widget rows begin — just below the rendered prompt text. */
-  private contentTop(): number { return 32 + Math.max(40, this.promptText.height) + 28; }
+  private contentTop(): number {
+    const visualOffset = this.hasVisual ? VISUAL_PANEL_H + 8 : 0;
+    return visualOffset + 32 + Math.max(40, this.promptText.height) + 28;
+  }
 
   // --- balance equation ----------------------------------------------------
 
@@ -303,10 +327,48 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     this.clearKeys();
     this.clearWidgets();
     this.stopTimer();
+    this.clearVisual();
     this.resolver = null;
     this.coeffs = [];
-    this.promptText.setText('');
+    this.promptText.setText('').setY(32);
     this.hintText.setText('');
     this.controlsText.setText('').setVisible(false);
+  }
+
+  private clearVisual(): void {
+    if (this.visualContainer) {
+      this.visualContainer.destroy();
+      this.visualContainer = null;
+    }
+    this.hasVisual = false;
+  }
+
+  /** Build the bordered visual window and render the diagram into it. */
+  private buildVisualPanel(question: QuestionDef): void {
+    if (!question.visual) return;
+    const padX = VISUAL_PAD;
+    const panelW = this.panelW - padX * 2;
+    const panelH = VISUAL_PANEL_H;
+    const panelX = padX;
+    const panelY = 8;
+
+    // Faint gold-bordered window (FF-menu style)
+    const border = this.scene.add.rectangle(panelX, panelY, panelW, panelH, 0x050d14, 0.9)
+      .setOrigin(0, 0)
+      .setStrokeStyle(2, 0xf9e2af, 0.7);
+    this.add(border);
+    this.widgets.push(border);
+
+    const innerContainer = this.scene.add.container(0, 0);
+    this.add(innerContainer);
+    this.widgets.push(innerContainer);
+    this.visualContainer = innerContainer;
+
+    renderQuestionVisual(
+      this.scene,
+      innerContainer,
+      question.visual,
+      { x: panelX + 8, y: panelY + 6, width: panelW - 16, height: panelH - 12 },
+    );
   }
 }
