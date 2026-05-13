@@ -6,11 +6,12 @@ import { MAX_TIER } from '../systems/skillTiers';
 import { persist as savePersist } from '../persist';
 import { totalXpForLevel, xpToNextLevel } from '../systems/Progression';
 import { MusicManager } from '../systems/MusicManager';
+import { effectiveStats, canEquip } from '../systems/equipment';
 
 interface MenuSceneData { returnTo?: string; returnData?: Record<string, unknown> }
 
 const W = 1920, H = 1080, FONT = 'monospace';
-const TABS = ['Skills', 'Refine', 'Items', 'Status', 'Save', 'Settings', 'Quit'] as const;
+const TABS = ['Skills', 'Refine', 'Equipment', 'Items', 'Status', 'Save', 'Settings', 'Quit'] as const;
 type Tab = typeof TABS[number];
 
 /**
@@ -103,6 +104,7 @@ export class MenuScene extends Phaser.Scene {
     switch (this.tab()) {
       case 'Skills': this.buildSkillsTab(); break;
       case 'Refine': this.buildRefineTab(); break;
+      case 'Equipment': this.buildEquipmentTab(); break;
       case 'Items': this.buildItemsTab(); break;
       case 'Status': this.buildStatusTab(); break;
       case 'Save': this.buildButtonTab('Save now'); break;
@@ -146,6 +148,55 @@ export class MenuScene extends Phaser.Scene {
         : `${s.name}  [${s.affinity}]  ${tierTag}  →  +${p.delta.power} Pwr / +${p.delta.statusChance}% / −${p.delta.energyCost} EN   (${p.cost} RP)${p.canAfford ? '' : '  ✗'}`;
       row.setData('label', label);
     });
+  }
+
+  private buildEquipmentTab(): void {
+    const equipped = this.save.equipped;
+    const equipMap = this.content.equipment ?? {};
+    const base = this.save.stats;
+    const eff = effectiveStats(this.save, equipMap);
+    this.addObj(this.add.text(160, 168,
+      `Effective:  ATK ${eff.atk}  DEF ${eff.def}  SPD ${eff.spd}  HP ${eff.hp}  ·  Enter equips/unequips`,
+      { fontFamily: FONT, fontSize: '28px', color: '#8fa3c0' }).setDepth(1));
+    this.addObj(this.add.text(160, 204,
+      `Base:       ATK ${base.atk}  DEF ${base.def}  SPD ${base.spd}  HP ${base.hp}`,
+      { fontFamily: FONT, fontSize: '24px', color: '#566074' }).setDepth(1));
+
+    const allOwned = this.save.ownedEquipmentIds
+      .map(id => equipMap[id])
+      .filter((e): e is import('../content/types').EquipmentDef => !!e && canEquip(e, this.save.classId));
+
+    let y = 256;
+    for (const slotKey of ['weapon', 'armour', 'accessory'] as const) {
+      this.addObj(this.add.text(160, y, `── ${slotKey.charAt(0).toUpperCase() + slotKey.slice(1)} ──`, { fontFamily: FONT, fontSize: '26px', color: '#89dceb' }).setDepth(1));
+      y += 40;
+      const slotItems = allOwned.filter(e => e.kind === slotKey);
+      if (slotItems.length === 0) {
+        this.addObj(this.add.text(180, y, '  (none owned)', { fontFamily: FONT, fontSize: '26px', color: '#566074' }).setDepth(1));
+        y += 40;
+      } else {
+        slotItems.forEach(e => {
+          const isEquipped = equipped[slotKey] === e.id;
+          const row = this.addRow(y, () => this.toggleEquip(e));
+          const bonus = `ATK+${e.atkBonus} DEF+${e.defBonus} SPD+${e.spdBonus} HP+${e.hpBonus}`;
+          row.setData('label', `${isEquipped ? '◆' : '◇'} ${e.name}  [T${e.tier}]  ${bonus}`);
+          y += 40;
+        });
+      }
+    }
+  }
+
+  private toggleEquip(e: import('../content/types').EquipmentDef): void {
+    const slot = e.kind as 'weapon' | 'armour' | 'accessory';
+    if (this.save.equipped[slot] === e.id) {
+      this.save.equipped[slot] = null;
+      this.toast(`Unequipped ${e.name}.`);
+    } else {
+      this.save.equipped[slot] = e.id;
+      this.toast(`Equipped ${e.name}.`);
+    }
+    this.persist();
+    this.buildTab();
   }
 
   private refine(skillId: string): void {
@@ -264,6 +315,14 @@ export class MenuScene extends Phaser.Scene {
     switch (this.tab()) {
       case 'Skills': { const ids = this.save.unlockedSkillIds.filter(id => this.content.skills[id]); const id = ids[i]; if (id) this.toggleSkill(id); break; }
       case 'Refine': { const ids = this.save.unlockedSkillIds.filter(id => this.content.skills[id]); const id = ids[i]; if (id) this.refine(id); break; }
+      case 'Equipment': {
+        const allOwned = this.save.ownedEquipmentIds
+          .map(id => this.content.equipment?.[id])
+          .filter((e): e is import('../content/types').EquipmentDef => !!e && canEquip(e, this.save.classId));
+        const item = allOwned[i];
+        if (item) this.toggleEquip(item);
+        break;
+      }
       case 'Items': { const entry = this.save.items[i]; if (entry) this.useItem(entry.itemId); break; }
       case 'Settings':
         if (i === 0) this.toggleSetting('studyMode');
