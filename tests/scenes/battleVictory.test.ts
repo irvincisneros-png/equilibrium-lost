@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { applyVictory, RP_AWARDS } from '../../src/scenes/battleVictory';
 import { loadGameContent } from '../../src/content/loadGameContent';
 import { SaveManager } from '../../src/systems/SaveManager';
+import type { EquipmentDef } from '../../src/content/types';
 
 const content = loadGameContent().content;
 const region1 = content.regions[0]!;
@@ -107,5 +108,65 @@ describe('applyVictory', () => {
     expect(after.storyFlags['game_complete']).toBe(true);
     expect(after.reagentPoints).toBe(RP_AWARDS.finalBoss);
     expect(banners.some(b => /Æquor is saved|Equilibrium is whole/i.test(b))).toBe(true);
+  });
+});
+
+describe('applyVictory — Drachm awards', () => {
+  it('a wild kill awards floor(level × 3) Drachms', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const protium = content.enemies['protium']!; // level 2
+    const { save: after } = applyVictory(save, protium, region1, 0, content);
+    expect(after.drachms).toBe(Math.floor(protium.level * 3));
+  });
+
+  it('a miniBoss kill awards floor(level × 8) Drachms plus equipment drop banner on first clear', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const miniBoss = content.enemies[region1.miniBossId]!; // unstable-deuteride Lv6
+    // inject a dropEquipmentId into the enemy def for testing
+    const enemyWithDrop = { ...miniBoss, dropEquipmentId: 'lab-relic-alpha' };
+    // inject the equipment into content
+    const labRelicAlpha: EquipmentDef = {
+      id: 'lab-relic-alpha', name: 'Lab Relic Alpha', kind: 'accessory',
+      family: 'universal', wieldableBy: [], tier: 2,
+      atkBonus: 8, defBonus: 0, spdBonus: 3, hpBonus: 0,
+      description: 'A universal lab relic.', shopPrice: null, dropFrom: ['miniBoss']
+    };
+    const contentWithEquip = {
+      ...content,
+      equipment: { 'lab-relic-alpha': labRelicAlpha },
+      shops: {}
+    };
+    const { save: after, banners } = applyVictory(save, enemyWithDrop, region1, 0, contentWithEquip);
+    expect(after.drachms).toBe(Math.floor(enemyWithDrop.level * 8));
+    expect(after.ownedEquipmentIds).toContain('lab-relic-alpha');
+    expect(banners.some(b => /Lab Relic Alpha/i.test(b))).toBe(true);
+  });
+
+  it('a second miniBoss kill does not duplicate the equipment drop', () => {
+    const save = SaveManager.newGame('pyron', content);
+    const miniBoss = { ...content.enemies[region1.miniBossId]!, dropEquipmentId: 'lab-relic-alpha' };
+    const labRelicAlpha2: EquipmentDef = {
+      id: 'lab-relic-alpha', name: 'Lab Relic Alpha', kind: 'accessory',
+      family: 'universal', wieldableBy: [], tier: 2,
+      atkBonus: 8, defBonus: 0, spdBonus: 3, hpBonus: 0,
+      description: 'A universal lab relic.', shopPrice: null, dropFrom: ['miniBoss']
+    };
+    const contentWithEquip = {
+      ...content,
+      equipment: { 'lab-relic-alpha': labRelicAlpha2 },
+      shops: {}
+    };
+    const { save: after1 } = applyVictory(save, miniBoss, region1, 0, contentWithEquip);
+    const { save: after2 } = applyVictory(after1, miniBoss, region1, 0, contentWithEquip);
+    expect(after2.ownedEquipmentIds.filter(id => id === 'lab-relic-alpha')).toHaveLength(1);
+  });
+
+  it('a regionBoss kill awards floor(level × 15) Drachms', () => {
+    const save = SaveManager.newGame('pyron', content);
+    save.level = 10;
+    const boss = content.enemies[region1.regionBossId]!; // the-unstable-isotope Lv9
+    const contentWithEquip = { ...content, equipment: {}, shops: {} };
+    const { save: after } = applyVictory(save, boss, region1, 0, contentWithEquip);
+    expect(after.drachms).toBe(Math.floor(boss.level * 15));
   });
 });

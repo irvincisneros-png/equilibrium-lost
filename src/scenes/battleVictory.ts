@@ -56,10 +56,26 @@ export function applyVictory(save: SaveData, enemyDef: EnemyDef, region: RegionD
   // Boss clear
   const rp: RegionProgress = (s.regionProgress[region.id] ??= { entered: true, miniBossDefeated: false, bossDefeated: false, shrineCleared: false });
   if (enemyDef.role === 'miniBoss') {
+    // Equipment drop (first-clear, before flag is set)
+    if (enemyDef.dropEquipmentId && !rp.miniBossDefeated) {
+      const dropId = enemyDef.dropEquipmentId;
+      if (!s.ownedEquipmentIds.includes(dropId)) {
+        s.ownedEquipmentIds.push(dropId);
+        banners.push(`Found: ${content.equipment?.[dropId]?.name ?? dropId}!`);
+      }
+    }
     rp.miniBossDefeated = true;
     s.storyFlags[`miniboss_${region.id}_done`] = true;
     banners.push('The guardian falls — the path ahead is clear.');
   } else if (enemyDef.role === 'regionBoss' || enemyDef.role === 'finalBoss') {
+    // Equipment drop (first-clear, before flag is set)
+    if (enemyDef.dropEquipmentId && !rp.bossDefeated) {
+      const dropId = enemyDef.dropEquipmentId;
+      if (!s.ownedEquipmentIds.includes(dropId)) {
+        s.ownedEquipmentIds.push(dropId);
+        banners.push(`Found: ${content.equipment?.[dropId]?.name ?? dropId}!`);
+      }
+    }
     rp.bossDefeated = true;
     s.storyFlags[`equilibrium_restored_${region.id}`] = true;
     award(region.bossReward.xp, 'Region cleared!');
@@ -82,6 +98,14 @@ export function applyVictory(save: SaveData, enemyDef: EnemyDef, region: RegionD
     : RP_AWARDS.wild;
   s.reagentPoints += rpGain;
   banners.push(`+${rpGain} Reagent Points`);
+
+  // Drachms
+  const drachmsGain = (enemyDef.role === 'regionBoss' || enemyDef.role === 'finalBoss')
+    ? Math.floor(enemyDef.level * 15)
+    : enemyDef.role === 'miniBoss'
+    ? Math.floor(enemyDef.level * 8)
+    : Math.floor(enemyDef.level * 3);
+  s.drachms = (s.drachms ?? 0) + drachmsGain;
 
   // Evolution — checked last, now that bossDefeated may have just been set
   let evolved: EvolutionDef | null = null;
