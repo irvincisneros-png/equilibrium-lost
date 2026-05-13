@@ -5,6 +5,7 @@ import { QuizPanel } from '../ui/QuizPanel';
 import { SaveManager } from '../systems/SaveManager';
 import { persist as savePersist } from '../persist';
 import { MusicManager } from '../systems/MusicManager';
+import { effectiveStats } from '../systems/equipment';
 
 interface SpringSceneData { regionId: string }
 
@@ -73,7 +74,7 @@ export class HealingSpringScene extends Phaser.Scene {
 
     const passed = this.answers.every(a => a);
     if (passed) {
-      this.save.currentHp = this.save.stats.hp;
+      this.save.currentHp = effectiveStats(this.save, this.content.equipment ?? {}).hp;
       this.save.currentEnergy = 100;
       await this.banner('Refreshed — HP and Energy restored!', '#06d6a0');
     } else {
