@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import type { GameContent, ClassDef, SaveData, SaveSettings } from '../content/types';
 import { SaveManager } from '../systems/SaveManager';
 import { persist as savePersist } from '../persist';
+import { MusicManager } from '../systems/MusicManager';
 
 const W = 1920;
 const H = 1080;
@@ -28,6 +29,9 @@ export class ClassSelectScene extends Phaser.Scene {
   create(): void {
     const content: GameContent = this.registry.get('content');
     this.classes = content.classes;
+
+    // Continuous from TitleScene — idempotent if title music is already playing
+    MusicManager.play(this, 'music_title');
 
     this.cameras.main.setBackgroundColor('#0b0f17');
 
@@ -144,6 +148,9 @@ export class ClassSelectScene extends Phaser.Scene {
       save.settings = { ...pending };
       this.registry.set('pendingSettings', null);
     }
+
+    // Re-sync volume from the freshly-created save
+    MusicManager.state.volume = save.settings.musicVolume ?? 0.6;
 
     this.registry.set('save', save);
     savePersist();

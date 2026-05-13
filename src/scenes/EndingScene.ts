@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { GameContent, SaveData } from '../content/types';
+import { MusicManager } from '../systems/MusicManager';
 
 const W = 1920;
 const H = 1080;
@@ -11,6 +12,8 @@ export class EndingScene extends Phaser.Scene {
   create(): void {
     const content: GameContent | null = this.registry.get('content');
     const save: SaveData | null = this.registry.get('save');
+
+    MusicManager.play(this, 'music_ending');
 
     this.cameras.main.setBackgroundColor('#05080d');
     this.add.rectangle(W / 2, H / 2, W, H, 0x05080d).setOrigin(0.5);

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import type { GameContent, SaveData, RegionDef } from '../content/types';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
+import { MusicManager } from '../systems/MusicManager';
 
 const W = 1920;
 const H = 1080;
@@ -25,6 +26,8 @@ export class WorldMapScene extends Phaser.Scene {
   create(): void {
     const content: GameContent = this.registry.get('content');
     const save: SaveData = this.registry.get('save');
+
+    MusicManager.play(this, 'music_worldmap');
 
     this.cameras.main.setBackgroundColor('#0b0f17');
 

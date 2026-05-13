@@ -6,6 +6,27 @@ import { tileBlocks, isTallGrass, pickWildEncounter } from './overworldHelpers';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
 import { persist as savePersist } from '../persist';
 import { REFRESHER_TOAST_KEY } from './battlePresenter';
+import { MusicManager } from '../systems/MusicManager';
+
+/** Maps a region id to its background music key. */
+function regionMusicKey(regionId: string): string {
+  switch (regionId) {
+    case 'elemental-reaches':
+      return 'music_overworld_r1';
+    case 'bonding-forge':
+    case 'reaction-hollow':
+    case 'balance-halls':
+      return 'music_overworld_r2_r4';
+    case 'catalyst-crags':
+    case 'acid-wastes':
+    case 'the-crucible':
+      return 'music_overworld_r5_r7';
+    case 'equilibriums-heart':
+      return 'music_overworld_r8';
+    default:
+      return 'music_overworld_r1';
+  }
+}
 import elementalReaches from '../content/data/tilemaps/elemental-reaches.json';
 import bondingForge from '../content/data/tilemaps/bonding-forge.json';
 import reactionHollow from '../content/data/tilemaps/reaction-hollow.json';
@@ -132,6 +153,8 @@ export class OverworldScene extends Phaser.Scene {
     this.region = region;
     this.regionId = region.id;
     this.map = TILEMAPS[region.tilemapKey] ?? (elementalReaches as unknown as TilemapData);
+
+    MusicManager.play(this, regionMusicKey(this.regionId));
 
     this.busy = false;
     this.npcs = [];

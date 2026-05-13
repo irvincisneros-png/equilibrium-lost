@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import type { GameContent, SaveData, SaveSettings } from '../content/types';
 import { SaveManager } from '../systems/SaveManager';
 import { addPlaceholderLabel } from '../ui/placeholderTextures';
+import { MusicManager } from '../systems/MusicManager';
 
 const W = 1920;
 const H = 1080;
@@ -19,6 +20,10 @@ export class TitleScene extends Phaser.Scene {
     const content: GameContent = this.registry.get('content');
     const save: SaveData | null = this.registry.get('save');
     const saveLoadResult: { ok: boolean; reason?: string } = this.registry.get('saveLoadResult');
+
+    // Sync volume from save before first play (so the correct level is used from the start)
+    MusicManager.state.volume = save?.settings.musicVolume ?? 0.6;
+    MusicManager.play(this, 'music_title');
 
     this.cameras.main.setBackgroundColor('#0b0f17');
 
@@ -138,7 +143,7 @@ export class TitleScene extends Phaser.Scene {
     if (save) {
       settings = save.settings;
     } else {
-      const pending: SaveSettings = this.registry.get('pendingSettings') ?? { studyMode: false, answerTimer: false };
+      const pending: SaveSettings = this.registry.get('pendingSettings') ?? { studyMode: false, answerTimer: false, musicVolume: 0.6 };
       settings = pending;
       this.registry.set('pendingSettings', settings);
     }

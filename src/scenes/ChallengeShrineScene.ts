@@ -7,6 +7,7 @@ import { persist as savePersist } from '../persist';
 import { addXp } from '../systems/Progression';
 import { scoreGauntlet } from './shrineScoring';
 import { RP_AWARDS } from './battleVictory';
+import { MusicManager } from '../systems/MusicManager';
 
 interface ShrineSceneData { regionId: string }
 
@@ -43,6 +44,8 @@ export class ChallengeShrineScene extends Phaser.Scene {
     if (!region) { this.scene.start('WorldMapScene'); return; }
     this.regionId = region.id;
     const shrine = region.shrine;
+
+    MusicManager.play(this, 'music_shrine');
     const allowedMisses = shrine.questionCount - Math.ceil(shrine.questionCount * shrine.passRatio);
 
     this.cameras.main.setBackgroundColor('#070b12');

@@ -4,6 +4,7 @@ import type { QuizEngine } from '../systems/QuizEngine';
 import { QuizPanel } from '../ui/QuizPanel';
 import { SaveManager } from '../systems/SaveManager';
 import { persist as savePersist } from '../persist';
+import { MusicManager } from '../systems/MusicManager';
 
 interface SpringSceneData { regionId: string }
 
@@ -38,6 +39,8 @@ export class HealingSpringScene extends Phaser.Scene {
     const region = this.content.regions.find(r => r.id === this.regionId) ?? this.content.regions[0];
     if (!region) { this.scene.start('WorldMapScene'); return; }
     this.regionId = region.id;
+
+    MusicManager.play(this, 'music_shrine');
 
     this.cameras.main.setBackgroundColor('#070b12');
     this.add.rectangle(0, 0, W, H, 0x040d1a).setOrigin(0, 0);
