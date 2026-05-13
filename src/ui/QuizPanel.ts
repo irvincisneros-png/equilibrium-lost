@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import type { QuestionDef, BalanceEquationSpec } from '../content/types';
+import { OrderStepsWidget } from './OrderStepsWidget';
 
 export interface QuizAnswer {
   index?: number;          // mcq selection 0..3
@@ -81,6 +82,9 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     if (question.format === 'balanceEquation' && question.equation) {
       this.buildBalance(question.equation);
       this.controlsText.setText('▲▼ buttons (or ←/→ pick a term, ↑/↓ change it) · Enter to submit').setVisible(true);
+    } else if (question.format === 'orderSteps' && question.steps && question.steps.length >= 2) {
+      this.buildOrderSteps(question.steps);
+      this.controlsText.setText('Drag a step to reorder — or ↑/↓ to pick a step, Shift+↑/↓ to move it · Enter to submit').setVisible(true);
     } else {
       this.buildMcq(question.options ?? ['(error)', '(error)', '(error)', '(error)']);
       this.controlsText.setText('Click an answer — or press A · B · C · D  (or 1 · 2 · 3 · 4)').setVisible(true);
@@ -104,8 +108,10 @@ export class QuizPanel extends Phaser.GameObjects.Container {
     } else if (question.format === 'balanceEquation' && question.equation) {
       const coeffs = [...question.equation.reactants, ...question.equation.products].map(t => t.coeff);
       answerStr = this.equationString(question.equation, coeffs);
+    } else if (question.format === 'orderSteps' && question.steps) {
+      answerStr = '\n' + question.steps.map((s, i) => `  ${i + 1}. ${s}`).join('\n');
     }
-    const heading = correct ? '✓ Correct!' : `✗ The answer was ${answerStr}`;
+    const heading = correct ? '✓ Correct!' : (question.format === 'orderSteps' ? `✗ The correct order was:${answerStr}` : `✗ The answer was ${answerStr}`);
     const box = this.scene.add.text(32, this.contentTop(), `${heading}\n— ${question.explanation}`, {
       fontFamily: FONT, fontSize: '32px', color: correct ? C_OK : '#f9e2af', wordWrap: { width: this.panelW - 64 }, lineSpacing: 8,
     }).setOrigin(0, 0);
@@ -226,6 +232,17 @@ export class QuizPanel extends Phaser.GameObjects.Container {
       const sep = i === rCount - 1 ? ' → ' : (i < terms.length - 1 ? ' + ' : '');
       return piece + sep;
     }).join('');
+  }
+
+  // --- order steps ---------------------------------------------------------
+
+  private buildOrderSteps(steps: string[]): void {
+    const w = new OrderStepsWidget(this.scene, 40, this.contentTop(), this.panelW - 80, steps, {
+      onSubmit: (order) => this.choose({ widgetOrder: order, fastAnswer: this.snapFast() }),
+      registerKey: (event, fn) => this.onKey(event, fn as AnyHandler),
+    });
+    this.add(w);
+    this.widgets.push(w);
   }
 
   // --- optional countdown bar ----------------------------------------------
